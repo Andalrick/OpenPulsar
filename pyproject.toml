@@ -1,0 +1,52 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "openpulsar"
+version = "0.1.0"
+description = "Open-source configuration utility for Pulsar wired gaming mice on Linux."
+requires-python = ">=3.12"
+readme = "README.md"
+license = { text = "GPL-3.0-or-later" }
+authors = [
+    { name = "Andalrick" },
+]
+keywords = ["linux", "mouse", "pulsar", "hid", "gaming"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: X11 Applications :: Qt",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: System :: Hardware :: Hardware Drivers",
+]
+dependencies = [
+    "PySide6",
+    "pyusb",
+    "hidapi",
+]
+
+[project.scripts]
+openpulsar = "openpulsar.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+openpulsar = ["assets/**/*.svg", "translations/*.json"]
+
+[project.optional-dependencies]
+test = ["pytest", "pytest-qt"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[project.urls]
+Homepage = "https://github.com/Andalrick/OpenPulsar"
+Repository = "https://github.com/Andalrick/OpenPulsar"
+Issues = "https://github.com/Andalrick/OpenPulsar/issues"

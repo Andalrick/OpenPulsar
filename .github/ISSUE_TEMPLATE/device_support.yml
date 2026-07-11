@@ -1,0 +1,40 @@
+name: Device support request
+description: Provide information for an unsupported Pulsar wired mouse
+title: "[Device]: "
+labels: ["device-support", "needs-triage"]
+body:
+  - type: input
+    id: model
+    attributes:
+      label: Exact device model and size
+      placeholder: Pulsar ... Wired, Medium/Mini/etc.
+    validations:
+      required: true
+  - type: input
+    id: usb
+    attributes:
+      label: USB vendor and product IDs
+      placeholder: 3710:1400
+    validations:
+      required: true
+  - type: input
+    id: firmware
+    attributes:
+      label: Firmware version
+      placeholder: V1.0
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Available evidence
+      description: Describe tested controls, captures or protocol similarities. Do not attach unrelated USB traffic.
+    validations:
+      required: true
+  - type: checkboxes
+    id: hardware
+    attributes:
+      label: Hardware access
+      options:
+        - label: I own or can repeatedly test this exact device.
+          required: true

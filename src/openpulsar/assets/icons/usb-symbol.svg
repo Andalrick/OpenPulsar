@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+
+<svg
+   fill="#000000"
+   version="1.1"
+   id="Capa_1"
+   width="800px"
+   height="800px"
+   viewBox="0 0 577.4 577.4"
+   xml:space="preserve"
+   sodipodi:docname="usb-symbol.svg"
+   inkscape:version="1.4.4 (dcaf3e7d9e, 2026-05-05)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><defs
+   id="defs2" /><sodipodi:namedview
+   id="namedview2"
+   pagecolor="#ffffff"
+   bordercolor="#cccccc"
+   borderopacity="1"
+   inkscape:showpageshadow="0"
+   inkscape:pageopacity="1"
+   inkscape:pagecheckerboard="0"
+   inkscape:deskcolor="#d1d1d1"
+   inkscape:zoom="1.48125"
+   inkscape:cx="400.33755"
+   inkscape:cy="400"
+   inkscape:window-width="2560"
+   inkscape:window-height="1364"
+   inkscape:window-x="0"
+   inkscape:window-y="0"
+   inkscape:window-maximized="1"
+   inkscape:current-layer="Capa_1" />
+<g
+   id="g2"
+   style="fill:#333333">
+	<g
+   id="g1"
+   style="fill:#333333">
+		<path
+   d="M474.025,147.726h-77.903c-7.913,0-14.337,6.417-14.337,14.337v77.903c0,7.919,6.424,14.337,14.337,14.337h10.088v43.001    c0,5.373-4.378,9.75-9.749,9.75h-78.9v-187.42h37.278c3.645-0.049,7.083-2.03,8.831-5.271c1.689-3.271,1.504-7.224-0.471-10.259    L297.023,4.492C295.162,1.683,292.043,0,288.679,0c-3.307,0.065-6.52,1.663-8.323,4.492l-66.084,99.584    c-2.03,3.091-2.291,7.028-0.544,10.231c1.728,3.27,5.186,5.329,8.886,5.329h37.224v187.42h-78.899    c-5.374,0-9.751-4.377-9.751-9.75v-51.609c14.673-9.488,24.429-25.92,24.429-44.69c0-29.425-23.864-53.291-53.289-53.291    c-29.425,0-53.289,23.864-53.289,53.291c0,18.772,9.751,35.203,24.429,44.69v51.609c0,37.203,30.27,67.476,67.473,67.476h78.901    v114.637c-14.676,9.5-24.431,25.92-24.431,44.693c0,29.424,23.866,53.289,53.291,53.289c29.425,0,53.287-23.863,53.287-53.289    c0-18.773-9.75-35.193-24.429-44.693V364.78h78.901c37.203,0,67.473-30.271,67.473-67.476v-43.001h10.091    c7.908,0,14.336-6.416,14.336-14.337v-77.903C488.363,154.142,481.936,147.726,474.025,147.726z"
+   id="path1"
+   style="fill:#333333" />
+	</g>
+</g>
+</svg>

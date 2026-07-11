@@ -1,0 +1,58 @@
+name: Bug report
+description: Report a reproducible OpenPulsar problem
+title: "[Bug]: "
+labels: ["bug", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for taking the time to report a problem.
+  - type: input
+    id: version
+    attributes:
+      label: OpenPulsar version or commit
+      placeholder: v0.1.0 or commit hash
+    validations:
+      required: true
+  - type: input
+    id: device
+    attributes:
+      label: Mouse model and firmware
+      placeholder: Pulsar Xlite V3 Wired Medium, firmware V1.0
+    validations:
+      required: true
+  - type: input
+    id: system
+    attributes:
+      label: Linux environment
+      placeholder: Fedora 42, KDE Plasma, Wayland, Python 3.13
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: List the smallest reliable sequence that triggers the problem.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behaviour and logs
+      description: Paste terminal output or attach screenshots. Remove private information first.
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      options:
+        - label: I searched existing issues.
+          required: true
+        - label: I removed private or unrelated information from logs and captures.
+          required: true

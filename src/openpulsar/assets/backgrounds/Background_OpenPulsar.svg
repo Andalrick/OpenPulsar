@@ -1,0 +1,448 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="540"
+   height="720"
+   viewBox="0 0 540 720"
+   version="1.1"
+   id="svg102"
+   sodipodi:docname="Background_OpenPulsar.svg"
+   inkscape:version="1.4.4 (dcaf3e7d9e, 2026-05-05)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview102"
+     pagecolor="#ffffff"
+     bordercolor="#cccccc"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="1"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="2.04"
+     inkscape:cx="233.33333"
+     inkscape:cy="95.833333"
+     inkscape:window-width="2560"
+     inkscape:window-height="1364"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg102"
+     showgrid="false" />
+  <defs
+     id="defs8">
+    <linearGradient
+       id="bg"
+       x1="0"
+       y1="0"
+       x2="1"
+       y2="1">
+      <stop
+         offset="0"
+         stop-color="#ffffff"
+         id="stop1" />
+      <stop
+         offset="0.58"
+         stop-color="#fbfcfe"
+         id="stop2" />
+      <stop
+         offset="1"
+         stop-color="#edf1f6"
+         id="stop3" />
+    </linearGradient>
+    <linearGradient
+       id="blue"
+       x1="0"
+       y1="0"
+       x2="1"
+       y2="1">
+      <stop
+         offset="0"
+         stop-color="#1f7cff"
+         id="stop4" />
+      <stop
+         offset="1"
+         stop-color="#004fe8"
+         id="stop5" />
+    </linearGradient>
+    <linearGradient
+       id="greyBand"
+       x1="0"
+       y1="0"
+       x2="1"
+       y2="1">
+      <stop
+         offset="0"
+         stop-color="#f7f8fa"
+         stop-opacity="0"
+         id="stop6" />
+      <stop
+         offset="0.45"
+         stop-color="#d9dde4"
+         stop-opacity="0.58"
+         id="stop7" />
+      <stop
+         offset="1"
+         stop-color="#f7f8fa"
+         stop-opacity="0"
+         id="stop8" />
+    </linearGradient>
+    <style
+       id="style8">
+      .title { font-family: Inter, Arial, Helvetica, sans-serif; font-weight: 800; font-size: 24px; letter-spacing: -1.3px; }
+      .tag { font-family: Inter, Arial, Helvetica, sans-serif; font-weight: 700; font-size: 7px; letter-spacing: 2.25px; fill: #111827; }
+      .line { stroke:#9aa3af; stroke-width:1; opacity:.55; stroke-linecap:round; }
+      .line2 { stroke:#c9ced6; stroke-width:1; opacity:.75; stroke-linecap:round; }
+      .dot { fill:#88909b; opacity:.65; }
+      .sq { fill:#6d7480; opacity:.65; }
+      .soft { fill:#e6e9ee; opacity:.58; }
+      .darkShape { fill:#4d535c; opacity:.82; }
+    </style>
+  </defs>
+  <rect
+     width="540"
+     height="720"
+     fill="url(#bg)"
+     id="rect8" />
+  <!-- large flat diagonal structure on the right -->
+  <g
+     opacity="0.75"
+     id="g12">
+    <polygon
+       points="502,0 540,0 188,720 145,720"
+       fill="url(#greyBand)"
+       id="polygon8" />
+    <polygon
+       points="540,108 540,190 279,720 231,720"
+       fill="#eef1f5"
+       opacity="0.58"
+       id="polygon9" />
+    <polygon
+       points="421,0 456,0 363,104 328,104"
+       fill="#f0f2f5"
+       opacity="0.7"
+       id="polygon10" />
+    <polygon
+       points="448,44 486,44 454,73 416,73"
+       fill="#5d646d"
+       opacity="0.62"
+       id="polygon11" />
+    <polygon
+       points="506,86 540,86 502,116 468,116"
+       fill="#e2e5ea"
+       opacity="0.9"
+       id="polygon12" />
+  </g>
+  <!-- bottom left flat blocks -->
+  <g
+     opacity="0.78"
+     id="g16">
+    <polygon
+       points="0,593 37,593 0,630"
+       fill="#d7dbe2"
+       id="polygon13" />
+    <polygon
+       points="56,642 109,642 72,680 18,680"
+       class="darkShape"
+       id="polygon14" />
+    <polygon
+       points="0,687 33,687 0,720"
+       fill="#d8dce3"
+       id="polygon15" />
+    <polygon
+       points="93,688 132,688 107,712 68,712"
+       fill="#eef0f4"
+       id="polygon16" />
+  </g>
+  <!-- mid/right flat blocks -->
+  <g
+     opacity="0.8"
+     id="g19">
+    <polygon
+       points="410,561 487,561 447,604 370,604"
+       class="darkShape"
+       id="polygon17" />
+    <polygon
+       points="392,505 470,505 430,548 352,548"
+       fill="#edf0f4"
+       id="polygon18" />
+    <polygon
+       points="523,523 540,523 540,612 486,612"
+       fill="#eceff3"
+       opacity=".75"
+       id="polygon19" />
+  </g>
+  <!-- fine tech lines -->
+  <!-- dotted grids -->
+  <!-- small squares -->
+  <!-- OpenPulsar logo and text -->
+  <g
+     transform="translate(-23.172607,9)"
+     id="g102">
+    <!-- icon -->
+    <!-- title -->
+    <text
+       style="font-weight:800;font-size:24px;font-family:'JetBrains Mono';-inkscape-font-specification:'JetBrains Mono, Ultra-Bold';letter-spacing:-1.3px;stroke:none"
+       x="68.088608"
+       y="24.392405"
+       id="text111">p</text>
+    <text
+       style="font-weight:800;font-size:24px;font-family:'JetBrains Mono';-inkscape-font-specification:'JetBrains Mono, Ultra-Bold';letter-spacing:-1.3px;stroke:none"
+       x="81.188617"
+       y="24.392405"
+       id="text110">e</text>
+    <text
+       style="font-weight:800;font-size:24px;font-family:'JetBrains Mono';-inkscape-font-specification:'JetBrains Mono, Ultra-Bold';letter-spacing:-1.3px;stroke:none"
+       x="94.288626"
+       y="24.392405"
+       id="text109">n</text>
+    <text
+       style="font-weight:800;font-size:24px;font-family:'JetBrains Mono';-inkscape-font-specification:'JetBrains Mono, Ultra-Bold';letter-spacing:-1.3px;stroke:none;fill:#2f6cff;fill-opacity:1"
+       x="107.38863"
+       y="24.392405"
+       id="text108">P</text>
+    <text
+       style="font-weight:800;font-size:24px;font-family:'JetBrains Mono';-inkscape-font-specification:'JetBrains Mono, Ultra-Bold';letter-spacing:-1.3px;stroke:none;fill:#2f6cff;fill-opacity:1"
+       x="120.48864"
+       y="24.392405"
+       id="text107">u</text>
+    <text
+       style="font-weight:800;font-size:24px;font-family:'JetBrains Mono';-inkscape-font-specification:'JetBrains Mono, Ultra-Bold';letter-spacing:-1.3px;stroke:none;fill:#2f6cff;fill-opacity:1"
+       x="133.58865"
+       y="24.392405"
+       id="text106">l</text>
+    <text
+       style="font-weight:800;font-size:24px;font-family:'JetBrains Mono';-inkscape-font-specification:'JetBrains Mono, Ultra-Bold';letter-spacing:-1.3px;stroke:none;fill:#2f6cff;fill-opacity:1"
+       x="146.68866"
+       y="24.392405"
+       id="text105">s</text>
+    <text
+       style="font-weight:800;font-size:24px;font-family:'JetBrains Mono';-inkscape-font-specification:'JetBrains Mono, Ultra-Bold';letter-spacing:-1.3px;stroke:none;fill:#2f6cff;fill-opacity:1"
+       x="159.78867"
+       y="24.392405"
+       id="text104">a</text>
+    <text
+       style="font-weight:800;font-size:24px;font-family:'JetBrains Mono';-inkscape-font-specification:'JetBrains Mono, Ultra-Bold';letter-spacing:-1.3px;stroke:none;fill:#2f6cff;fill-opacity:1"
+       x="172.88868"
+       y="24.392405"
+       id="text103">r</text>
+    <line
+       x1="199.67261"
+       y1="6"
+       x2="199.67261"
+       y2="31"
+       stroke="#8b929c"
+       stroke-width="1"
+       opacity="0.72"
+       id="line101" />
+    <text
+       style="font-weight:bold;font-size:10.6667px;font-family:'JetBrains Mono';-inkscape-font-specification:'JetBrains Mono, Bold';letter-spacing:2.25px;fill:#111827"
+       x="212.35127"
+       y="24.093342"
+       id="text30">P</text>
+    <text
+       style="font-weight:bold;font-size:10.6667px;font-family:'JetBrains Mono';-inkscape-font-specification:'JetBrains Mono, Bold';letter-spacing:2.25px;fill:#111827"
+       x="221.0013"
+       y="24.093342"
+       id="text29">E</text>
+    <text
+       style="font-weight:bold;font-size:10.6667px;font-family:'JetBrains Mono';-inkscape-font-specification:'JetBrains Mono, Bold';letter-spacing:2.25px;fill:#111827"
+       x="229.65132"
+       y="24.093342"
+       id="text28">R</text>
+    <text
+       style="font-weight:bold;font-size:10.6667px;font-family:'JetBrains Mono';-inkscape-font-specification:'JetBrains Mono, Bold';letter-spacing:2.25px;fill:#111827"
+       x="238.30135"
+       y="24.093342"
+       id="text27">F</text>
+    <text
+       style="font-weight:bold;font-size:10.6667px;font-family:'JetBrains Mono';-inkscape-font-specification:'JetBrains Mono, Bold';letter-spacing:2.25px;fill:#111827"
+       x="246.95137"
+       y="24.093342"
+       id="text26">O</text>
+    <text
+       style="font-weight:bold;font-size:10.6667px;font-family:'JetBrains Mono';-inkscape-font-specification:'JetBrains Mono, Bold';letter-spacing:2.25px;fill:#111827"
+       x="255.60139"
+       y="24.093342"
+       id="text25">R</text>
+    <text
+       style="font-weight:bold;font-size:10.6667px;font-family:'JetBrains Mono';-inkscape-font-specification:'JetBrains Mono, Bold';letter-spacing:2.25px;fill:#111827"
+       x="264.25142"
+       y="24.093342"
+       id="text24">M</text>
+    <text
+       style="font-weight:bold;font-size:10.6667px;font-family:'JetBrains Mono';-inkscape-font-specification:'JetBrains Mono, Bold';letter-spacing:2.25px;fill:#111827"
+       x="272.90144"
+       y="24.093342"
+       id="text23">A</text>
+    <text
+       style="font-weight:bold;font-size:10.6667px;font-family:'JetBrains Mono';-inkscape-font-specification:'JetBrains Mono, Bold';letter-spacing:2.25px;fill:#111827"
+       x="281.55147"
+       y="24.093342"
+       id="text22">N</text>
+    <text
+       style="font-weight:bold;font-size:10.6667px;font-family:'JetBrains Mono';-inkscape-font-specification:'JetBrains Mono, Bold';letter-spacing:2.25px;fill:#111827"
+       x="290.20149"
+       y="24.093342"
+       id="text21">C</text>
+    <text
+       style="font-weight:bold;font-size:10.6667px;font-family:'JetBrains Mono';-inkscape-font-specification:'JetBrains Mono, Bold';letter-spacing:2.25px;fill:#111827"
+       x="298.85152"
+       y="24.093342"
+       id="text20">E</text>
+    <text
+       style="font-weight:bold;font-size:10.6667px;font-family:'JetBrains Mono';-inkscape-font-specification:'JetBrains Mono, Bold';letter-spacing:2.25px;fill:#111827"
+       x="307.50154"
+       y="24.093342"
+       id="text19">,</text>
+    <text
+       style="font-weight:bold;font-size:10.6667px;font-family:'JetBrains Mono';-inkscape-font-specification:'JetBrains Mono, Bold';letter-spacing:2.25px;fill:#111827"
+       x="324.80159"
+       y="24.093342"
+       id="text18">P</text>
+    <text
+       style="font-weight:bold;font-size:10.6667px;font-family:'JetBrains Mono';-inkscape-font-specification:'JetBrains Mono, Bold';letter-spacing:2.25px;fill:#111827"
+       x="333.45161"
+       y="24.093342"
+       id="text17">R</text>
+    <text
+       style="font-weight:bold;font-size:10.6667px;font-family:'JetBrains Mono';-inkscape-font-specification:'JetBrains Mono, Bold';letter-spacing:2.25px;fill:#111827"
+       x="342.10164"
+       y="24.093342"
+       id="text16">E</text>
+    <text
+       style="font-weight:bold;font-size:10.6667px;font-family:'JetBrains Mono';-inkscape-font-specification:'JetBrains Mono, Bold';letter-spacing:2.25px;fill:#111827"
+       x="350.75166"
+       y="24.093342"
+       id="text15">C</text>
+    <text
+       style="font-weight:bold;font-size:10.6667px;font-family:'JetBrains Mono';-inkscape-font-specification:'JetBrains Mono, Bold';letter-spacing:2.25px;fill:#111827"
+       x="359.40169"
+       y="24.093342"
+       id="text14">I</text>
+    <text
+       style="font-weight:bold;font-size:10.6667px;font-family:'JetBrains Mono';-inkscape-font-specification:'JetBrains Mono, Bold';letter-spacing:2.25px;fill:#111827"
+       x="368.05171"
+       y="24.093342"
+       id="text13">S</text>
+    <text
+       style="font-weight:bold;font-size:10.6667px;font-family:'JetBrains Mono';-inkscape-font-specification:'JetBrains Mono, Bold';letter-spacing:2.25px;fill:#111827"
+       x="376.70174"
+       y="24.093342"
+       id="text12">I</text>
+    <text
+       style="font-weight:bold;font-size:10.6667px;font-family:'JetBrains Mono';-inkscape-font-specification:'JetBrains Mono, Bold';letter-spacing:2.25px;fill:#111827"
+       x="385.35176"
+       y="24.093342"
+       id="text11">O</text>
+    <text
+       style="font-weight:bold;font-size:10.6667px;font-family:'JetBrains Mono';-inkscape-font-specification:'JetBrains Mono, Bold';letter-spacing:2.25px;fill:#111827"
+       x="394.00179"
+       y="24.093342"
+       id="text10">N</text>
+    <text
+       style="font-weight:bold;font-size:10.6667px;font-family:'JetBrains Mono';-inkscape-font-specification:'JetBrains Mono, Bold';letter-spacing:2.25px;fill:#111827"
+       x="402.65181"
+       y="24.093342"
+       id="text9">,</text>
+    <text
+       style="font-weight:bold;font-size:10.6667px;font-family:'JetBrains Mono';-inkscape-font-specification:'JetBrains Mono, Bold';letter-spacing:2.25px;fill:#111827"
+       x="419.95186"
+       y="24.093342"
+       id="text8">C</text>
+    <text
+       style="font-weight:bold;font-size:10.6667px;font-family:'JetBrains Mono';-inkscape-font-specification:'JetBrains Mono, Bold';letter-spacing:2.25px;fill:#111827"
+       x="428.60188"
+       y="24.093342"
+       id="text7">O</text>
+    <text
+       style="font-weight:bold;font-size:10.6667px;font-family:'JetBrains Mono';-inkscape-font-specification:'JetBrains Mono, Bold';letter-spacing:2.25px;fill:#111827"
+       x="437.25191"
+       y="24.093342"
+       id="text6">N</text>
+    <text
+       style="font-weight:bold;font-size:10.6667px;font-family:'JetBrains Mono';-inkscape-font-specification:'JetBrains Mono, Bold';letter-spacing:2.25px;fill:#111827"
+       x="445.90193"
+       y="24.093342"
+       id="text5">T</text>
+    <text
+       style="font-weight:bold;font-size:10.6667px;font-family:'JetBrains Mono';-inkscape-font-specification:'JetBrains Mono, Bold';letter-spacing:2.25px;fill:#111827"
+       x="454.55196"
+       y="24.093342"
+       id="text4">R</text>
+    <text
+       style="font-weight:bold;font-size:10.6667px;font-family:'JetBrains Mono';-inkscape-font-specification:'JetBrains Mono, Bold';letter-spacing:2.25px;fill:#111827"
+       x="463.20198"
+       y="24.093342"
+       id="text3">O</text>
+    <text
+       style="font-weight:bold;font-size:10.6667px;font-family:'JetBrains Mono';-inkscape-font-specification:'JetBrains Mono, Bold';letter-spacing:2.25px;fill:#111827"
+       x="471.85201"
+       y="24.093342"
+       id="text2">L</text>
+    <text
+       style="font-weight:bold;font-size:10.6667px;font-family:'JetBrains Mono';-inkscape-font-specification:'JetBrains Mono, Bold';letter-spacing:2.25px;display:none;fill:#111827"
+       x="480.50204"
+       y="24.093342"
+       id="text1">E</text>
+  </g>
+  <g
+     id="g4"
+     transform="matrix(0.28571429,0,0,0.28571429,7.7142857,7.7142857)"
+     style="stroke-width:3.5">
+    <circle
+       cx="64"
+       cy="64"
+       fill="none"
+       stroke="#000"
+       stroke-width="35"
+       id="circle0"
+       style="fill:#000000;fill-opacity:1;stroke:none"
+       r="63" />
+    <circle
+       cx="64"
+       cy="64"
+       fill="none"
+       stroke="#000"
+       stroke-width="35"
+       id="circle1"
+       style="fill:#ffffff;fill-opacity:1;stroke:none"
+       r="51" />
+    <ellipse
+       cx="64"
+       cy="64"
+       fill="#1f5fff"
+       id="circle2"
+       style="stroke-width:3.5;fill:#2f6cff;fill-opacity:1"
+       rx="27"
+       ry="27.000002" />
+    <path
+       style="fill:#2f6cff;fill-opacity:1;stroke:none;stroke-width:6.61416;paint-order:markers stroke fill"
+       d="m 66,56 6,6 23,-29 z"
+       id="path1"
+       sodipodi:nodetypes="cccc" />
+    <path
+       style="fill:#2f6cff;fill-opacity:1;stroke:none;stroke-width:6.61416;paint-order:markers stroke fill"
+       d="M 56,66 33,95 62,72 Z"
+       id="path2"
+       sodipodi:nodetypes="cccc" />
+    <path
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:6.61416;paint-order:markers stroke fill"
+       d="M 66,56 72,62 84.421,46.337 81.662,43.58 Z"
+       id="path3"
+       sodipodi:nodetypes="ccccc" />
+    <path
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:6.61416;paint-order:markers stroke fill"
+       d="m 56,66 6,6 -15.662,12.42 -2.759,-2.757 z"
+       id="path4"
+       sodipodi:nodetypes="ccccc" />
+    <circle
+       cx="64"
+       cy="64"
+       r="10"
+       fill="#ffffff"
+       id="circle3"
+       style="stroke-width:3.5" />
+  </g>
+</svg>

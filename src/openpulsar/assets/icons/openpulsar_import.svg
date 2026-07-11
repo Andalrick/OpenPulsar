@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" aria-label="Import">
+  <g fill="none" stroke="White" stroke-width="12" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M64 18v58"/>
+    <path d="M36 50l28 28 28-28"/>
+    <path d="M26 78v24c0 4.4 3.6 8 8 8h60c4.4 0 8-3.6 8-8V78"/>
+  </g>
+</svg>
