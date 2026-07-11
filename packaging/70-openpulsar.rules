@@ -1,0 +1,6 @@
+# OpenPulsar — supported Pulsar wired gaming mice
+# Grant the active local session access to the matching hidraw interfaces.
+SUBSYSTEM=="hidraw", ATTRS{idVendor}=="3710", ATTRS{idProduct}=="1401", TAG+="uaccess"
+SUBSYSTEM=="hidraw", ATTRS{idVendor}=="3710", ATTRS{idProduct}=="1402", TAG+="uaccess"
+SUBSYSTEM=="hidraw", ATTRS{idVendor}=="3710", ATTRS{idProduct}=="1403", TAG+="uaccess"
+SUBSYSTEM=="hidraw", ATTRS{idVendor}=="3710", ATTRS{idProduct}=="1404", TAG+="uaccess"

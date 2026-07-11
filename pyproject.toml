@@ -31,7 +31,8 @@ dependencies = [
 ]
 
 [project.scripts]
-openpulsar = "openpulsar.cli:main"
+openpulsar = "openpulsar.gui.app:main"
+openpulsar-cli = "openpulsar.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

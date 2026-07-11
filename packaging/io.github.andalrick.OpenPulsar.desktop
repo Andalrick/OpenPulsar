@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=OpenPulsar
+Comment=Configure Pulsar wired gaming mice
+Exec=openpulsar
+Icon=io.github.andalrick.OpenPulsar
+Terminal=false
+Categories=Settings;HardwareSettings;Qt;
+Keywords=mouse;gaming;pulsar;dpi;rgb;
+StartupNotify=true
+StartupWMClass=OpenPulsar
