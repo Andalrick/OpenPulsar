@@ -33,8 +33,8 @@ class TrayMixin:
         self.tray_visibility_action = QAction(self)
         self.tray_visibility_action.triggered.connect(self.toggle_window_from_tray)
 
-        self.tray_profile_menu = QMenu("Profil", tray_menu)
-        self.tray_dpi_menu = QMenu("Palier DPI", tray_menu)
+        self.tray_profile_menu = QMenu(tr("tray.profile"), tray_menu)
+        self.tray_dpi_menu = QMenu(tr("tray.dpi_stage"), tray_menu)
 
         quit_action = QAction(tr("tray.quit"), self)
         quit_action.triggered.connect(self.quit_from_tray)
@@ -209,9 +209,9 @@ class TrayMixin:
         if not device_ready:
             return
 
-        profile_menu.setTitle(f"Profil (P{self.current_slot})")
+        profile_menu.setTitle(f"{tr('tray.profile')} (P{self.current_slot})")
         active_stage = max(1, min(getattr(self, "active_dpi_stage", 1), len(self.current_profile.dpi_stages)))
-        dpi_menu.setTitle(f"Palier DPI ({active_stage})")
+        dpi_menu.setTitle(f"{tr('tray.dpi_stage')} ({active_stage})")
 
         profile_group = QActionGroup(profile_menu)
         profile_group.setExclusive(True)
@@ -235,7 +235,7 @@ class TrayMixin:
         stage_count = len(self.current_profile.dpi_stages)
 
         for stage in range(1, stage_count + 1):
-            action = QAction(f"Palier {stage}", dpi_menu)
+            action = QAction(f"{tr('tray.stage')} {stage}", dpi_menu)
             action.setCheckable(True)
             action.setChecked(stage == active_stage)
             action.triggered.connect(
