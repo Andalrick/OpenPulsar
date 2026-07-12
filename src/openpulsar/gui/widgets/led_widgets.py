@@ -61,9 +61,27 @@ class LedIndicator(QPushButton):
         painter.setBrush(background)
         painter.drawEllipse(outer)
 
+        center = outer.center()
+
+        # Keep the crisp vector dot, but restore the subtle depth of the
+        # previous control without relying on a platform-dependent effect.
+        # The shadow is drawn first and shifted down by a fraction of a pixel.
+        if self.isEnabled():
+            shadow = QColor(15, 23, 42, 42)
+        else:
+            shadow = QColor(15, 23, 42, 20)
+
         painter.setPen(Qt.NoPen)
+        painter.setBrush(shadow)
+        painter.drawEllipse(
+            center.x(),
+            center.y() + 0.75,
+            6.5,
+            6.5,
+        )
+
         painter.setBrush(inner)
-        painter.drawEllipse(outer.center(), 6.0, 6.0)
+        painter.drawEllipse(center, 6.0, 6.0)
 
 
 class LedSettingsButton(QPushButton):
