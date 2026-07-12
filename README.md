@@ -34,8 +34,8 @@
 | Device | USB PID | Status |
 |---|---:|:---:|
 | Pulsar Xlite V3 Wired — Medium | `0x1401` | ✅ |
-| Pulsar X2 Wired | `0x1402` | ✅ |
-| Pulsar X2H Wired | `0x1403` | ⚠️ Provisional PID |
+| Pulsar X2 Wired | `0x1402` | ⚠️ Provisional PID |
+| Pulsar X2H Wired | `0x1403` | ✅ |
 | Pulsar X2A Wired | `0x1404` | ✅ |
 
 All currently supported devices use Pulsar vendor ID `0x3710` and the Sonix Gen1 wired protocol.
