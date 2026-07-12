@@ -41,7 +41,7 @@ from .widgets.common_widgets import (
     picture_path,
     qss_url,
 )
-from .widgets.dpi_widgets import DpiValueControl
+from .widgets.dpi_widgets import DpiRemoveButton, DpiValueControl
 from .widgets.keyboard_widgets import (
     KeyboardCommandRow,
     KeyboardCommandsEditor,
@@ -465,10 +465,7 @@ def build_main_ui(self):
         self.dpi_minus_buttons.append(dpi_box.minus_button)
         self.dpi_plus_buttons.append(dpi_box.plus_button)
 
-        remove_button = QPushButton("×")
-        remove_button.setObjectName("dpiRemoveButton")
-        remove_button.setFixedSize(24, 24)
-        apply_openpulsar_control_effect(remove_button, blur=8, offset_y=2, alpha=58)
+        remove_button = DpiRemoveButton()
         remove_button.clicked.connect(
             lambda checked=False, stage=i + 1: self.remove_dpi_stage(stage)
         )

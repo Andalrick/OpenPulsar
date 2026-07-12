@@ -15,7 +15,7 @@ class LedIndicator(QPushButton):
         super().__init__(parent)
         self._color = self._to_qcolor(color)
         self.setObjectName("dpiLedButton")
-        self.setFixedSize(24, 24)
+        self.setFixedSize(26, 26)
         self.setCursor(Qt.PointingHandCursor)
         self.setFocusPolicy(Qt.NoFocus)
 

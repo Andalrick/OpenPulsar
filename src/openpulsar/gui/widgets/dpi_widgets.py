@@ -1,9 +1,61 @@
 """DPI control widgets used by the OpenPulsar main window."""
 
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QRectF
+from PySide6.QtGui import QColor, QPainter, QPen
 from PySide6.QtWidgets import QHBoxLayout, QLineEdit, QPushButton, QWidget
 
+from openpulsar.gui import theme
+
 from .keyboard_widgets import apply_openpulsar_control_effect
+
+
+class DpiRemoveButton(QPushButton):
+    """Round DPI-stage remove control drawn independently from font metrics."""
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setObjectName("dpiRemoveButton")
+        self.setFixedSize(26, 26)
+        self.setCursor(Qt.PointingHandCursor)
+        self.setFocusPolicy(Qt.NoFocus)
+
+    def paintEvent(self, event):
+        painter = QPainter(self)
+        painter.setRenderHint(QPainter.Antialiasing, True)
+
+        if not self.isEnabled():
+            border = QColor("#d1d5db")
+            background = QColor("#f8fafc")
+            cross = QColor("#94a3b8")
+        elif self.isDown():
+            border = QColor(theme.OP_BLUE)
+            background = QColor("#dbeafe")
+            cross = QColor(theme.OP_BLUE)
+        elif self.underMouse():
+            border = QColor(theme.OP_BLUE)
+            background = QColor(theme.OP_BLUE_SOFT)
+            cross = QColor(theme.OP_BLUE)
+        else:
+            border = QColor("#cbd5e1")
+            background = QColor("#ffffff")
+            cross = QColor("#64748b")
+
+        outer = QRectF(0.5, 0.5, self.width() - 1.0, self.height() - 1.0)
+        painter.setPen(QPen(border, 1.0))
+        painter.setBrush(background)
+        painter.drawEllipse(outer)
+
+        center = outer.center()
+        half = 4.0
+        painter.setPen(QPen(cross, 1.6, Qt.SolidLine, Qt.RoundCap))
+        painter.drawLine(
+            center.x() - half, center.y() - half,
+            center.x() + half, center.y() + half,
+        )
+        painter.drawLine(
+            center.x() + half, center.y() - half,
+            center.x() - half, center.y() + half,
+        )
 
 
 class DpiValueControl(QWidget):
