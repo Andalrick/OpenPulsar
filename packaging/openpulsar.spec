@@ -1,6 +1,6 @@
 Name:           openpulsar
 Version:        0.1.0
-Release:        1%{?dist}
+Release:        1
 Summary:        Configuration utility for Pulsar wired gaming mice
 
 License:        GPL-3.0-or-later
