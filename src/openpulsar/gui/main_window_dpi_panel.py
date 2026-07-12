@@ -233,24 +233,14 @@ class DpiPanelMixin:
         if index < 0 or index >= len(self.dpi_led_buttons):
             return
 
-        css_color = self.dpi_color_to_css(self.dpi_led_display_color(color))
+        display_color = self.dpi_led_display_color(color)
+        if isinstance(display_color, Color):
+            display_color = (display_color.r, display_color.g, display_color.b)
 
-        self.dpi_led_buttons[index].setText("●")
-        self.dpi_led_buttons[index].setStyleSheet(f"""
-            QPushButton#dpiLedButton {{
-                background-color: #ffffff;
-                border: 1px solid #cbd5e1;
-                border-radius: 12px;
-                color: {css_color};
-                font-size: 17px;
-                padding: 0;
-            }}
+        if isinstance(display_color, tuple) and len(display_color) >= 3:
+            display_color = tuple(display_color[:3])
 
-            QPushButton#dpiLedButton:hover {{
-                background-color: #eef4ff;
-                border: 1px solid #2f6cff;
-            }}
-        """)
+        self.dpi_led_buttons[index].setColor(display_color)
 
     def cycle_active_dpi_stage(self):
         self.change_active_dpi_stage_by_mode("Cycle normal")

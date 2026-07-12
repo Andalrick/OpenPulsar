@@ -22,6 +22,7 @@ from openpulsar.hid import HID_MODS, HID_KEYS
 
 from . import theme
 from .widgets.led_widgets import (
+    LedIndicator,
     LedSettingsButton,
     LedGainControl,
     LedChoiceControl,
@@ -437,9 +438,7 @@ def build_main_ui(self):
         self.mouse.capabilities.max_dpi_stages
     ):
 
-        led_button = QPushButton()
-        led_button.setObjectName("dpiLedButton")
-        led_button.setFixedSize(24, 24)
+        led_button = LedIndicator()
         led_button.clicked.connect(
             lambda checked=False, stage=i + 1, button=led_button: self.handle_dpi_led_click(
                 stage,

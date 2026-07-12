@@ -8,6 +8,64 @@ from openpulsar.gui import theme
 from openpulsar.gui.widgets.common_widgets import apply_openpulsar_control_effect
 
 
+class LedIndicator(QPushButton):
+    """Circular DPI LED swatch drawn independently from font metrics and QSS."""
+
+    def __init__(self, color="#2f6cff", parent=None):
+        super().__init__(parent)
+        self._color = self._to_qcolor(color)
+        self.setObjectName("dpiLedButton")
+        self.setFixedSize(24, 24)
+        self.setCursor(Qt.PointingHandCursor)
+        self.setFocusPolicy(Qt.NoFocus)
+
+    @staticmethod
+    def _to_qcolor(color):
+        if isinstance(color, QColor):
+            result = QColor(color)
+        elif isinstance(color, (tuple, list)) and len(color) >= 3:
+            result = QColor(int(color[0]), int(color[1]), int(color[2]))
+        else:
+            result = QColor(color)
+
+        return result if result.isValid() else QColor("#2f6cff")
+
+    def setColor(self, color):
+        new_color = self._to_qcolor(color)
+        if new_color != self._color:
+            self._color = new_color
+            self.update()
+
+    def color(self):
+        return QColor(self._color)
+
+    def paintEvent(self, event):
+        painter = QPainter(self)
+        painter.setRenderHint(QPainter.Antialiasing, True)
+
+        if not self.isEnabled():
+            border = QColor("#d1d5db")
+            background = QColor("#f8fafc")
+            inner = QColor("#94a3b8")
+        elif self.underMouse():
+            border = QColor(theme.OP_BLUE)
+            background = QColor(theme.OP_BLUE_SOFT)
+            inner = self._color
+        else:
+            border = QColor("#cbd5e1")
+            background = QColor("#ffffff")
+            inner = self._color
+
+        outer = QRectF(0.5, 0.5, self.width() - 1.0, self.height() - 1.0)
+        painter.setPen(QPen(border, 1.0))
+        painter.setBrush(background)
+        painter.drawEllipse(outer)
+
+        painter.setPen(Qt.NoPen)
+        painter.setBrush(inner)
+        painter.drawEllipse(outer.center(), 6.0, 6.0)
+
+
 class LedSettingsButton(QPushButton):
     """Tiny RGB LED button aligned with the DPI color dots."""
 
