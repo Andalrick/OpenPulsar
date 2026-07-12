@@ -125,8 +125,12 @@ class TrayMixin:
             args.extend(str(arg) for arg in extra_args)
         self._force_quit = True
         self.cleanup_resources()
-        QProcess.startDetached(sys.executable, args)
         app = QApplication.instance()
+        if app is not None:
+            instance_guard = getattr(app, "_openpulsar_single_instance_guard", None)
+            if instance_guard is not None:
+                instance_guard.release()
+        QProcess.startDetached(sys.executable, args)
         if app is not None:
             app.quit()
 

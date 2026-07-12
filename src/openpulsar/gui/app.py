@@ -8,6 +8,7 @@ from PySide6.QtGui import QIcon
 from openpulsar.gui.main_window import MainWindow
 from openpulsar.logging_utils import configure_logging
 from openpulsar.gui.settings_dialog import SettingsStore
+from openpulsar.gui.single_instance import SingleInstanceGuard
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
@@ -31,6 +32,12 @@ def main():
     configure_logging()
     app = QApplication(sys.argv)
 
+    instance_guard = SingleInstanceGuard(app)
+    if not instance_guard.acquire():
+        return 0
+    app._openpulsar_single_instance_guard = instance_guard
+    app.aboutToQuit.connect(instance_guard.release)
+
     app.setWindowIcon(QIcon(picture_path("Icon_OpenPulsar.svg")))
 
     settings = SettingsStore.load()
@@ -42,11 +49,23 @@ def main():
 
     window = MainWindow(start_in_tray=start_in_tray)
 
+    def activate_existing_window():
+        if window.isMinimized():
+            window.showNormal()
+        else:
+            window.show()
+        window.raise_()
+        window.activateWindow()
+        if hasattr(window, "update_tray_visibility_action"):
+            window.update_tray_visibility_action()
+
+    instance_guard.set_activation_handler(activate_existing_window)
+
     # En mode --tray, on ne montre la fenêtre que si le tray n'a pas pu être créé.
     if not start_in_tray or getattr(window, "tray_icon", None) is None:
         window.show()
 
-    sys.exit(app.exec())
+    return app.exec()
 
 
 if __name__ == "__main__":
