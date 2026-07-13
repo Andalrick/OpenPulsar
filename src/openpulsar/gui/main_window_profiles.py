@@ -24,7 +24,11 @@ from .errors import HARDWARE_STATE_ERRORS
 from .main_window_actions import action_to_text as format_button_action
 from .main_window_actions import text_to_action as parse_button_action
 from .main_window_profile_style import profile_segment_style
-from .profile.profile_extras_store import ProfileExtrasStore, apply_profile_extras
+from .profile.profile_extras_store import (
+    ProfileExtrasStore,
+    apply_profile_extras,
+    restore_logical_led_colors,
+)
 from .widgets.keyboard_widgets import KeyboardCommandsEditor
 
 logger = get_logger(__name__)
@@ -395,14 +399,25 @@ class ProfileMixin:
             extras = ProfileExtrasStore.load_slot(slot)
             apply_profile_extras(profile, extras)
 
+            # The hardware reports the physical color stored after RGB gain
+            # correction.  Prefer OpenPulsar's exact logical color when this
+            # slot is already known; otherwise migrate legacy profiles by
+            # applying the inverse correction once.
+            restored_logical_colors = restore_logical_led_colors(profile, extras)
+
             stored_commands = ProfileExtrasStore.load_keyboard_commands(slot)
             if stored_commands is not None:
                 profile.keyboard_commands = stored_commands
             elif not getattr(profile, "keyboard_commands", None):
                 profile.keyboard_commands = KeyboardCommandsEditor.load_legacy_keyboard_commands()
 
-            for stage in profile.dpi_stages:
-                stage.color = self.remove_led_correction(stage.color, profile=profile)
+            if not restored_logical_colors:
+                for stage in profile.dpi_stages:
+                    stage.color = self.remove_led_correction(stage.color, profile=profile)
+
+                # Persist the reconstructed logical colors so subsequent
+                # reloads never depend on a lossy inverse conversion again.
+                ProfileExtrasStore.save_slot(slot, profile)
 
             logger.debug("LOADED:")
             for i, stage in enumerate(profile.dpi_stages):
@@ -928,4 +943,3 @@ class ProfileMixin:
 
         finally:
             self._applying_profile = False
-

@@ -4,6 +4,8 @@ from pathlib import Path
 import json
 import os
 
+from openpulsar.core.dpi import Color
+
 
 class ProfileExtrasStore:
     """Local per-slot settings not fully stored by the mouse firmware."""
@@ -70,6 +72,18 @@ class ProfileExtrasStore:
                 "red_gain": int(getattr(profile, "led_red_gain", 100)),
                 "green_gain": int(getattr(profile, "led_green_gain", 100)),
                 "blue_gain": int(getattr(profile, "led_blue_gain", 100)),
+                # Keep the user-facing colors losslessly.  The mouse stores
+                # colors after RGB gain correction, so reading them back and
+                # applying the inverse cannot recover clipped/zeroed channels
+                # or rounding exactly.
+                "logical_colors": [
+                    {
+                        "r": int(stage.color.r),
+                        "g": int(stage.color.g),
+                        "b": int(stage.color.b),
+                    }
+                    for stage in getattr(profile, "dpi_stages", [])
+                ],
                 "enabled": bool(getattr(profile, "led_enabled", True)),
                 "brightness": int(getattr(profile, "led_brightness", 100)),
                 "pulse_enabled": bool(getattr(profile, "led_pulse_enabled", False)),
@@ -110,3 +124,44 @@ def apply_profile_extras(profile, extras: dict):
         profile.keyboard_commands = [command for command in commands if isinstance(command, dict)]
 
     return profile
+
+
+def restore_logical_led_colors(profile, extras: dict) -> bool:
+    """Restore exact UI colors saved before hardware RGB correction.
+
+    Return ``True`` only when the saved list is complete and valid for the
+    profile currently reported by the mouse.  Older configuration files, or
+    profiles whose DPI-stage count changed outside OpenPulsar, deliberately
+    fall back to hardware colors plus inverse correction.
+    """
+    if not isinstance(extras, dict):
+        return False
+
+    led = extras.get("led", {})
+    if not isinstance(led, dict):
+        return False
+
+    stored_colors = led.get("logical_colors")
+    stages = getattr(profile, "dpi_stages", [])
+    if not isinstance(stored_colors, list) or len(stored_colors) != len(stages):
+        return False
+
+    restored = []
+    for payload in stored_colors:
+        if not isinstance(payload, dict):
+            return False
+
+        try:
+            channels = tuple(int(payload[channel]) for channel in ("r", "g", "b"))
+        except (KeyError, TypeError, ValueError):
+            return False
+
+        if any(channel < 0 or channel > 255 for channel in channels):
+            return False
+
+        restored.append(Color(*channels))
+
+    for stage, color in zip(stages, restored):
+        stage.color = color
+
+    return True
