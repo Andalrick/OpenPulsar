@@ -11,6 +11,7 @@
   <a href="LICENSE"><img alt="License: GPL-3.0-or-later" src="https://img.shields.io/badge/License-GPL--3.0--or--later-blue.svg"></a>
   <img alt="Python 3.12+" src="https://img.shields.io/badge/Python-3.12%2B-blue.svg">
   <img alt="Linux" src="https://img.shields.io/badge/Platform-Linux-lightgrey.svg">
+  <a href="https://discord.gg/VghxVFVUUQ"><img alt="Discord" src="https://img.shields.io/badge/Discord-Join%20the%20community-5865F2?logo=discord&logoColor=white"></a>
 </p>
 
 <p align="center">
@@ -84,6 +85,8 @@ The GUI smoke tests are skipped automatically when Qt cannot initialize. Real-de
 ## Contributing
 
 Bug reports, tested device information and code contributions are welcome. Please read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request.
+
+For compatibility questions, hardware testing and protocol research, join the [OpenPulsar Discord community](https://discord.gg/VghxVFVUUQ).
 
 ## Disclaimer
 
