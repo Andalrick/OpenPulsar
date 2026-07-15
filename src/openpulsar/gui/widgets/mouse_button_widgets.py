@@ -18,29 +18,89 @@ from .common_widgets import apply_openpulsar_control_effect, picture_path
 from .qt_delegates import ActionTreeDelegate, CenteredComboDelegate
 
 
+class ActionTreeWidget(QTreeWidget):
+    """Action tree that can keep its current top-level group open."""
+
+    def __init__(self, keep_one_group_open=False, parent=None):
+        super().__init__(parent)
+        self._keep_one_group_open = keep_one_group_open
+
+    def mousePressEvent(self, event):
+        item = self.itemAt(event.position().toPoint())
+        if (
+            self._keep_one_group_open
+            and item is not None
+            and item.parent() is None
+            and item.isExpanded()
+        ):
+            return
+
+        super().mousePressEvent(event)
+
+
 class MouseButtonCombo(QComboBox):
     protectedClicked = Signal(object)
+    popupAboutToShow = Signal()
 
     def __init__(self, parent=None):
         super().__init__(parent)
         self._action_groups = []
         apply_openpulsar_control_effect(self)
         self._open_menu = None
+        self._action_menu_width = None
+        self._action_menu_height = 234
+        self._keep_one_group_open = False
 
-    def set_action_groups(self, groups):
-        """Configure a compact selector with expandable categories."""
-        current = self.currentText()
-        self._action_groups = list(groups)
+    def set_action_menu_width(self, width):
+        """Keep the category popup at a stable width when the combo resizes."""
+        self._action_menu_width = int(width)
+
+    def set_action_menu_height(self, height):
+        """Set a fixed popup height large enough for the biggest category."""
+        self._action_menu_height = int(height)
+
+    def set_keep_one_group_open(self, enabled):
+        self._keep_one_group_open = bool(enabled)
+
+    def set_action_groups(self, groups, placeholder=None):
+        """Configure a compact selector with expandable categories.
+
+        Actions may be plain labels or ``(label, data)`` pairs.  The latter
+        lets translated selectors keep stable internal action identifiers.
+        """
+        current_text = self.currentText()
+        current_data = self.currentData()
+        signals_were_blocked = self.blockSignals(True)
+        self._action_groups = []
         self.clear()
 
-        for _group_name, actions in self._action_groups:
-            for action in actions:
-                self.addItem(action)
+        if placeholder is not None:
+            placeholder_label, placeholder_data = placeholder
+            self.addItem(placeholder_label, placeholder_data)
 
-        if current:
-            index = self.findText(current)
+        for group_name, actions in groups:
+            normalized_actions = []
+            for action in actions:
+                if isinstance(action, (tuple, list)) and len(action) == 2:
+                    label, data = action
+                else:
+                    label = data = action
+
+                normalized_actions.append((label, data))
+                self.addItem(label, data)
+
+            self._action_groups.append((group_name, normalized_actions))
+
+        if current_data is not None:
+            index = self.findData(current_data)
             if index >= 0:
                 self.setCurrentIndex(index)
+        elif current_text:
+            index = self.findText(current_text)
+            if index >= 0:
+                self.setCurrentIndex(index)
+
+        self.blockSignals(signals_were_blocked)
 
     def is_left_click_protected(self):
         return bool(self.property("leftClickProtected"))
@@ -62,15 +122,19 @@ class MouseButtonCombo(QComboBox):
             self.protectedClicked.emit(self)
             return
 
+        self.popupAboutToShow.emit()
+
         if not self._action_groups:
             super().showPopup()
             return
 
-        menu = QMenu(self)
+        # Parent the popup to the top-level window rather than the scroll-area
+        # combo: it stays above command rows while inheriting OpenPulsar QSS.
+        menu = QMenu(self.window())
         self._open_menu = menu
         menu.setObjectName("mouseButtonActionMenu")
 
-        tree = QTreeWidget()
+        tree = ActionTreeWidget(self._keep_one_group_open)
         tree.setObjectName("mouseButtonActionTree")
         tree.setHeaderHidden(True)
         tree.setRootIsDecorated(True)
@@ -81,21 +145,29 @@ class MouseButtonCombo(QComboBox):
         tree.setIndentation(10)
         tree.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         tree.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        tree.setFixedSize(130, 210)
+        menu_width = self._action_menu_width or max(130, self.width())
+        tree.setFixedSize(menu_width, self._action_menu_height)
         tree.setItemDelegate(ActionTreeDelegate(tree))
 
         current_text = self.currentText()
+        current_data = self.currentData()
 
         for group_name, actions in self._action_groups:
             group_item = QTreeWidgetItem(tree, [group_name])
             group_item.setFlags(Qt.ItemIsEnabled)
 
-            for action in actions:
-                action_item = QTreeWidgetItem(group_item, [action])
-                action_item.setData(0, Qt.UserRole, action)
+            for label, data in actions:
+                action_item = QTreeWidgetItem(group_item, [label])
+                action_item.setData(0, Qt.UserRole, data)
 
-                if action == current_text:
+                if data == current_data or label == current_text:
                     group_item.setExpanded(True)
+
+        if self._keep_one_group_open and not any(
+            tree.topLevelItem(i).isExpanded()
+            for i in range(tree.topLevelItemCount())
+        ):
+            tree.topLevelItem(0).setExpanded(True)
 
         def collapse_other_groups(open_item):
             for i in range(tree.topLevelItemCount()):
@@ -107,28 +179,47 @@ class MouseButtonCombo(QComboBox):
             if item.parent() is None:
                 collapse_other_groups(item)
 
-        def on_item_clicked(item, _column):
-            action = item.data(0, Qt.UserRole)
-
-            if action is None:
-                will_open = not item.isExpanded()
-                if will_open:
-                    collapse_other_groups(item)
-                item.setExpanded(will_open)
+        def on_item_collapsed(item):
+            if not self._keep_one_group_open or item.parent() is not None:
                 return
 
-            index = self.findText(action)
+            has_open_group = any(
+                tree.topLevelItem(i).isExpanded()
+                for i in range(tree.topLevelItemCount())
+            )
+            if not has_open_group:
+                item.setExpanded(True)
+
+        def on_item_clicked(item, _column):
+            action_data = item.data(0, Qt.UserRole)
+
+            if action_data is None:
+                if self._keep_one_group_open:
+                    if not item.isExpanded():
+                        collapse_other_groups(item)
+                        item.setExpanded(True)
+                else:
+                    will_open = not item.isExpanded()
+                    if will_open:
+                        collapse_other_groups(item)
+                    item.setExpanded(will_open)
+                return
+
+            index = self.findData(action_data)
             if index >= 0:
                 self.setCurrentIndex(index)
             menu.close()
 
         tree.itemExpanded.connect(on_item_expanded)
+        tree.itemCollapsed.connect(on_item_collapsed)
         tree.itemClicked.connect(on_item_clicked)
 
         widget_action = QWidgetAction(menu)
         widget_action.setDefaultWidget(tree)
         menu.addAction(widget_action)
-        menu.exec(self.mapToGlobal(self.rect().bottomLeft()))
+        popup_position = self.mapToGlobal(self.rect().bottomLeft())
+        popup_position.setX(popup_position.x() - 2)
+        menu.exec(popup_position)
         if self._open_menu is menu:
             self._open_menu = None
 

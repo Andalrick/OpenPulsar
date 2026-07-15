@@ -23,6 +23,7 @@ from PySide6.QtWidgets import (
 
 from openpulsar.i18n import tr
 from .. import theme
+from .mouse_button_widgets import MouseButtonCombo
 from ..metrics import (
     CONTENT_MARGIN_TOP,
     FOOTER_HEIGHT,
@@ -278,6 +279,12 @@ class KeyboardCommandRow(QWidget):
         "DPI Cycle",
         "DPI Stage+",
         "DPI Stage-",
+        "DPI Stage 1",
+        "DPI Stage 2",
+        "DPI Stage 3",
+        "DPI Stage 4",
+        "DPI Stage 5",
+        "DPI Stage 6",
         "Profile Cycle+",
         "Profile Cycle-",
         "Profile 1",
@@ -301,6 +308,12 @@ class KeyboardCommandRow(QWidget):
         "Cycle DPI": "DPI Cycle",
         "Palier DPI+": "DPI Stage+",
         "Palier DPI-": "DPI Stage-",
+        "Palier DPI 1": "DPI Stage 1",
+        "Palier DPI 2": "DPI Stage 2",
+        "Palier DPI 3": "DPI Stage 3",
+        "Palier DPI 4": "DPI Stage 4",
+        "Palier DPI 5": "DPI Stage 5",
+        "Palier DPI 6": "DPI Stage 6",
         "Cycle Profil": "Profile Cycle+",
         "Cycle Profil+": "Profile Cycle+",
         "Cycle Profil-": "Profile Cycle-",
@@ -336,20 +349,21 @@ class KeyboardCommandRow(QWidget):
     commandTriggered = Signal(str, str)
     rowChanged = Signal()
 
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, dpi_stage_count_provider=None):
         super().__init__(parent)
+
+        self._dpi_stage_count_provider = dpi_stage_count_provider
 
         self.setObjectName("keyboardCommandRow")
         self.setFixedSize(self.ROW_WIDTH, self.ROW_HEIGHT)
 
-        self.action_combo = QComboBox()
-        self.action_combo.setObjectName("keyboardCommandCombo")
+        self.action_combo = MouseButtonCombo()
+        self.action_combo.setObjectName("keyboardCommandActionCombo")
         self.action_combo.setFixedSize(self.ACTION_WIDTH_SIMPLE, 26)
-        apply_openpulsar_control_effect(self.action_combo)
-        self.action_combo.setView(QListView())
-        self.action_combo.setMaxVisibleItems(len(self.COMMANDS))
-        for command in self.COMMANDS:
-            self.action_combo.addItem(tr(command), command)
+        self.action_combo.set_action_menu_width(self.ACTION_WIDTH_SIMPLE)
+        self.action_combo.set_keep_one_group_open(True)
+        self.action_combo.popupAboutToShow.connect(self._refresh_action_groups)
+        self._refresh_action_groups()
         self.action_combo.currentIndexChanged.connect(self._on_action_changed)
 
         self.parameter_combo = QComboBox()
@@ -382,6 +396,52 @@ class KeyboardCommandRow(QWidget):
         row_layout.addWidget(self.remove_button, alignment=Qt.AlignVCenter)
 
         self.update_parameter_state(self.current_action())
+
+    def _available_dpi_stage_count(self):
+        if self._dpi_stage_count_provider is None:
+            return 6
+
+        try:
+            count = int(self._dpi_stage_count_provider())
+        except (TypeError, ValueError):
+            return 6
+
+        return max(1, min(count, 6))
+
+    def _refresh_action_groups(self):
+        dpi_stage_count = self._available_dpi_stage_count()
+        direct_stage_actions = [
+            (tr(f"DPI Stage {stage}"), f"DPI Stage {stage}")
+            for stage in range(1, dpi_stage_count + 1)
+        ]
+        command_groups = [
+            (tr("DPI adjustment"), [
+                (tr("DPI Value+"), "DPI Value+"),
+                (tr("DPI Value-"), "DPI Value-"),
+            ]),
+            (tr("DPI stages"), [
+                (tr("DPI Cycle"), "DPI Cycle"),
+                (tr("DPI Stage+"), "DPI Stage+"),
+                (tr("DPI Stage-"), "DPI Stage-"),
+                *direct_stage_actions,
+            ]),
+            (tr("Profiles"), [
+                (tr("Profile Cycle+"), "Profile Cycle+"),
+                (tr("Profile Cycle-"), "Profile Cycle-"),
+                (tr("Profile 1"), "Profile 1"),
+                (tr("Profile 2"), "Profile 2"),
+                (tr("Profile 3"), "Profile 3"),
+                (tr("Profile 4"), "Profile 4"),
+                (tr("Profile 5"), "Profile 5"),
+            ]),
+        ]
+        self.action_combo.set_action_menu_height(
+            258 + max(0, dpi_stage_count - 4) * 24
+        )
+        self.action_combo.set_action_groups(
+            command_groups,
+            placeholder=(tr(self.COMMAND_PLACEHOLDER), self.COMMAND_PLACEHOLDER),
+        )
 
     def current_action(self):
         return self.action_combo.currentData() or self.COMMAND_PLACEHOLDER
@@ -549,12 +609,15 @@ class KeyboardCommandsEditor(QWidget):
 
     dpiValueChangeRequested = Signal(int)
     dpiStageModeRequested = Signal(str)
+    dpiStageDirectRequested = Signal(int)
     profileModeRequested = Signal(str)
     profileDirectRequested = Signal(int)
     commandsChanged = Signal(list)
 
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, dpi_stage_count_provider=None):
         super().__init__(parent)
+
+        self._dpi_stage_count_provider = dpi_stage_count_provider
 
         self.setObjectName("keyboardCommandsEditor")
         self.setFixedSize(LEFT_PANEL_WIDTH, PANEL_BODY_HEIGHT)
@@ -699,7 +762,9 @@ class KeyboardCommandsEditor(QWidget):
         self.command_scrollbar.update()
 
     def add_keyboard_command_row(self, data=None):
-        row = KeyboardCommandRow()
+        row = KeyboardCommandRow(
+            dpi_stage_count_provider=self._dpi_stage_count_provider,
+        )
         row.remove_button.clicked.connect(
             lambda checked=False, row=row: self.remove_keyboard_command_row(row)
         )
@@ -791,6 +856,12 @@ class KeyboardCommandsEditor(QWidget):
             self.dpiStageModeRequested.emit("Incrémental")
         elif action == "DPI Stage-":
             self.dpiStageModeRequested.emit("Décrémental")
+        elif action.startswith("DPI Stage "):
+            try:
+                dpi_stage = int(action.split()[-1])
+            except (TypeError, ValueError):
+                return
+            self.dpiStageDirectRequested.emit(dpi_stage)
         elif action == "Profile Cycle+":
             self.profileModeRequested.emit("Cycle normal")
         elif action == "Profile Cycle-":

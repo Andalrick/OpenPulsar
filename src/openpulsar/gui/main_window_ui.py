@@ -584,9 +584,12 @@ def build_main_ui(self):
     logic_page_layout.setContentsMargins(0, 0, 0, 0)
     logic_page_layout.setSpacing(0)
 
-    self.keyboard_commands_editor = KeyboardCommandsEditor()
+    self.keyboard_commands_editor = KeyboardCommandsEditor(
+        dpi_stage_count_provider=self.enabled_dpi_stage_count,
+    )
     self.keyboard_commands_editor.dpiValueChangeRequested.connect(self.change_active_dpi_value)
     self.keyboard_commands_editor.dpiStageModeRequested.connect(self.change_active_dpi_stage_by_mode)
+    self.keyboard_commands_editor.dpiStageDirectRequested.connect(self.set_active_dpi_stage)
     self.keyboard_commands_editor.profileModeRequested.connect(self.change_profile_by_mode)
     self.keyboard_commands_editor.profileDirectRequested.connect(self.activate_profile)
     self.keyboard_commands_editor.commandsChanged.connect(self.on_keyboard_commands_changed)

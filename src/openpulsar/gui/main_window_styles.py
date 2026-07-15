@@ -628,7 +628,8 @@ LIGHT_THEME_QSS = """
             border-radius: 10px;
         }
 
-        QComboBox#keyboardCommandCombo {
+        QComboBox#keyboardCommandCombo,
+        QComboBox#keyboardCommandActionCombo {
             background-color: #ffffff;
             border: 1px solid #cbd5e1;
             border-radius: 7px;
@@ -641,12 +642,14 @@ LIGHT_THEME_QSS = """
             max-height: 26px;
         }
 
-        QComboBox#keyboardCommandCombo::drop-down {
+        QComboBox#keyboardCommandCombo::drop-down,
+        QComboBox#keyboardCommandActionCombo::drop-down {
             width: 0px;
             border: none;
         }
 
-        QComboBox#keyboardCommandCombo::down-arrow {
+        QComboBox#keyboardCommandCombo::down-arrow,
+        QComboBox#keyboardCommandActionCombo::down-arrow {
             image: none;
             width: 0px;
             height: 0px;
@@ -677,12 +680,14 @@ LIGHT_THEME_QSS = """
         QComboBox#keyboardCommandCombo QAbstractItemView::item:selected,
         QComboBox#keyboardCommandCombo QListView::item:hover,
         QComboBox#keyboardCommandCombo QListView::item:selected {
-            background-color: #38bdf8;
-            color: #ffffff;
+            background-color: #eef4ff;
+            color: #0f63ff;
         }
 
         QComboBox#keyboardCommandCombo:hover,
-        QComboBox#keyboardCommandCombo:focus {
+        QComboBox#keyboardCommandCombo:focus,
+        QComboBox#keyboardCommandActionCombo:hover,
+        QComboBox#keyboardCommandActionCombo:focus {
             border: 2px solid #2f6cff;
             background-color: #ffffff;
             padding-left: 7px;
