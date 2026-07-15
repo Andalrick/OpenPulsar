@@ -685,9 +685,7 @@ LIGHT_THEME_QSS = """
         }
 
         QComboBox#keyboardCommandCombo:hover,
-        QComboBox#keyboardCommandCombo:focus,
-        QComboBox#keyboardCommandActionCombo:hover,
-        QComboBox#keyboardCommandActionCombo:focus {
+        QComboBox#keyboardCommandActionCombo:hover {
             border: 2px solid #2f6cff;
             background-color: #ffffff;
             padding-left: 7px;

@@ -399,6 +399,7 @@ def build_main_ui(self):
         self.back_button_combo,
         self.forward_button_combo,
     ):
+        combo.set_keep_one_group_open(True)
         combo.set_action_groups(button_action_groups)
         disabled_index = combo.findText(tr("Disabled"))
         combo.setItemData(
