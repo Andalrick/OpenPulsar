@@ -19,7 +19,7 @@ pytest.importorskip("PySide6")
 from PySide6.QtWidgets import QApplication  # noqa: E402
 
 from openpulsar.core.buttons import DpiAction, MouseAction  # noqa: E402
-from openpulsar.devices.pulsar.xlite_v3_wired import PulsarXliteV3Wired  # noqa: E402
+from openpulsar.devices.pulsar.xlite_wired import PulsarXliteWired  # noqa: E402
 from openpulsar.gui.profile.profile_extras_store import ProfileExtrasStore  # noqa: E402
 from openpulsar.gui.settings_dialog import SettingsStore  # noqa: E402
 
@@ -27,7 +27,7 @@ from openpulsar.gui.settings_dialog import SettingsStore  # noqa: E402
 class FakeMouse:
     """Small in-memory mouse driver used by GUI smoke tests."""
 
-    capabilities = PulsarXliteV3Wired.capabilities
+    capabilities = PulsarXliteWired.capabilities
 
     def __init__(self):
         self.current_vid_pid = self.capabilities.vid_pid_pairs[0]

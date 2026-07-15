@@ -33,7 +33,7 @@
 
 | Device | USB PID | Status |
 |---|---:|:---:|
-| Pulsar Xlite V3 Wired — Medium | `0x1401` | ✅ |
+| Pulsar Xlite Wired | `0x1401` | ✅ |
 | Pulsar X2 Wired | `0x1402` | ✅ |
 | Pulsar X2H Wired | `0x1403` | ⚠️ Provisional PID |
 | Pulsar X2A Wired | `0x1404` | ✅ |

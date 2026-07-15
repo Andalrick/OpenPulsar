@@ -2,11 +2,11 @@ from openpulsar.core.device import DeviceCapabilities
 from openpulsar.protocol import SonixGen1Protocol
 
 
-class PulsarXliteV3Wired(SonixGen1Protocol):
-    """Capability sheet for the Pulsar Xlite V3 Wired Medium."""
+class PulsarXliteWired(SonixGen1Protocol):
+    """Capability sheet for the Pulsar Xlite Wired."""
 
     capabilities = DeviceCapabilities(
-        name="Pulsar Xlite V3 Wired - Medium",
+        name="Pulsar Xlite Wired",
         vid_pid_pairs=[(0x3710, 0x1401)],
         interface_num=3,
         report_size=64,

@@ -14,7 +14,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Added
 
-- Support for Pulsar Xlite V3 Wired — Medium.
+- Support for Pulsar Xlite Wired.
 - Support for Pulsar X2 Wired.
 - Support for Pulsar X2H Wired with a provisional product ID pending hardware confirmation.
 - Support for Pulsar X2A Wired.

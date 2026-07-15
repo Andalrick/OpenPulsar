@@ -15,12 +15,12 @@ from openpulsar.devices.pulsar import (
     PulsarX2AWired,
     PulsarX2Wired,
     PulsarX2HWired,
-    PulsarXliteV3Wired,
+    PulsarXliteWired,
 )
 
 
 SUPPORTED_DEVICES: list[Type[DeviceDriver]] = [
-    PulsarXliteV3Wired,
+    PulsarXliteWired,
     PulsarX2AWired,
     PulsarX2Wired,
     PulsarX2HWired,

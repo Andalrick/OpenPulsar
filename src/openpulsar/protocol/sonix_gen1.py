@@ -223,7 +223,7 @@ class SonixGen1Protocol(DeviceDriver):
     def get_firmware_version(self) -> str:
         """Return the USB device/firmware version exposed by bcdDevice.
 
-        Pulsar publishes the Xlite V3 Wired firmware as V1.0, which matches
+        Pulsar publishes the Xlite Wired firmware as V1.0, which matches
         the USB bcdDevice value seen in captures (0x1000 -> V1.0).
         If a future Sonix firmware command is identified, it can replace this.
         """

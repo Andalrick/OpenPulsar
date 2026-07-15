@@ -18,7 +18,7 @@ def asset_path(name, category=None):
     """Return an absolute path for an OpenPulsar asset.
 
     ``name`` may be a plain filename (icon/background) or a relative path such
-    as ``Pulsar/XliteV3_Wired_size2_device.svg`` for device illustrations.
+    as ``Pulsar/Xlite_Wired_size2_device.svg`` for device illustrations.
     """
     if category is not None:
         return str(ASSETS_DIR / category / name)

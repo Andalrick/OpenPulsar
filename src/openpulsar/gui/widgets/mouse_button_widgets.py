@@ -156,7 +156,7 @@ class MouseButtonEditor(QWidget):
         self.mouse_image.setGeometry(-1, 0, 340, 360)
 
         self._device_background_path = picture_path("Device_background.svg")
-        self._mouse_pixmap_path = picture_path("Pulsar/XliteV3_Wired_size2_device.svg")
+        self._mouse_pixmap_path = picture_path("Pulsar/Xlite_Wired_size2_device.svg")
 
         self._set_label_image(self.device_background, self._device_background_path)
         self._set_label_image(self.mouse_image, self._mouse_pixmap_path)

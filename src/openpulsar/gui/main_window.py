@@ -38,7 +38,7 @@ from PySide6.QtWidgets import (
 )
 
 from openpulsar.devices.registry import find_supported_device
-from openpulsar.devices.pulsar import PulsarXliteV3Wired
+from openpulsar.devices.pulsar import PulsarXliteWired
 from openpulsar.core.device_mapper import (
     read_profile_from_mouse,
     apply_profile_to_mouse,
@@ -177,7 +177,7 @@ class MainWindow(DeviceMixin, ProfileMixin, DpiPanelMixin, LedPanelMixin, TrayMi
         self.persistent_mode = bool(self.app_settings.get("persistent_mode", False))
         self.apply_light_theme()
 
-        self.mouse = find_supported_device() or PulsarXliteV3Wired()
+        self.mouse = find_supported_device() or PulsarXliteWired()
         self.mouse.open()
 
         self.active_slot = 1

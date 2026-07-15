@@ -4,7 +4,7 @@ from contextlib import contextmanager
 
 from openpulsar.devices.registry import find_supported_device
 from openpulsar.logging_utils import configure_logging
-from openpulsar.devices.pulsar import PulsarXliteV3Wired
+from openpulsar.devices.pulsar import PulsarXliteWired
 from openpulsar.core.profile_manager import (
     list_profiles,
 )
@@ -27,7 +27,7 @@ PULSAR_VENDOR_ID = "3710"
 @contextmanager
 def open_mouse():
     """Open the supported mouse and always release its USB interface."""
-    mouse = find_supported_device() or PulsarXliteV3Wired()
+    mouse = find_supported_device() or PulsarXliteWired()
     mouse.open()
     try:
         yield mouse
