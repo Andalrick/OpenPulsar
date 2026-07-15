@@ -1,5 +1,5 @@
 Name:           openpulsar
-Version:        0.1.0
+Version:        0.1.1
 Release:        1%{?dist}
 Summary:        Configuration utility for Pulsar wired gaming mice
 
@@ -62,5 +62,8 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/io.github.anda
 %{_udevrulesdir}/70-openpulsar.rules
 
 %changelog
+* Wed Jul 15 2026 Andalrick <andalrick@outlook.com> - 0.1.1-1
+- Refine DPI and keyboard command controls
+
 * Sat Jul 11 2026 Andalrick <andalrick@outlook.com> - 0.1.0-1
 - Initial RPM packaging

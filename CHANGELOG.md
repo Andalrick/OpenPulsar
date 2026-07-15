@@ -6,11 +6,26 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-07-15
+
 ### Added
 
 - Public repository metadata and contribution workflow.
+- Direct keyboard shortcuts for selecting available DPI stages.
 
-## [0.1.0] - Unreleased
+### Changed
+
+- Grouped keyboard commands into DPI adjustment, DPI stages and profile categories.
+- Limited direct DPI-stage choices to the stages available in the active profile.
+- Unified action-menu sizing, alignment and selection styling across mouse buttons and keyboard commands.
+- Corrected the supported mouse name from Pulsar Xlite V3 Wired to Pulsar Xlite Wired.
+
+### Fixed
+
+- Removed the unwanted shadow from DPI color indicators.
+- Prevented keyboard command menus from flickering, clipping or appearing below command rows.
+
+## [0.1.0] - 2026-07-11
 
 ### Added
 

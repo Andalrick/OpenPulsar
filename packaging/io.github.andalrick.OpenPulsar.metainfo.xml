@@ -23,6 +23,11 @@
     <name>Andalrick</name>
   </developer>
   <releases>
+    <release version="0.1.1" date="2026-07-15">
+      <description>
+        <p>Improved keyboard command selection with contextual direct DPI-stage shortcuts and consistent action menus.</p>
+      </description>
+    </release>
     <release version="0.1.0" date="2026-07-11">
       <description>
         <p>Initial public release for supported Pulsar wired gaming mice.</p>
