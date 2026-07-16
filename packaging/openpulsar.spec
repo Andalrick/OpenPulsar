@@ -5,7 +5,7 @@ Summary:        Configuration utility for Pulsar wired gaming mice
 
 License:        GPL-3.0-or-later
 URL:            https://github.com/Andalrick/OpenPulsar
-Source0:        %{url}/archive/refs/tags/v%{version}/%{name}-%{version}.tar.gz
+Source0:        %{url}/archive/refs/tags/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
 
 BuildArch:      noarch
 BuildRequires:  python3-devel
