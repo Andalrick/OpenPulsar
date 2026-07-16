@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.2] - 2026-07-16
+
+### Changed
+
+- Kept at least one category expanded in categorized mouse-button action menus.
+
+### Fixed
+
+- Removed persistent focus outlines that could highlight two keyboard command selectors at once.
+
 ## [0.1.1] - 2026-07-15
 
 ### Added

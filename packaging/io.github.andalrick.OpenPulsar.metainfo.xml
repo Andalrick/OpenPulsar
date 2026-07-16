@@ -23,6 +23,11 @@
     <name>Andalrick</name>
   </developer>
   <releases>
+    <release version="0.1.2" date="2026-07-16">
+      <description>
+        <p>Improved command selectors by removing duplicate focus outlines and keeping an action category expanded.</p>
+      </description>
+    </release>
     <release version="0.1.1" date="2026-07-15">
       <description>
         <p>Improved keyboard command selection with contextual direct DPI-stage shortcuts and consistent action menus.</p>
