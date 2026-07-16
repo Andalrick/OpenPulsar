@@ -6,6 +6,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.4] - 2026-07-17
+
+### Added
+
+- Added complete MIT copyright and license notices for `pulsar-mouse-linux` and `python-pulsar-mouse-tool`.
+- Added explicit upstream acknowledgements to the README, About panel and derived source files.
+- Added a dedicated RGB gain icon to the LED panel header.
+
+### Changed
+
+- Included third-party notices in Python packages and RPM installations.
+- Unified typography, hover text colors, toggle states and control shadows throughout the interface.
+- Matched sensor subpanel corner radii to the control-pill radius.
+
+### Fixed
+
+- Made active brightness and pulsation controls visually distinct from inactive controls.
+- Ensured keyboard-command and mouse-button text uses the shared blue hover state.
+
 ## [0.1.3] - 2026-07-16
 
 ### Added

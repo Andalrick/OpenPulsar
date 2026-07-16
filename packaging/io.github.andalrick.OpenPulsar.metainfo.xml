@@ -23,6 +23,11 @@
     <name>Andalrick</name>
   </developer>
   <releases>
+    <release version="0.1.4" date="2026-07-17">
+      <description>
+        <p>Added complete upstream MIT attribution and refined visual consistency for controls, LED settings and sensor subpanels.</p>
+      </description>
+    </release>
     <release version="0.1.3" date="2026-07-16">
       <description>
         <p>Introduced a first-run project presentation with community links and refined visual consistency throughout the interface.</p>
