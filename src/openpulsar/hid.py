@@ -6,6 +6,9 @@ describe_button / parse_button_function helpers are device-independent
 and shared across all drivers.
 """
 
+# Portions copyright (c) 2026 Packerlschupfer, used under the MIT License.
+# See THIRD-PARTY-NOTICES.md for attribution and complete license terms.
+
 # ── Button function types ────────────────────────────────────────────────────
 
 BTN_TYPE_MOUSE     = 0x01   # standard mouse click

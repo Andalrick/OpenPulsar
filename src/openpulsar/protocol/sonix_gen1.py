@@ -18,6 +18,9 @@ Global settings (profile=0): polling rate, debounce, angle snap, ripple, motion 
 Per-profile settings (profile=1-5): DPI stages, LOD, brightness, LED effect, button bindings
 """
 
+# Portions copyright (c) 2026 Packerlschupfer, used under the MIT License.
+# See THIRD-PARTY-NOTICES.md for attribution and complete license terms.
+
 import struct
 import glob
 import os

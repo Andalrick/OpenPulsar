@@ -538,7 +538,7 @@ class DpiPanelMixin:
             if is_active:
                 row.setStyleSheet("""
                     QWidget#dpiStageRow {
-                        background-color: #f8fbff;
+                        background-color: #eef4ff;
                         border: 1px solid #2f6cff;
                         border-radius: 10px;
                     }
@@ -604,5 +604,4 @@ class DpiPanelMixin:
 
         except HARDWARE_STATE_ERRORS as e:
             logger.debug(f"HIDRAW DPI EVENT FAILED: {e}")
-
 

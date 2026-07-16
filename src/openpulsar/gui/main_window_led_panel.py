@@ -1,11 +1,13 @@
 from openpulsar.i18n import tr
 from openpulsar.logging_utils import get_logger
 from PySide6.QtCore import Qt
+from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton
 
 from .errors import HARDWARE_STATE_ERRORS
 from .metrics import ROW_HEIGHT
 from .profile.profile_extras_store import ProfileExtrasStore
+from .widgets.common_widgets import picture_path
 from .widgets.led_widgets import LedGainControl, LedChoiceControl
 
 import time
@@ -149,10 +151,25 @@ class LedPanelMixin:
                     border: 1px solid #2f6cff;
                     color: #1d4ed8;
                 }
+                QPushButton#ledGainColorButton[ledToggleActive="true"] {
+                    background-color: #2f6cff;
+                    border: 1px solid #2f6cff;
+                    color: #ffffff;
+                }
+                QPushButton#ledGainColorButton[ledToggleActive="true"]:hover {
+                    background-color: #1d4ed8;
+                    border: 1px solid #1d4ed8;
+                    color: #ffffff;
+                }
                 QPushButton#ledGainColorButton[ledToggleActive="false"] {
-                    background-color: #f8fafc;
-                    border: 1px solid #e2e8f0;
-                    color: #94a3b8;
+                    background-color: #ffffff;
+                    border: 1px solid #cbd5e1;
+                    color: #64748b;
+                }
+                QPushButton#ledGainColorButton[ledToggleActive="false"]:hover {
+                    background-color: #eef4ff;
+                    border: 1px solid #2f6cff;
+                    color: #1d4ed8;
                 }
             """)
         else:
@@ -191,12 +208,18 @@ class LedPanelMixin:
         self.led_settings_button.update()
         if self.dpi_header_title is not None:
             self.dpi_header_title.setText(tr("led.rgb_gain") if visible else "DPI")
-        if visible:
-            self.dpi_header_title.setContentsMargins(6, 0, 0, 0)
-        else:
             self.dpi_header_title.setContentsMargins(0, 0, 0, 0)
         if self.dpi_header_icon is not None:
-            self.dpi_header_icon.setVisible(not visible)
+            icon_name = "icon_rgb_sliders.svg" if visible else "icon_target.svg"
+            self.dpi_header_icon.setPixmap(
+                QPixmap(picture_path(icon_name)).scaled(
+                    16,
+                    16,
+                    Qt.KeepAspectRatio,
+                    Qt.SmoothTransformation,
+                )
+            )
+            self.dpi_header_icon.show()
         if visible:
             self.sync_led_panel_from_profile()
             self.dpi_content_stack.setCurrentWidget(self.led_panel)

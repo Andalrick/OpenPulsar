@@ -52,7 +52,7 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/io.github.anda
 %pytest -q
 
 %files -f %{pyproject_files}
-%license LICENSE
+%license LICENSE THIRD-PARTY-NOTICES.md
 %doc README.md CHANGELOG.md
 %{_bindir}/openpulsar
 %{_bindir}/openpulsar-cli

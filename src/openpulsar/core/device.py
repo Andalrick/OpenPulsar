@@ -5,6 +5,9 @@ Each supported model implements a DeviceDriver subclass with its own protocol.
 The GUI and CLI use DeviceCapabilities to adapt dynamically to the hardware.
 """
 
+# Portions copyright (c) 2026 Packerlschupfer, used under the MIT License.
+# See THIRD-PARTY-NOTICES.md for attribution and complete license terms.
+
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from typing import Optional

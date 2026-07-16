@@ -25,13 +25,13 @@ class DpiRemoveButton(QPushButton):
             background = QColor("#f8fafc")
             cross = QColor("#94a3b8")
         elif self.isDown():
-            border = QColor(theme.OP_BLUE)
-            background = QColor("#dbeafe")
-            cross = QColor(theme.OP_BLUE)
+            border = QColor(theme.OP_DANGER_TEXT)
+            background = QColor("#fee2e2")
+            cross = QColor(theme.OP_DANGER_TEXT_HOVER)
         elif self.underMouse():
-            border = QColor(theme.OP_BLUE)
-            background = QColor(theme.OP_BLUE_SOFT)
-            cross = QColor(theme.OP_BLUE)
+            border = QColor(theme.OP_DANGER)
+            background = QColor(theme.OP_DANGER_HOVER)
+            cross = QColor(theme.OP_DANGER_TEXT_HOVER)
         else:
             border = QColor("#cbd5e1")
             background = QColor("#ffffff")

@@ -37,6 +37,9 @@ openpulsar-cli = "openpulsar.cli:main"
 [tool.setuptools.packages.find]
 where = ["src"]
 
+[tool.setuptools]
+license-files = ["LICENSE", "THIRD-PARTY-NOTICES.md"]
+
 [tool.setuptools.package-data]
 openpulsar = ["assets/**/*.svg", "translations/*.json"]
 

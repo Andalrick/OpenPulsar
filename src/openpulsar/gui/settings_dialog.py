@@ -353,8 +353,8 @@ class SettingsDialog(QWidget):
         self._loading = True
         self.help_popup = None
 
-        self.apply_style()
         self.build_ui()
+        self.apply_style()
         self.load_values()
 
         self._loading = False
@@ -582,17 +582,10 @@ class SettingsDialog(QWidget):
             border-radius: 7px;
         }
 
-        QWidget#settingsPillSelector:hover {
-            border: 1px solid #2f6cff;
-            background-color: #ffffff;
-        }
-
         QLabel#settingsPillValue {
             background-color: #ffffff;
             border: none;
             color: #1f2937;
-            font-size: 11px;
-            font-weight: 600;
             padding: 0px;
         }
 
@@ -621,6 +614,7 @@ class SettingsDialog(QWidget):
         QPushButton#settingsPillPrevious:hover,
         QPushButton#settingsPillNext:hover {
             background-color: #eef4ff;
+            border: 1px solid #2f6cff;
             color: #1d4ed8;
         }
 
@@ -633,8 +627,19 @@ class SettingsDialog(QWidget):
             font-weight: 800;
         }
 
+        QPushButton#settingsApplyButton:enabled {
+            color: #ffffff;
+        }
+
         QPushButton#settingsApplyButton:hover {
             background-color: #1d4ed8;
             border: 1px solid #1d4ed8;
+            color: #ffffff;
+        }
+
+        QPushButton#settingsApplyButton:pressed {
+            background-color: #1e40af;
+            border: 1px solid #1e40af;
+            color: #ffffff;
         }
         """.replace("{panel_border_width}", str(PANEL_BORDER_WIDTH)))

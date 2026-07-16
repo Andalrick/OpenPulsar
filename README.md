@@ -89,6 +89,19 @@ Bug reports, tested device information and code contributions are welcome. Pleas
 
 OpenPulsar is an independent community project. It is not affiliated with, endorsed by or sponsored by Pulsar Gaming Gears.
 
+## Acknowledgements
+
+OpenPulsar incorporates and adapts code and protocol research from
+[pulsar-mouse-linux](https://github.com/packerlschupfer/pulsar-mouse-linux) by
+Packerlschupfer and
+[python-pulsar-mouse-tool](https://github.com/andrewrabert/python-pulsar-mouse-tool)
+by Andrew Rabert.
+
+Their copyright notices and complete MIT license terms are preserved in
+[THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
+
 ## License
 
 OpenPulsar is licensed under the [GNU General Public License v3.0 or later](LICENSE).
+Third-party portions remain subject to the notices and license terms in
+[THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).

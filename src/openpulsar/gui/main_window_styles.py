@@ -96,7 +96,7 @@ LIGHT_THEME_QSS = """
                 stop: 1 #fbfdff
             );
             border: {panel_border_width}px solid #cdd8e8;
-            border-radius: 10px;
+            border-radius: 7px;
         }
 
         QLabel {
@@ -131,7 +131,7 @@ LIGHT_THEME_QSS = """
         }
 
         QPushButton:hover {
-            background-color: #f8fbff;
+            background-color: #eef4ff;
             border: 1px solid #2f6cff;
         }
 
@@ -148,8 +148,8 @@ LIGHT_THEME_QSS = """
         }
 
         QPushButton#logExportButton:hover {
-            background-color: rgba(238, 244, 255, 180);
-            border: 1px solid #cbd5e1;
+            background-color: #eef4ff;
+            border: 1px solid #2f6cff;
         }
 
         QPushButton#logExportButton:pressed {
@@ -165,7 +165,7 @@ LIGHT_THEME_QSS = """
         }
 
         QPushButton#settingsButton:hover {
-            background-color: rgba(238, 244, 255, 220);
+            background-color: #eef4ff;
             border: 1px solid #2f6cff;
         }
 
@@ -194,7 +194,7 @@ LIGHT_THEME_QSS = """
         QComboBox:focus,
         QSpinBox:focus {
             border: 1px solid #2f6cff;
-            background-color: #ffffff;
+            background-color: #eef4ff;
             padding: 3px 7px;
         }
 
@@ -218,11 +218,6 @@ LIGHT_THEME_QSS = """
             background-color: #ffffff;
             border: 1px solid #cbd5e1;
             border-radius: 7px;
-        }
-
-        QWidget#dpiValueControl:hover {
-            border: 1px solid #2f6cff;
-            background-color: #ffffff;
         }
 
         QWidget#dpiValueControl:disabled {
@@ -281,6 +276,7 @@ LIGHT_THEME_QSS = """
         QPushButton#dpiMinusButton:hover,
         QPushButton#dpiPlusButton:hover {
             background-color: #eef4ff;
+            border: 1px solid #2f6cff;
             color: #1d4ed8;
         }
 
@@ -372,7 +368,8 @@ LIGHT_THEME_QSS = """
         QComboBox#mouseButtonCombo:hover,
         QComboBox#mouseButtonCombo:focus {
             border: 1px solid #2f6cff;
-            background-color: #ffffff;
+            background-color: #eef4ff;
+            color: #1d4ed8;
             padding-left: 7px;
             padding-right: 0px;
         }
@@ -450,21 +447,6 @@ LIGHT_THEME_QSS = """
             image: url({check_icon});
         }
 
-
-        QPushButton#dpiRemoveButton {
-            background-color: #ffffff;
-            border: 1px solid #cbd5e1;
-            border-radius: 12px;
-            padding: 0;
-            font-weight: bold;
-            color: #334155;
-        }
-
-        QPushButton#dpiRemoveButton:hover {
-            background-color: #fee2e2;
-            border: 1px solid #ef4444;
-            color: #991b1b;
-        }
 
         QMenu#dpiColorMenu {
             background-color: #ffffff;
@@ -555,25 +537,10 @@ LIGHT_THEME_QSS = """
         }
 
         QPushButton#aboutLinkButton:hover {
-            background-color: #2f6cff;
-            color: #ffffff;
+            background-color: #eef4ff;
+            border: 1px solid #2f6cff;
+            color: #1d4ed8;
         }
-
-        QPushButton#helpPopupCloseButton {
-            background-color: #ffffff;
-            border: 1px solid #cbd5e1;
-            border-radius: 11px;
-            padding: 0px;
-            color: #334155;
-            font-weight: 700;
-        }
-
-        QPushButton#helpPopupCloseButton:hover {
-            background-color: #fee2e2;
-            border: 1px solid #ef4444;
-            color: #991b1b;
-        }
-
 
         QLabel#usbStatusIndicator {
             background-color: transparent;
@@ -593,7 +560,12 @@ LIGHT_THEME_QSS = """
             font-size: 16px;
         }
 
-        QPushButton#aboutHoverButton:hover,
+        QPushButton#aboutHoverButton:hover {
+            background-color: #eef4ff;
+            border: 1px solid #2f6cff;
+            color: #1d4ed8;
+        }
+
         QPushButton#aboutHoverButton[aboutOpen="true"] {
             background-color: #2f6cff;
             border: 1px solid #2f6cff;
@@ -694,8 +666,8 @@ LIGHT_THEME_QSS = """
             border-radius: 4px;
             padding: 2px;
             color: #1f2937;
-            selection-background-color: #38bdf8;
-            selection-color: #ffffff;
+            selection-background-color: #eef4ff;
+            selection-color: #0f63ff;
             outline: 0px;
         }
 
@@ -717,9 +689,12 @@ LIGHT_THEME_QSS = """
         }
 
         QComboBox#keyboardCommandCombo:hover,
-        QComboBox#keyboardCommandActionCombo:hover {
+        QComboBox#keyboardCommandActionCombo:hover,
+        QComboBox#keyboardCommandCombo:focus,
+        QComboBox#keyboardCommandActionCombo:focus {
             border: 1px solid #2f6cff;
-            background-color: #ffffff;
+            background-color: #eef4ff;
+            color: #1d4ed8;
             padding-left: 7px;
             padding-right: 3px;
         }

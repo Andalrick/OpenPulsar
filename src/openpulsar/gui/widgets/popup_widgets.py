@@ -35,9 +35,7 @@ class HelpPopup(QWidget):
         title_label = QLabel(title)
         title_label.setObjectName("helpPopupTitle")
 
-        close_button = QPushButton("×")
-        close_button.setObjectName("helpPopupCloseButton")
-        close_button.setFixedSize(22, 22)
+        close_button = DpiRemoveButton()
         close_button.clicked.connect(self.close)
 
         header.addWidget(title_label)

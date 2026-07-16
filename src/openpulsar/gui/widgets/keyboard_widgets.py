@@ -21,6 +21,7 @@ from PySide6.QtWidgets import (
 )
 
 from openpulsar.i18n import tr
+from .dpi_widgets import DpiRemoveButton
 from .mouse_button_widgets import MouseButtonCombo
 from ..metrics import (
     CONTENT_MARGIN_TOP,
@@ -248,7 +249,7 @@ class KeyboardCommandRow(QWidget):
     PARAMETER_WIDTH = 58
     MERGED_SPACING_WIDTH = 8
     ACTION_WIDTH_SIMPLE = ACTION_WIDTH_WITH_PARAMETER + PARAMETER_WIDTH + MERGED_SPACING_WIDTH
-    SHORTCUT_WIDTH = 106
+    SHORTCUT_WIDTH = 104
 
     # Les identifiants restent en anglais dans le code et dans le JSON.
     # L'affichage passe systématiquement par tr(...).
@@ -365,9 +366,7 @@ class KeyboardCommandRow(QWidget):
         self.shortcut_button.setCursor(Qt.PointingHandCursor)
         self.shortcut_button.shortcutChanged.connect(lambda *_args: self.rowChanged.emit())
 
-        self.remove_button = QPushButton("×")
-        self.remove_button.setObjectName("dpiRemoveButton")
-        self.remove_button.setFixedSize(24, 24)
+        self.remove_button = DpiRemoveButton()
 
         row_layout = QHBoxLayout(self)
         row_layout.setContentsMargins(4, 7, 4, 7)
