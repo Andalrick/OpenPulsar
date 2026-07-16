@@ -3,9 +3,6 @@
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QHBoxLayout, QLabel, QPushButton, QWidget
 
-from .keyboard_widgets import apply_openpulsar_control_effect
-
-
 class SensorValueControl(QWidget):
     def __init__(
         self,
@@ -24,7 +21,6 @@ class SensorValueControl(QWidget):
         self.setObjectName("dpiValueControl")
         self.setAttribute(Qt.WA_StyledBackground, True)
         self.setFixedSize(104, 26)
-        apply_openpulsar_control_effect(self)
 
         self.previous_button = QPushButton(previous_symbol)
         self.previous_button.setObjectName("dpiMinusButton")

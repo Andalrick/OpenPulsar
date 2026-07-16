@@ -5,9 +5,6 @@ from PySide6.QtGui import QColor, QFont, QPainter, QPen
 from PySide6.QtWidgets import QWidget, QHBoxLayout, QPushButton, QLabel
 
 from openpulsar.gui import theme
-from openpulsar.gui.widgets.common_widgets import apply_openpulsar_control_effect
-
-
 class LedIndicator(QPushButton):
     """Circular DPI LED swatch drawn independently from font metrics and QSS."""
 
@@ -168,7 +165,6 @@ class LedGainControl(QWidget):
         layout.addWidget(self.value_label)
         layout.addWidget(self.plus_button)
 
-        apply_openpulsar_control_effect(self)
         self.setValue(value)
 
     def setValue(self, value):
@@ -240,7 +236,6 @@ class LedChoiceControl(QWidget):
         layout.addWidget(self.value_label)
         layout.addWidget(self.next_button)
 
-        apply_openpulsar_control_effect(self)
         self.setValue(self._choices[0][1] if value is None else value)
 
     def setValue(self, value):

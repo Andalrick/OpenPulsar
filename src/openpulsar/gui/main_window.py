@@ -100,7 +100,6 @@ from .widgets.common_widgets import (
     ASSETS_DIR,
     LED_PALETTE,
     TAB_ICONS,
-    apply_openpulsar_control_effect,
     apply_openpulsar_panel_effect,
     asset_path,
     hex_to_color,

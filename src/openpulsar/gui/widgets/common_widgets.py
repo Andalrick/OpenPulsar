@@ -91,17 +91,6 @@ def apply_openpulsar_panel_effect(widget, blur=None, offset_y=None, alpha=None):
     widget.setGraphicsEffect(effect)
 
 
-def apply_openpulsar_control_effect(widget, blur=None, offset_y=None, alpha=None):
-    """Apply the very small OpenPulsar shadow used by floating controls."""
-    effect = QGraphicsDropShadowEffect(widget)
-    effect.setBlurRadius(blur if blur is not None else theme.OP_CONTROL_SHADOW_BLUR)
-    effect.setOffset(0, offset_y if offset_y is not None else theme.OP_CONTROL_SHADOW_OFFSET_Y)
-    color = QColor(theme.OP_PANEL_SHADOW_COLOR)
-    color.setAlpha(alpha if alpha is not None else theme.OP_CONTROL_SHADOW_ALPHA)
-    effect.setColor(color)
-    widget.setGraphicsEffect(effect)
-
-
 def make_section_header(icon_path, title):
     header = QWidget()
     header.setObjectName("sectionHeader")

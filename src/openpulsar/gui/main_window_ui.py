@@ -33,7 +33,6 @@ from .widgets.common_widgets import (
     ASSETS_DIR,
     LED_PALETTE,
     TAB_ICONS,
-    apply_openpulsar_control_effect,
     apply_openpulsar_panel_effect,
     asset_path,
     hex_to_color,
@@ -240,7 +239,6 @@ def build_main_ui(self):
     dpi_header_layout.setContentsMargins(3, 1, 3, 0)
 
     self.led_settings_button = LedSettingsButton()
-    apply_openpulsar_control_effect(self.led_settings_button, blur=1, offset_y=1, alpha=58)
     self.led_settings_button.clicked.connect(self.toggle_led_panel)
 
     dpi_help_button = QPushButton("?")
@@ -343,7 +341,6 @@ def build_main_ui(self):
         self.ripple_control_check,
     ):
         checkbox.setFixedHeight(26)
-        apply_openpulsar_control_effect(checkbox)
 
     self.left_button_combo = MouseButtonCombo()
     self.right_button_combo = MouseButtonCombo()
@@ -490,7 +487,6 @@ def build_main_ui(self):
     self.add_dpi_button = QPushButton(tr("+ Add stage"))
     self.add_dpi_button.setObjectName("addListButton")
     self.add_dpi_button.setFixedSize(150, 30)
-    apply_openpulsar_control_effect(self.add_dpi_button)
     self.add_dpi_button.clicked.connect(self.add_dpi_stage)
 
     dpi_footer = QWidget()

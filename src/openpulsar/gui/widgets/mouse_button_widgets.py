@@ -14,7 +14,7 @@ from PySide6.QtWidgets import (
 )
 
 from ..metrics import LEFT_PANEL_WIDTH, PANEL_BODY_HEIGHT
-from .common_widgets import apply_openpulsar_control_effect, picture_path
+from .common_widgets import picture_path
 from .qt_delegates import ActionTreeDelegate, CenteredComboDelegate
 
 
@@ -45,7 +45,6 @@ class MouseButtonCombo(QComboBox):
     def __init__(self, parent=None):
         super().__init__(parent)
         self._action_groups = []
-        apply_openpulsar_control_effect(self)
         self._open_menu = None
         self._action_menu_width = None
         self._action_menu_height = 234

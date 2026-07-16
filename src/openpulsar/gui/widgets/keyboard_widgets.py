@@ -9,7 +9,6 @@ from PySide6.QtGui import QKeySequence, QPainter, QColor
 from PySide6.QtWidgets import (
     QApplication,
     QComboBox,
-    QGraphicsDropShadowEffect,
     QHBoxLayout,
     QLabel,
     QLineEdit,
@@ -22,7 +21,6 @@ from PySide6.QtWidgets import (
 )
 
 from openpulsar.i18n import tr
-from .. import theme
 from .mouse_button_widgets import MouseButtonCombo
 from ..metrics import (
     CONTENT_MARGIN_TOP,
@@ -32,18 +30,6 @@ from ..metrics import (
     ROW_HEIGHT as OP_ROW_HEIGHT,
     ROW_SPACING as OP_ROW_SPACING,
 )
-
-
-def apply_openpulsar_control_effect(widget, blur=None, offset_y=None, alpha=None):
-    """Apply the very small OpenPulsar shadow used by floating controls."""
-    effect = QGraphicsDropShadowEffect(widget)
-    effect.setBlurRadius(blur if blur is not None else theme.OP_CONTROL_SHADOW_BLUR)
-    effect.setOffset(0, offset_y if offset_y is not None else theme.OP_CONTROL_SHADOW_OFFSET_Y)
-    color = QColor(theme.OP_PANEL_SHADOW_COLOR)
-    color.setAlpha(alpha if alpha is not None else theme.OP_CONTROL_SHADOW_ALPHA)
-    effect.setColor(color)
-    widget.setGraphicsEffect(effect)
-
 
 class OpenPulsarScrollBar(QScrollBar):
     def __init__(self, orientation=Qt.Vertical, parent=None):
@@ -369,7 +355,6 @@ class KeyboardCommandRow(QWidget):
         self.parameter_combo = QComboBox()
         self.parameter_combo.setObjectName("keyboardCommandCombo")
         self.parameter_combo.setFixedSize(self.PARAMETER_WIDTH, 26)
-        apply_openpulsar_control_effect(self.parameter_combo)
         self.parameter_combo.setView(QListView())
         self.parameter_combo.setMaxVisibleItems(len(self.DPI_STEPS))
         self.parameter_combo.currentTextChanged.connect(self._on_parameter_changed)
@@ -377,14 +362,12 @@ class KeyboardCommandRow(QWidget):
         self.shortcut_button = KeyboardShortcutButton()
         self.shortcut_button.setObjectName("keyboardShortcutButton")
         self.shortcut_button.setFixedSize(self.SHORTCUT_WIDTH, 26)
-        apply_openpulsar_control_effect(self.shortcut_button)
         self.shortcut_button.setCursor(Qt.PointingHandCursor)
         self.shortcut_button.shortcutChanged.connect(lambda *_args: self.rowChanged.emit())
 
         self.remove_button = QPushButton("×")
         self.remove_button.setObjectName("dpiRemoveButton")
         self.remove_button.setFixedSize(24, 24)
-        apply_openpulsar_control_effect(self.remove_button, blur=8, offset_y=2, alpha=58)
 
         row_layout = QHBoxLayout(self)
         row_layout.setContentsMargins(4, 7, 4, 7)
@@ -672,7 +655,6 @@ class KeyboardCommandsEditor(QWidget):
         self.add_command_button = QPushButton(tr("+ Add keyboard command"))
         self.add_command_button.setObjectName("addListButton")
         self.add_command_button.setFixedSize(220, 30)
-        apply_openpulsar_control_effect(self.add_command_button)
         self.add_command_button.clicked.connect(lambda checked=False: self.add_keyboard_command_row())
 
         self.command_footer = QWidget()

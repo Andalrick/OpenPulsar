@@ -6,9 +6,6 @@ from PySide6.QtWidgets import QHBoxLayout, QLineEdit, QPushButton, QWidget
 
 from openpulsar.gui import theme
 
-from .keyboard_widgets import apply_openpulsar_control_effect
-
-
 class DpiRemoveButton(QPushButton):
     """Round DPI-stage remove control drawn independently from font metrics."""
 
@@ -69,7 +66,6 @@ class DpiValueControl(QWidget):
         self.setObjectName("dpiValueControl")
         self.setAttribute(Qt.WA_StyledBackground, True)
         self.setFixedSize(84, 26)
-        apply_openpulsar_control_effect(self)
 
         self.minus_button = QPushButton("−")
         self.minus_button.setObjectName("dpiMinusButton")
