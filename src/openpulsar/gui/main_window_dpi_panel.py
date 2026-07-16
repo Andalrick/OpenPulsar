@@ -177,7 +177,7 @@ class DpiPanelMixin:
                 }}
 
                 QPushButton#dpiColorChoice:hover {{
-                    border: 2px solid #2f6cff;
+                    border: 1px solid #2f6cff;
                 }}
             """)
 
@@ -529,7 +529,7 @@ class DpiPanelMixin:
                 row.setStyleSheet("""
                     QWidget#dpiStageRow {
                         background-color: transparent;
-                        border: 2px solid transparent;
+                        border: 1px solid transparent;
                         border-radius: 10px;
                     }
                 """)
@@ -539,7 +539,7 @@ class DpiPanelMixin:
                 row.setStyleSheet("""
                     QWidget#dpiStageRow {
                         background-color: #f8fbff;
-                        border: 2px solid #2f6cff;
+                        border: 1px solid #2f6cff;
                         border-radius: 10px;
                     }
                 """)
@@ -547,7 +547,7 @@ class DpiPanelMixin:
                 row.setStyleSheet("""
                     QWidget#dpiStageRow {
                         background-color: transparent;
-                        border: 2px solid transparent;
+                        border: 1px solid transparent;
                         border-radius: 10px;
                     }
                 """)

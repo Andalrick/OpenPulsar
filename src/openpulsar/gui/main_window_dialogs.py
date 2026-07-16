@@ -176,11 +176,31 @@ class DialogMixin:
 
         if self.about_popup is not None:
             self.about_popup.close()
+            return
 
         self.about_popup = AboutPopup(self.centralWidget())
-        self.about_popup.move(10, 10)
+        self.about_popup.closed.connect(self.on_about_popup_closed)
+        self.about_popup.move(6, 51)
         self.about_popup.show()
         self.about_popup.raise_()
+        self.about_hover_zone.set_open(True)
+
+    def on_about_popup_closed(self):
+        self.about_popup = None
+        self.about_hover_zone.set_open(False)
+
+    def show_first_run_about(self):
+        if self.start_in_tray or self.app_settings.get("about_welcome_seen", False):
+            return
+
+        self.show_about_popup()
+        self.app_settings["about_welcome_seen"] = True
+
+        try:
+            SettingsStore.save(self.app_settings)
+        except OSError:
+            # A read-only configuration directory should not prevent startup.
+            pass
 
     def show_settings_dialog(self):
         if self.help_popup is not None:

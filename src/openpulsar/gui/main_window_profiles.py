@@ -24,6 +24,7 @@ from .errors import HARDWARE_STATE_ERRORS
 from .main_window_actions import action_to_text as format_button_action
 from .main_window_actions import text_to_action as parse_button_action
 from .main_window_profile_style import profile_segment_style
+from .metrics import PANEL_BORDER_WIDTH
 from .profile.profile_extras_store import ProfileExtrasStore, apply_profile_extras
 from .widgets.keyboard_widgets import KeyboardCommandsEditor
 
@@ -50,7 +51,10 @@ class ProfileMixin:
             self._profile_segment_style(
                 accent=True,
                 left_radius=True,
-            ).replace("border-left: 0px;", "border-left: 1px solid #2f6cff;")
+            ).replace(
+                "border-left: 0px;",
+                f"border-left: {PANEL_BORDER_WIDTH}px solid #2f6cff;",
+            )
         )
 
         self.prev_profile_button.setStyleSheet(
@@ -928,4 +932,3 @@ class ProfileMixin:
 
         finally:
             self._applying_profile = False
-

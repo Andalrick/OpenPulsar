@@ -1,6 +1,10 @@
+from importlib.metadata import PackageNotFoundError, version as package_version
+
 from openpulsar.i18n import tr
 
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, Signal
+from PySide6.QtCore import QUrl
+from PySide6.QtGui import QDesktopServices
 from PySide6.QtWidgets import (
     QWidget,
     QHBoxLayout,
@@ -8,6 +12,8 @@ from PySide6.QtWidgets import (
     QLabel,
     QPushButton,
 )
+
+from .dpi_widgets import DpiRemoveButton
 
 
 class HelpPopup(QWidget):
@@ -49,36 +55,81 @@ class HelpPopup(QWidget):
 
 
 class AboutPopup(QWidget):
+    closed = Signal()
+
+    GITHUB_URL = "https://github.com/Andalrick/OpenPulsar"
+    DISCORD_URL = "https://discord.gg/eeGT2TVW8"
+
     def __init__(self, parent=None):
         super().__init__(parent)
 
-        self.setObjectName("helpPopup")
+        self.setObjectName("aboutPopup")
         self.setAttribute(Qt.WA_StyledBackground, True)
-        self.setFixedSize(520, 700)
+        self.setAttribute(Qt.WA_DeleteOnClose, True)
+        self.setFixedSize(528, 634)
 
         layout = QVBoxLayout(self)
         layout.setContentsMargins(16, 12, 16, 16)
+        layout.setSpacing(10)
 
         header = QHBoxLayout()
 
         title = QLabel(tr("about.title"))
         title.setObjectName("helpPopupTitle")
 
-        close_button = QPushButton("×")
-        close_button.setObjectName("helpPopupCloseButton")
-        close_button.setFixedSize(22, 22)
+        close_button = DpiRemoveButton()
         close_button.clicked.connect(self.close)
 
         header.addWidget(title)
         header.addStretch()
         header.addWidget(close_button)
 
+        product = QLabel("OpenPulsar")
+        product.setObjectName("aboutProductName")
+
+        try:
+            current_version = package_version("openpulsar")
+        except PackageNotFoundError:
+            current_version = "dev"
+
+        version = QLabel(tr("about.version").format(version=current_version))
+        version.setObjectName("aboutVersion")
+
         body = QLabel(tr("about.body"))
+        body.setObjectName("helpPopupBody")
         body.setWordWrap(True)
         body.setAlignment(Qt.AlignTop)
+        body.setTextInteractionFlags(Qt.TextSelectableByMouse)
+
+        links = QHBoxLayout()
+        links.setSpacing(10)
+        links.addStretch()
+
+        for label, url in (
+            ("GitHub", self.GITHUB_URL),
+            ("Discord", self.DISCORD_URL),
+        ):
+            button = QPushButton(label)
+            button.setObjectName("aboutLinkButton")
+            button.setFixedSize(110, 30)
+            button.setCursor(Qt.PointingHandCursor)
+            button.setFocusPolicy(Qt.NoFocus)
+            button.clicked.connect(
+                lambda checked=False, target=url: QDesktopServices.openUrl(QUrl(target))
+            )
+            links.addWidget(button)
+
+        links.addStretch()
 
         layout.addLayout(header)
-        layout.addWidget(body)
+        layout.addWidget(product)
+        layout.addWidget(version)
+        layout.addWidget(body, 1)
+        layout.addLayout(links)
+
+    def closeEvent(self, event):
+        self.closed.emit()
+        super().closeEvent(event)
 
 
 class AboutHoverButton(QPushButton):
@@ -89,11 +140,20 @@ class AboutHoverButton(QPushButton):
         self.setFixedSize(32, 32)
         self.setCursor(Qt.PointingHandCursor)
         self.setFocusPolicy(Qt.NoFocus)
+        self.setProperty("aboutOpen", False)
+
+    def set_open(self, open_):
+        self.setProperty("aboutOpen", bool(open_))
+        self.setText("?" if open_ or self.underMouse() else "")
+        self.style().unpolish(self)
+        self.style().polish(self)
+        self.update()
 
     def enterEvent(self, event):
         self.setText("?")
         super().enterEvent(event)
 
     def leaveEvent(self, event):
-        self.setText("")
+        if not self.property("aboutOpen"):
+            self.setText("")
         super().leaveEvent(event)

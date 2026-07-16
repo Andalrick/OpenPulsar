@@ -91,7 +91,7 @@ class LedSettingsButton(QPushButton):
         elif active:
             border = QColor(theme.OP_BLUE)
             background = QColor("#ffffff")
-            border_width = 2.0
+            border_width = 1.0
         elif self.underMouse():
             border = QColor(theme.OP_BLUE)
             background = QColor(theme.OP_BLUE_SOFT)
@@ -142,7 +142,7 @@ class LedGainControl(QWidget):
 
         self.minus_button = QPushButton("−")
         self.minus_button.setObjectName("dpiMinusButton")
-        self.minus_button.setFixedSize(24, 24)
+        self.minus_button.setFixedSize(23, 24)
         self.minus_button.setAutoRepeat(True)
         self.minus_button.setAutoRepeatDelay(300)
         self.minus_button.setAutoRepeatInterval(90)
@@ -155,14 +155,14 @@ class LedGainControl(QWidget):
 
         self.plus_button = QPushButton("+")
         self.plus_button.setObjectName("dpiPlusButton")
-        self.plus_button.setFixedSize(24, 24)
+        self.plus_button.setFixedSize(23, 24)
         self.plus_button.setAutoRepeat(True)
         self.plus_button.setAutoRepeatDelay(300)
         self.plus_button.setAutoRepeatInterval(90)
         self.plus_button.clicked.connect(self.next)
 
         layout = QHBoxLayout(self)
-        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setContentsMargins(1, 1, 1, 1)
         layout.setSpacing(0)
         layout.addWidget(self.minus_button)
         layout.addWidget(self.value_label)
@@ -220,7 +220,7 @@ class LedChoiceControl(QWidget):
 
         self.previous_button = QPushButton("◀")
         self.previous_button.setObjectName("dpiMinusButton")
-        self.previous_button.setFixedSize(24, 24)
+        self.previous_button.setFixedSize(23, 24)
         self.previous_button.clicked.connect(self.previous)
 
         self.value_label = QLabel("")
@@ -230,11 +230,11 @@ class LedChoiceControl(QWidget):
 
         self.next_button = QPushButton("▶")
         self.next_button.setObjectName("dpiPlusButton")
-        self.next_button.setFixedSize(24, 24)
+        self.next_button.setFixedSize(23, 24)
         self.next_button.clicked.connect(self.next)
 
         layout = QHBoxLayout(self)
-        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setContentsMargins(1, 1, 1, 1)
         layout.setSpacing(0)
         layout.addWidget(self.previous_button)
         layout.addWidget(self.value_label)

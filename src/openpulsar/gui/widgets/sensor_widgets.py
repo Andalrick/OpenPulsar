@@ -28,7 +28,7 @@ class SensorValueControl(QWidget):
 
         self.previous_button = QPushButton(previous_symbol)
         self.previous_button.setObjectName("dpiMinusButton")
-        self.previous_button.setFixedSize(24, 24)
+        self.previous_button.setFixedSize(23, 24)
         self.previous_button.clicked.connect(self.previous)
 
         self.value_label = QLabel("")
@@ -38,11 +38,11 @@ class SensorValueControl(QWidget):
 
         self.next_button = QPushButton(next_symbol)
         self.next_button.setObjectName("dpiPlusButton")
-        self.next_button.setFixedSize(24, 24)
+        self.next_button.setFixedSize(23, 24)
         self.next_button.clicked.connect(self.next)
 
         layout = QHBoxLayout(self)
-        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setContentsMargins(1, 1, 1, 1)
         layout.setSpacing(0)
         layout.addWidget(self.previous_button)
         layout.addWidget(self.value_label)

@@ -73,7 +73,7 @@ class DpiValueControl(QWidget):
 
         self.minus_button = QPushButton("−")
         self.minus_button.setObjectName("dpiMinusButton")
-        self.minus_button.setFixedSize(20, 24)
+        self.minus_button.setFixedSize(19, 24)
         self._enable_auto_repeat(self.minus_button)
 
         self.value_label = QLineEdit("0")
@@ -85,11 +85,11 @@ class DpiValueControl(QWidget):
 
         self.plus_button = QPushButton("+")
         self.plus_button.setObjectName("dpiPlusButton")
-        self.plus_button.setFixedSize(20, 24)
+        self.plus_button.setFixedSize(19, 24)
         self._enable_auto_repeat(self.plus_button)
 
         layout = QHBoxLayout(self)
-        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setContentsMargins(1, 1, 1, 1)
         layout.setSpacing(0)
         layout.addWidget(self.minus_button)
         layout.addWidget(self.value_label)

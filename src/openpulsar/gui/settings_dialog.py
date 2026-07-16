@@ -15,6 +15,7 @@ from PySide6.QtWidgets import (
 )
 
 from openpulsar.i18n import tr, set_language
+from .metrics import PANEL_BORDER_WIDTH
 
 
 ASSETS_DIR = Path(__file__).resolve().parents[1] / "assets"
@@ -36,6 +37,7 @@ class SettingsStore:
         "language": "system",
         "persistent_mode": False,
         "show_context_help": True,
+        "about_welcome_seen": False,
     }
 
     @classmethod
@@ -124,7 +126,7 @@ class SettingsPillSelector(QWidget):
 
         self.previous_button = QPushButton("◀")
         self.previous_button.setObjectName("settingsPillPrevious")
-        self.previous_button.setFixedSize(26, 26)
+        self.previous_button.setFixedSize(25, 26)
         self.previous_button.setCursor(Qt.PointingHandCursor)
         self.previous_button.clicked.connect(self.previous)
 
@@ -135,12 +137,12 @@ class SettingsPillSelector(QWidget):
 
         self.next_button = QPushButton("▶")
         self.next_button.setObjectName("settingsPillNext")
-        self.next_button.setFixedSize(26, 26)
+        self.next_button.setFixedSize(25, 26)
         self.next_button.setCursor(Qt.PointingHandCursor)
         self.next_button.clicked.connect(self.next)
 
         layout = QHBoxLayout(self)
-        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setContentsMargins(1, 1, 1, 1)
         layout.setSpacing(0)
         layout.addWidget(self.previous_button)
         layout.addWidget(self.value_label)
@@ -205,7 +207,7 @@ class SettingsPercentPillSelector(QWidget):
 
         self.previous_button = QPushButton("−")
         self.previous_button.setObjectName("settingsPillPrevious")
-        self.previous_button.setFixedSize(28, 26)
+        self.previous_button.setFixedSize(27, 26)
         self.previous_button.setCursor(Qt.PointingHandCursor)
         self.previous_button.setAutoRepeat(True)
         self.previous_button.setAutoRepeatDelay(300)
@@ -219,7 +221,7 @@ class SettingsPercentPillSelector(QWidget):
 
         self.next_button = QPushButton("+")
         self.next_button.setObjectName("settingsPillNext")
-        self.next_button.setFixedSize(28, 26)
+        self.next_button.setFixedSize(27, 26)
         self.next_button.setCursor(Qt.PointingHandCursor)
         self.next_button.setAutoRepeat(True)
         self.next_button.setAutoRepeatDelay(300)
@@ -227,7 +229,7 @@ class SettingsPercentPillSelector(QWidget):
         self.next_button.clicked.connect(self.next)
 
         layout = QHBoxLayout(self)
-        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setContentsMargins(1, 1, 1, 1)
         layout.setSpacing(0)
         layout.addWidget(self.previous_button)
         layout.addWidget(self.value_label)
@@ -291,7 +293,7 @@ class SettingsHelpPopup(QFrame):
         self.setStyleSheet("""
         QFrame#settingsHelpPopup {
             background-color: #ffffff;
-            border: 1px solid #cbd5e1;
+            border: {panel_border_width}px solid #cbd5e1;
             border-radius: 12px;
         }
         QLabel#settingsHelpPopupTitle {
@@ -305,7 +307,7 @@ class SettingsHelpPopup(QFrame):
             font-family: Inter, Segoe UI, Arial;
             font-size: 12px;
         }
-        """)
+        """.replace("{panel_border_width}", str(PANEL_BORDER_WIDTH)))
 
     def mousePressEvent(self, event):
         self.close()
@@ -536,7 +538,7 @@ class SettingsDialog(QWidget):
         self.setStyleSheet("""
         QWidget#settingsPopover {
             background-color: #ffffff;
-            border: 1px solid #cbd5e1;
+            border: {panel_border_width}px solid #cbd5e1;
             border-radius: 12px;
         }
 
@@ -635,4 +637,4 @@ class SettingsDialog(QWidget):
             background-color: #1d4ed8;
             border: 1px solid #1d4ed8;
         }
-        """)
+        """.replace("{panel_border_width}", str(PANEL_BORDER_WIDTH)))

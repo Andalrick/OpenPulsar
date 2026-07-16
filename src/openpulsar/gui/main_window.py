@@ -214,6 +214,9 @@ class MainWindow(DeviceMixin, ProfileMixin, DpiPanelMixin, LedPanelMixin, TrayMi
         build_main_ui(self)
         self.start_light_refresh()
 
+        if not self.start_in_tray:
+            QTimer.singleShot(0, self.show_first_run_about)
+
     # LED panel behavior lives in LedPanelMixin.
 
     # Dialog / popover behavior lives in DialogMixin.

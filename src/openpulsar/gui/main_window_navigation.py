@@ -1,5 +1,6 @@
 from PySide6.QtGui import QIcon
 
+from .metrics import PANEL_BORDER_WIDTH
 from .widgets.common_widgets import TAB_ICONS
 
 
@@ -19,7 +20,7 @@ def _main_tab_style(self, active=False, side="left"):
     return f"""
         QPushButton#mainTabButton {{
             background-color: {bg};
-            border: 1px solid {border};
+            border: {PANEL_BORDER_WIDTH}px solid {border};
             {shared_edge}
             border-radius: 0px;
             border-top-left-radius: {left_radius}px;
@@ -33,7 +34,7 @@ def _main_tab_style(self, active=False, side="left"):
         }}
         QPushButton#mainTabButton:hover {{
             background-color: {hover_bg};
-            border: 1px solid #2f6cff;
+            border: {PANEL_BORDER_WIDTH}px solid #2f6cff;
             color: {hover_fg};
         }}
     """
@@ -67,4 +68,3 @@ def select_main_tab(self, index):
     self.logic_tab_button.setStyleSheet(
         self._main_tab_style(active=index == 1, side="right")
     )
-

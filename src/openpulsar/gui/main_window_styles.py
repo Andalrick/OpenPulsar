@@ -95,7 +95,7 @@ LIGHT_THEME_QSS = """
                 stop: 0 #ffffff,
                 stop: 1 #fbfdff
             );
-            border: 1px solid #cdd8e8;
+            border: {panel_border_width}px solid #cdd8e8;
             border-radius: 10px;
         }
 
@@ -132,7 +132,7 @@ LIGHT_THEME_QSS = """
 
         QPushButton:hover {
             background-color: #f8fbff;
-            border: 2px solid #2f6cff;
+            border: 1px solid #2f6cff;
         }
 
         QPushButton:pressed {
@@ -171,7 +171,7 @@ LIGHT_THEME_QSS = """
 
         QPushButton#settingsButton[settingsOpen="true"] {
             background-color: #ffffff;
-            border: 2px solid #2f6cff;
+            border: 1px solid #2f6cff;
         }
 
         QPushButton#settingsButton:pressed {
@@ -193,7 +193,7 @@ LIGHT_THEME_QSS = """
         QSpinBox:hover,
         QComboBox:focus,
         QSpinBox:focus {
-            border: 2px solid #2f6cff;
+            border: 1px solid #2f6cff;
             background-color: #ffffff;
             padding: 3px 7px;
         }
@@ -320,7 +320,7 @@ LIGHT_THEME_QSS = """
 
         QPushButton#ledSettingsButton[ledPanelOpen="true"] {
             background-color: #ffffff;
-            border: 2px solid #2f6cff;
+            border: 1px solid #2f6cff;
             color: #1d4ed8;
         }
 
@@ -371,7 +371,7 @@ LIGHT_THEME_QSS = """
 
         QComboBox#mouseButtonCombo:hover,
         QComboBox#mouseButtonCombo:focus {
-            border: 2px solid #2f6cff;
+            border: 1px solid #2f6cff;
             background-color: #ffffff;
             padding-left: 7px;
             padding-right: 0px;
@@ -512,7 +512,13 @@ LIGHT_THEME_QSS = """
 
         QWidget#helpPopup {
             background-color: #ffffff;
-            border: 1px solid #2f6cff;
+            border: {panel_border_width}px solid #2f6cff;
+            border-radius: 12px;
+        }
+
+        QWidget#aboutPopup {
+            background-color: #ffffff;
+            border: {panel_border_width}px solid #2f6cff;
             border-radius: 12px;
         }
 
@@ -526,6 +532,31 @@ LIGHT_THEME_QSS = """
             color: #334155;
             font-size: 12px;
             line-height: 1.25;
+        }
+
+        QLabel#aboutProductName {
+            color: #1f2937;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        QLabel#aboutVersion {
+            color: #64748b;
+            font-size: 12px;
+        }
+
+        QPushButton#aboutLinkButton {
+            background-color: #ffffff;
+            border: 1px solid #2f6cff;
+            border-radius: 8px;
+            padding: 0px;
+            color: #1d4ed8;
+            font-weight: 600;
+        }
+
+        QPushButton#aboutLinkButton:hover {
+            background-color: #2f6cff;
+            color: #ffffff;
         }
 
         QPushButton#helpPopupCloseButton {
@@ -562,7 +593,8 @@ LIGHT_THEME_QSS = """
             font-size: 16px;
         }
 
-        QPushButton#aboutHoverButton:hover {
+        QPushButton#aboutHoverButton:hover,
+        QPushButton#aboutHoverButton[aboutOpen="true"] {
             background-color: #2f6cff;
             border: 1px solid #2f6cff;
             color: #ffffff;
@@ -590,7 +622,7 @@ LIGHT_THEME_QSS = """
 
         QStackedWidget#mainStack {
             background-color: #ffffff;
-            border: 1px solid #cbd5e1;
+            border: {panel_border_width}px solid #cbd5e1;
             border-top: none;
             border-radius: 0px;
             border-bottom-left-radius: 10px;
@@ -624,7 +656,7 @@ LIGHT_THEME_QSS = """
 
         QWidget#keyboardCommandRow {
             background-color: transparent;
-            border: 2px solid transparent;
+            border: 1px solid transparent;
             border-radius: 10px;
         }
 
@@ -686,7 +718,7 @@ LIGHT_THEME_QSS = """
 
         QComboBox#keyboardCommandCombo:hover,
         QComboBox#keyboardCommandActionCombo:hover {
-            border: 2px solid #2f6cff;
+            border: 1px solid #2f6cff;
             background-color: #ffffff;
             padding-left: 7px;
             padding-right: 3px;

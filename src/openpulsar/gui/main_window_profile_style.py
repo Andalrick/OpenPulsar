@@ -1,4 +1,7 @@
 
+from .metrics import PANEL_BORDER_WIDTH
+
+
 def profile_segment_style(
     active=False,
     left_radius=False,
@@ -10,8 +13,8 @@ def profile_segment_style(
     hover_bg = "#2f6cff" if (active or accent) else "#eef4ff"
     hover_fg = "#ffffff" if (active or accent) else "#1d4ed8"
     border = "#2f6cff" if (active or accent) else "#d9e0ec"
-    radius_left = 9 if left_radius else 0
-    radius_right = 9 if right_radius else 0
+    radius_left = 12 if left_radius else 0
+    radius_right = 12 if right_radius else 0
     weight = "700" if (active or accent) else "500"
     font_size = "16px" if accent else "14px"
 
@@ -22,7 +25,7 @@ def profile_segment_style(
         QPushButton {{
             background-color: {bg};
             color: {fg};
-            border: 1px solid {border};
+            border: {PANEL_BORDER_WIDTH}px solid {border};
             border-left: 0px;
             border-radius: 0px;
             border-top-left-radius: {radius_left}px;
@@ -36,13 +39,13 @@ def profile_segment_style(
         QPushButton:hover {{
             background-color: {hover_bg};
             color: {hover_fg};
-            border: 1px solid {border};
+            border: {PANEL_BORDER_WIDTH}px solid {border};
             border-left: 0px;
         }}
         QPushButton:pressed {{
             background-color: #2f6cff;
             color: #ffffff;
-            border: 1px solid #2f6cff;
+            border: {PANEL_BORDER_WIDTH}px solid #2f6cff;
             border-left: 0px;
         }}
     """
