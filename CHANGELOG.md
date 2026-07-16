@@ -6,6 +6,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.3] - 2026-07-16
+
+### Added
+
+- Added a first-run OpenPulsar presentation with GitHub and Discord links.
+- Added project background, acknowledgements and community participation guidance to the About panel.
+
+### Changed
+
+- Redesigned and repositioned the About panel to integrate with the main interface.
+- Unified border widths, corner radii and active-state styling throughout the application.
+
+### Fixed
+
+- Kept composite-control borders visible when their buttons are highlighted.
+- Kept the About trigger visibly active while the panel is open.
+
 ## [0.1.2] - 2026-07-16
 
 ### Changed
