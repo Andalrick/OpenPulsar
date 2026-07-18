@@ -1,5 +1,4 @@
-from importlib.metadata import PackageNotFoundError, version as package_version
-
+from openpulsar import __version__
 from openpulsar.i18n import tr
 
 from PySide6.QtCore import Qt, Signal
@@ -85,12 +84,7 @@ class AboutPopup(QWidget):
         product = QLabel("OpenPulsar")
         product.setObjectName("aboutProductName")
 
-        try:
-            current_version = package_version("openpulsar")
-        except PackageNotFoundError:
-            current_version = "dev"
-
-        version = QLabel(tr("about.version").format(version=current_version))
+        version = QLabel(tr("about.version").format(version=__version__))
         version.setObjectName("aboutVersion")
 
         body = QLabel(tr("about.body"))

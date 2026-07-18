@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "openpulsar"
-version = "0.1.5"
+dynamic = ["version"]
 description = "Open-source configuration utility for Pulsar wired gaming mice on Linux."
 requires-python = ">=3.12"
 readme = "README.md"
@@ -36,6 +36,9 @@ openpulsar-cli = "openpulsar.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.dynamic]
+version = { attr = "openpulsar.__version__" }
 
 [tool.setuptools]
 license-files = ["LICENSE", "THIRD-PARTY-NOTICES.md"]
