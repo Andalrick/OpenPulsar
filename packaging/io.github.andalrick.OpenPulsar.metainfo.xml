@@ -23,6 +23,11 @@
     <name>Andalrick</name>
   </developer>
   <releases>
+    <release version="0.1.5" date="2026-07-18">
+      <description>
+        <p>Added direct DPI value keyboard commands, integrated shortcut conflict handling and a more consistent visual language across keyboard, DPI and RGB controls.</p>
+      </description>
+    </release>
     <release version="0.1.4" date="2026-07-17">
       <description>
         <p>Added complete upstream MIT attribution and refined visual consistency for controls, LED settings and sensor subpanels.</p>

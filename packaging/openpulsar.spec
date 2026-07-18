@@ -1,5 +1,5 @@
 Name:           openpulsar
-Version:        0.1.4
+Version:        0.1.5
 Release:        1%{?dist}
 Summary:        Configuration utility for Pulsar wired gaming mice
 
@@ -62,6 +62,11 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/io.github.anda
 %{_udevrulesdir}/70-openpulsar.rules
 
 %changelog
+* Sat Jul 18 2026 Andalrick <andalrick@outlook.com> - 0.1.5-1
+- Add direct DPI value keyboard commands and integrated shortcut conflict handling
+- Prevent multiple shortcut capture controls from listening simultaneously
+- Unify keyboard-command pills, DPI/RGB indicators and LED mode styling
+
 * Fri Jul 17 2026 Andalrick <andalrick@outlook.com> - 0.1.4-1
 - Add required upstream MIT notices and complete the visual consistency pass
 

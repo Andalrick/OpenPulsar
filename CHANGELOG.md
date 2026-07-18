@@ -6,6 +6,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.5] - 2026-07-18
+
+### Added
+
+- Added the `Set DPI` keyboard command with the shared DPI value control.
+- Added an integrated conflict card for resolving duplicate keyboard shortcuts without a system dialog.
+
+### Changed
+
+- Unified keyboard-command controls around a shared pill-size grid.
+- Reused the DPI color indicator design for RGB gain controls.
+- Made the LED mode indicator follow the same active and inactive styling as brightness and pulsation controls.
+
+### Fixed
+
+- Prevented multiple keyboard shortcut controls from listening at the same time.
+- Restored the previous shortcut when shortcut capture is cancelled.
+
 ## [0.1.4] - 2026-07-17
 
 ### Added
