@@ -84,18 +84,27 @@ class LedSettingsButton(QPushButton):
         if not self.isEnabled():
             border = QColor("#d1d5db")
             background = QColor("#f8fafc")
+            foreground = QColor("#94a3b8")
+            border_width = 1.0
+        elif active and self.underMouse():
+            border = QColor("#1d4ed8")
+            background = QColor("#1d4ed8")
+            foreground = QColor("#ffffff")
             border_width = 1.0
         elif active:
             border = QColor(theme.OP_BLUE)
-            background = QColor("#ffffff")
+            background = QColor(theme.OP_BLUE)
+            foreground = QColor("#ffffff")
             border_width = 1.0
         elif self.underMouse():
             border = QColor(theme.OP_BLUE)
             background = QColor(theme.OP_BLUE_SOFT)
+            foreground = QColor("#1d4ed8")
             border_width = 1.0
         else:
             border = QColor("#cbd5e1")
             background = QColor("#ffffff")
+            foreground = QColor("#94a3b8")
             border_width = 1.0
 
         inset = border_width / 2.0
@@ -109,14 +118,10 @@ class LedSettingsButton(QPushButton):
         font.setBold(True)
         painter.setFont(font)
 
-        colors = [QColor("#ef4444"), QColor("#22c55e"), QColor("#2563eb")]
-        if not self.isEnabled():
-            colors = [QColor("#94a3b8"), QColor("#94a3b8"), QColor("#94a3b8")]
-
         letters = ("L", "E", "D")
         xs = (4, 9, 14)
-        for letter, x, color in zip(letters, xs, colors):
-            painter.setPen(color)
+        for letter, x in zip(letters, xs):
+            painter.setPen(foreground)
             painter.drawText(QRectF(x, 6, 5, 10), Qt.AlignCenter, letter)
 
 

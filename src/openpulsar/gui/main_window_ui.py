@@ -583,8 +583,12 @@ def build_main_ui(self):
 
     self.keyboard_commands_editor = KeyboardCommandsEditor(
         dpi_stage_count_provider=self.enabled_dpi_stage_count,
+        dpi_min=self.mouse.capabilities.dpi_min,
+        dpi_max=self.mouse.capabilities.dpi_max,
+        dpi_step=self.mouse.capabilities.dpi_step,
     )
     self.keyboard_commands_editor.dpiValueChangeRequested.connect(self.change_active_dpi_value)
+    self.keyboard_commands_editor.dpiValueSetRequested.connect(self.set_active_dpi_value)
     self.keyboard_commands_editor.dpiStageModeRequested.connect(self.change_active_dpi_stage_by_mode)
     self.keyboard_commands_editor.dpiStageDirectRequested.connect(self.set_active_dpi_stage)
     self.keyboard_commands_editor.profileModeRequested.connect(self.change_profile_by_mode)

@@ -152,5 +152,12 @@
   "diagnostic.export_error.title": "Error de exportación",
   "diagnostic.export_error.body": "No se pudo guardar el informe de diagnóstico:\n{error}",
   "diagnostic.export_success.title": "Informe de diagnóstico guardado",
-  "diagnostic.export_success.body": "El informe de diagnóstico se ha guardado correctamente."
+  "diagnostic.export_success.body": "El informe de diagnóstico se ha guardado correctamente.",
+  "Set DPI": "Establecer DPI",
+  "Shortcut already assigned": "Atajo ya asignado",
+  "The shortcut {shortcut} is already assigned to {command}.": "El atajo «{shortcut}» ya está asignado a «{command}».",
+  "Do you want to reassign it?": "¿Quieres reasignarlo?",
+  "Cancel": "Cancelar",
+  "Reassign": "Reasignar",
+  "Already used by": "Ya utilizado por"
 }

@@ -610,6 +610,66 @@ LIGHT_THEME_QSS = """
             background-color: transparent;
         }
 
+        QWidget#shortcutConflictOverlay {
+            background-color: rgba(255, 255, 255, 220);
+        }
+
+        QWidget#shortcutConflictCard {
+            background-color: #ffffff;
+            border: 1px solid #93b4ff;
+            border-radius: 10px;
+        }
+
+        QLabel#shortcutConflictRelationLabel {
+            background-color: transparent;
+            border: none;
+            color: #334155;
+            font-size: 12px;
+        }
+
+        QLabel#shortcutConflictShortcutPill,
+        QLabel#shortcutConflictCommandPill {
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            color: #334155;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        QPushButton#shortcutConflictPrimaryButton,
+        QPushButton#shortcutConflictSecondaryButton {
+            min-height: 24px;
+            max-height: 26px;
+            padding: 0px 8px;
+            border-radius: 7px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        QPushButton#shortcutConflictPrimaryButton {
+            background-color: #2f6cff;
+            border: 1px solid #2f6cff;
+            color: #ffffff;
+        }
+
+        QPushButton#shortcutConflictPrimaryButton:hover {
+            background-color: #1d4ed8;
+            border-color: #1d4ed8;
+        }
+
+        QPushButton#shortcutConflictSecondaryButton {
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            color: #334155;
+        }
+
+        QPushButton#shortcutConflictSecondaryButton:hover {
+            background-color: #eef4ff;
+            border-color: #2f6cff;
+            color: #1d4ed8;
+        }
+
         QScrollArea#keyboardCommandsScrollArea {
             background-color: transparent;
             border: none;

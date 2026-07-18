@@ -152,5 +152,12 @@
   "diagnostic.export_error.title": "Export failed",
   "diagnostic.export_error.body": "The diagnostic report could not be saved:\n{error}",
   "diagnostic.export_success.title": "Diagnostic report saved",
-  "diagnostic.export_success.body": "The diagnostic report has been saved successfully."
+  "diagnostic.export_success.body": "The diagnostic report has been saved successfully.",
+  "Set DPI": "Set DPI",
+  "Shortcut already assigned": "Shortcut already assigned",
+  "The shortcut {shortcut} is already assigned to {command}.": "The shortcut {shortcut} is already assigned to {command}.",
+  "Do you want to reassign it?": "Do you want to reassign it?",
+  "Cancel": "Cancel",
+  "Reassign": "Reassign",
+  "Already used by": "Already used by"
 }

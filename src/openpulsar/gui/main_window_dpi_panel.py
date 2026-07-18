@@ -286,18 +286,24 @@ class DpiPanelMixin:
         if index < 0 or index >= len(self.dpi_boxes):
             return
 
-        box = self.dpi_boxes[index]
+        self.set_active_dpi_value(self.dpi_boxes[index].value() + int(delta))
+
+    def set_active_dpi_value(self, value):
+        if self.current_profile is None:
+            return
+
+        active_stage = int(getattr(self.current_profile, "active_dpi_stage", getattr(self, "active_dpi_stage", 1)))
+        index = active_stage - 1
+
+        if index < 0 or index >= len(self.dpi_boxes):
+            return
 
         if not self.is_dpi_stage_enabled(index):
             return
 
-        value = box.value() + int(delta)
         value = max(
             self.mouse.capabilities.dpi_min,
-            min(
-                self.mouse.capabilities.dpi_max,
-                value,
-            ),
+            min(self.mouse.capabilities.dpi_max, int(value)),
         )
 
         # Respecte le pas matériel de la souris.
@@ -305,7 +311,7 @@ class DpiPanelMixin:
         if dpi_step > 0:
             value = round(value / dpi_step) * dpi_step
 
-        box.setValue(value)
+        self.dpi_boxes[index].setValue(value)
         self.auto_apply("dpi")
 
     def change_dpi_stage(self, stage, direction):

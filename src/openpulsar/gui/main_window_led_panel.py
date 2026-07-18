@@ -8,7 +8,7 @@ from .errors import HARDWARE_STATE_ERRORS
 from .metrics import ROW_HEIGHT
 from .profile.profile_extras_store import ProfileExtrasStore
 from .widgets.common_widgets import picture_path
-from .widgets.led_widgets import LedGainControl, LedChoiceControl
+from .widgets.led_widgets import LedChoiceControl, LedGainControl, LedIndicator
 
 import time
 
@@ -127,11 +127,10 @@ class LedPanelMixin:
         layout.setSpacing(8)
         layout.setAlignment(Qt.AlignVCenter)
 
-        icon_button = QPushButton()
-        icon_button.setObjectName("ledGainColorButton")
-        icon_button.setFixedSize(24, 24)
-
         if text_icon:
+            icon_button = QPushButton()
+            icon_button.setObjectName("ledGainColorButton")
+            icon_button.setFixedSize(24, 24)
             icon_button.setText(str(marker))
             icon_button.setCursor(Qt.PointingHandCursor)
             if callable(toggle_callback):
@@ -173,18 +172,10 @@ class LedPanelMixin:
                 }
             """)
         else:
-            icon_button.setEnabled(False)
-            icon_button.setText("●")
-            icon_button.setStyleSheet(f"""
-                QPushButton#ledGainColorButton {{
-                    background-color: #ffffff;
-                    border: 1px solid #cbd5e1;
-                    border-radius: 12px;
-                    color: {marker};
-                    font-size: 17px;
-                    padding: 0px;
-                }}
-            """)
+            # Exact same 26 px swatch used by the DPI-stage rows.
+            icon_button = LedIndicator(marker)
+            icon_button.setCursor(Qt.ArrowCursor)
+            icon_button.setAttribute(Qt.WA_TransparentForMouseEvents, True)
 
         layout.addWidget(icon_button, alignment=Qt.AlignVCenter)
         layout.addWidget(control, alignment=Qt.AlignVCenter)

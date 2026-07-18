@@ -152,5 +152,12 @@
   "diagnostic.export_error.title": "Export impossible",
   "diagnostic.export_error.body": "Le rapport de diagnostic n’a pas pu être enregistré :\n{error}",
   "diagnostic.export_success.title": "Rapport de diagnostic enregistré",
-  "diagnostic.export_success.body": "Le rapport de diagnostic a bien été enregistré."
+  "diagnostic.export_success.body": "Le rapport de diagnostic a bien été enregistré.",
+  "Set DPI": "Définir DPI",
+  "Shortcut already assigned": "Raccourci déjà attribué",
+  "The shortcut {shortcut} is already assigned to {command}.": "Le raccourci « {shortcut} » est déjà attribué à « {command} ».",
+  "Do you want to reassign it?": "Voulez-vous le réattribuer ?",
+  "Cancel": "Annuler",
+  "Reassign": "Réattribuer",
+  "Already used by": "Déjà utilisé par"
 }

@@ -4,7 +4,7 @@ from pathlib import Path
 import json
 import os
 
-from PySide6.QtCore import Qt, Signal, QEvent, QRectF
+from PySide6.QtCore import Qt, Signal, QEvent, QRectF, QSize
 from PySide6.QtGui import QKeySequence, QPainter, QColor
 from PySide6.QtWidgets import (
     QApplication,
@@ -21,7 +21,7 @@ from PySide6.QtWidgets import (
 )
 
 from openpulsar.i18n import tr
-from .dpi_widgets import DpiRemoveButton
+from .dpi_widgets import DpiRemoveButton, DpiValueControl
 from .mouse_button_widgets import MouseButtonCombo
 from ..metrics import (
     CONTENT_MARGIN_TOP,
@@ -137,6 +137,8 @@ class OpenPulsarScrollBar(QScrollBar):
 
 class KeyboardShortcutButton(QPushButton):
     shortcutChanged = Signal(str, int, Qt.KeyboardModifiers)
+    captureStarted = Signal(object)
+    captureStopped = Signal(object)
 
     MODIFIER_KEYS = {
         Qt.Key_Control,
@@ -149,6 +151,7 @@ class KeyboardShortcutButton(QPushButton):
     def __init__(self, parent=None):
         super().__init__(tr("Press…"), parent)
         self._capturing = False
+        self._previous_shortcut = (None, Qt.NoModifier)
         self.key = None
         self.modifiers = Qt.NoModifier
         self.clicked.connect(self.start_capture)
@@ -172,6 +175,11 @@ class KeyboardShortcutButton(QPushButton):
         if self._capturing:
             return
 
+        # Let the owning editor stop any other shortcut capture first.
+        # Only one button may listen to keyboard events at a time.
+        self.captureStarted.emit(self)
+
+        self._previous_shortcut = (self.key, self.modifiers)
         self._capturing = True
         self.setText(tr("Listening…"))
         self.setProperty("capturing", True)
@@ -183,6 +191,22 @@ class KeyboardShortcutButton(QPushButton):
             app.installEventFilter(self)
 
         self.setFocus(Qt.MouseFocusReason)
+
+    def restore_previous_shortcut(self):
+        key, modifiers = self._previous_shortcut
+        self.set_shortcut(key, modifiers)
+
+    def cancel_capture(self):
+        if not self._capturing:
+            return
+
+        # Capturing does not alter the stored shortcut until a key is accepted,
+        # so cancelling only has to restore its visible label.
+        if self.key is None:
+            self.setText(tr("Press…"))
+        else:
+            self.setText(shortcut_to_text(self.key, self.modifiers))
+        self.stop_capture()
 
     def stop_capture(self):
         if not self._capturing:
@@ -197,6 +221,8 @@ class KeyboardShortcutButton(QPushButton):
         if app is not None:
             app.removeEventFilter(self)
 
+        self.captureStopped.emit(self)
+
     def eventFilter(self, watched, event):
         if not self._capturing:
             return False
@@ -207,9 +233,7 @@ class KeyboardShortcutButton(QPushButton):
         key = event.key()
 
         if key == Qt.Key_Escape:
-            self.stop_capture()
-            if self.key is None:
-                self.setText(tr("Press…"))
+            self.cancel_capture()
             return True
 
         if key in self.MODIFIER_KEYS:
@@ -245,11 +269,12 @@ class KeyboardCommandRow(QWidget):
     # - commande simple :        [commande fusionnée    ] [raccourci] [×]
     # Le champ raccourci est dimensionné pour accueillir au moins 12 caractères
     # du type "Ctrl+Shift+A".
-    ACTION_WIDTH_WITH_PARAMETER = 96
-    PARAMETER_WIDTH = 58
-    MERGED_SPACING_WIDTH = 8
-    ACTION_WIDTH_SIMPLE = ACTION_WIDTH_WITH_PARAMETER + PARAMETER_WIDTH + MERGED_SPACING_WIDTH
-    SHORTCUT_WIDTH = 104
+    PILL_WIDTH = 84
+    PILL_SPACING = 8
+    ACTION_WIDTH_WITH_PARAMETER = PILL_WIDTH
+    PARAMETER_WIDTH = PILL_WIDTH
+    ACTION_WIDTH_SIMPLE = (PILL_WIDTH * 2) + PILL_SPACING
+    SHORTCUT_WIDTH = PILL_WIDTH
 
     # Les identifiants restent en anglais dans le code et dans le JSON.
     # L'affichage passe systématiquement par tr(...).
@@ -259,6 +284,7 @@ class KeyboardCommandRow(QWidget):
         "DPI Value+",
         "DPI Value-",
     }
+    DPI_SET_COMMAND = "Set DPI"
 
     DPI_STEPS = ["50", "100", "200"]
 
@@ -285,6 +311,7 @@ class KeyboardCommandRow(QWidget):
         COMMAND_PLACEHOLDER,
         "DPI Value+",
         "DPI Value-",
+        DPI_SET_COMMAND,
         *SIMPLE_COMMANDS,
     ]
 
@@ -292,6 +319,7 @@ class KeyboardCommandRow(QWidget):
         "Choisir une commande": "Choose a command",
         "Valeur DPI+": "DPI Value+",
         "Valeur DPI-": "DPI Value-",
+        "Définir DPI": "Set DPI",
         "Cycle DPI": "DPI Cycle",
         "Palier DPI+": "DPI Stage+",
         "Palier DPI-": "DPI Stage-",
@@ -336,10 +364,20 @@ class KeyboardCommandRow(QWidget):
     commandTriggered = Signal(str, str)
     rowChanged = Signal()
 
-    def __init__(self, parent=None, dpi_stage_count_provider=None):
+    def __init__(
+        self,
+        parent=None,
+        dpi_stage_count_provider=None,
+        dpi_min=50,
+        dpi_max=26000,
+        dpi_step=50,
+    ):
         super().__init__(parent)
 
         self._dpi_stage_count_provider = dpi_stage_count_provider
+        self._dpi_min = int(dpi_min)
+        self._dpi_max = int(dpi_max)
+        self._dpi_step = int(dpi_step)
 
         self.setObjectName("keyboardCommandRow")
         self.setFixedSize(self.ROW_WIDTH, self.ROW_HEIGHT)
@@ -360,11 +398,23 @@ class KeyboardCommandRow(QWidget):
         self.parameter_combo.setMaxVisibleItems(len(self.DPI_STEPS))
         self.parameter_combo.currentTextChanged.connect(self._on_parameter_changed)
 
+        self.dpi_value_control = DpiValueControl()
+        self.dpi_value_control.setRange(self._dpi_min, self._dpi_max)
+        self.dpi_value_control.setSingleStep(self._dpi_step)
+        self.dpi_value_control.setValue(max(self._dpi_min, min(self._dpi_max, 800)))
+        self.dpi_value_control.minus_button.clicked.connect(
+            lambda checked=False: self._change_set_dpi_value(-1)
+        )
+        self.dpi_value_control.plus_button.clicked.connect(
+            lambda checked=False: self._change_set_dpi_value(1)
+        )
+        self.dpi_value_control.value_label.editingFinished.connect(self._on_dpi_value_edited)
+        self.dpi_value_control.setVisible(False)
+
         self.shortcut_button = KeyboardShortcutButton()
         self.shortcut_button.setObjectName("keyboardShortcutButton")
         self.shortcut_button.setFixedSize(self.SHORTCUT_WIDTH, 26)
         self.shortcut_button.setCursor(Qt.PointingHandCursor)
-        self.shortcut_button.shortcutChanged.connect(lambda *_args: self.rowChanged.emit())
 
         self.remove_button = DpiRemoveButton()
 
@@ -374,6 +424,7 @@ class KeyboardCommandRow(QWidget):
         row_layout.setAlignment(Qt.AlignVCenter)
         row_layout.addWidget(self.action_combo, alignment=Qt.AlignVCenter)
         row_layout.addWidget(self.parameter_combo, alignment=Qt.AlignVCenter)
+        row_layout.addWidget(self.dpi_value_control, alignment=Qt.AlignVCenter)
         row_layout.addWidget(self.shortcut_button, alignment=Qt.AlignVCenter)
         row_layout.addWidget(self.remove_button, alignment=Qt.AlignVCenter)
 
@@ -400,6 +451,7 @@ class KeyboardCommandRow(QWidget):
             (tr("DPI adjustment"), [
                 (tr("DPI Value+"), "DPI Value+"),
                 (tr("DPI Value-"), "DPI Value-"),
+                (tr("Set DPI"), "Set DPI"),
             ]),
             (tr("DPI stages"), [
                 (tr("DPI Cycle"), "DPI Cycle"),
@@ -436,10 +488,21 @@ class KeyboardCommandRow(QWidget):
         self.shortcut_button.setEnabled(self.current_action() in self.COMMANDS[1:])
         self.rowChanged.emit()
 
+    def _change_set_dpi_value(self, direction):
+        value = self.dpi_value_control.value() + (int(direction) * self._dpi_step)
+        self.dpi_value_control.setValue(value)
+        self.rowChanged.emit()
+
+    def _on_dpi_value_edited(self):
+        self.rowChanged.emit()
+
     def update_parameter_state(self, action):
         previous = self.parameter_combo.currentText()
         self.parameter_combo.blockSignals(True)
         self.parameter_combo.clear()
+
+        self.dpi_value_control.setVisible(False)
+        self.dpi_value_control.setEnabled(False)
 
         if action in self.DPI_STEP_COMMANDS:
             self.action_combo.setFixedWidth(self.ACTION_WIDTH_WITH_PARAMETER)
@@ -451,6 +514,15 @@ class KeyboardCommandRow(QWidget):
             self.parameter_combo.setVisible(True)
             if previous in self.DPI_STEPS:
                 self.parameter_combo.setCurrentText(previous)
+            self.shortcut_button.setEnabled(True)
+        elif action == self.DPI_SET_COMMAND:
+            self.action_combo.setFixedWidth(self.ACTION_WIDTH_WITH_PARAMETER)
+            self.shortcut_button.setFixedWidth(self.SHORTCUT_WIDTH)
+
+            self.parameter_combo.setVisible(False)
+            self.parameter_combo.setEnabled(False)
+            self.dpi_value_control.setVisible(True)
+            self.dpi_value_control.setEnabled(True)
             self.shortcut_button.setEnabled(True)
         elif action == self.COMMAND_PLACEHOLDER:
             self.action_combo.setFixedWidth(self.ACTION_WIDTH_SIMPLE)
@@ -474,7 +546,12 @@ class KeyboardCommandRow(QWidget):
         if action == self.COMMAND_PLACEHOLDER:
             return None, None
 
-        parameter = self.parameter_combo.currentText() if action in self.DPI_STEP_COMMANDS else None
+        if action in self.DPI_STEP_COMMANDS:
+            parameter = self.parameter_combo.currentText()
+        elif action == self.DPI_SET_COMMAND:
+            parameter = str(self.dpi_value_control.value())
+        else:
+            parameter = None
         return action, parameter
 
     def to_dict(self):
@@ -507,6 +584,9 @@ class KeyboardCommandRow(QWidget):
         if action in self.DPI_STEP_COMMANDS:
             return action, str(data.get("step", parameter or "100"))
 
+        if action == self.DPI_SET_COMMAND:
+            return action, str(parameter or data.get("dpi", "800"))
+
         if action in self.SIMPLE_COMMANDS or action == "DPI Cycle":
             return action, None
 
@@ -522,6 +602,11 @@ class KeyboardCommandRow(QWidget):
             parameter_index = self.parameter_combo.findText(str(parameter))
             if parameter_index >= 0:
                 self.parameter_combo.setCurrentIndex(parameter_index)
+        elif action == self.DPI_SET_COMMAND and parameter is not None:
+            try:
+                self.dpi_value_control.setValue(int(parameter))
+            except (TypeError, ValueError):
+                self.dpi_value_control.setValue(800)
 
         key = data.get("key")
         modifiers = data.get("modifiers", 0)
@@ -590,16 +675,27 @@ class KeyboardCommandsEditor(QWidget):
     SCROLL_HEIGHT = (VISIBLE_ROWS * ROW_HEIGHT) + ((VISIBLE_ROWS - 1) * ROW_SPACING)
 
     dpiValueChangeRequested = Signal(int)
+    dpiValueSetRequested = Signal(int)
     dpiStageModeRequested = Signal(str)
     dpiStageDirectRequested = Signal(int)
     profileModeRequested = Signal(str)
     profileDirectRequested = Signal(int)
     commandsChanged = Signal(list)
 
-    def __init__(self, parent=None, dpi_stage_count_provider=None):
+    def __init__(
+        self,
+        parent=None,
+        dpi_stage_count_provider=None,
+        dpi_min=50,
+        dpi_max=26000,
+        dpi_step=50,
+    ):
         super().__init__(parent)
 
         self._dpi_stage_count_provider = dpi_stage_count_provider
+        self._dpi_min = int(dpi_min)
+        self._dpi_max = int(dpi_max)
+        self._dpi_step = int(dpi_step)
 
         self.setObjectName("keyboardCommandsEditor")
         self.setFixedSize(LEFT_PANEL_WIDTH, PANEL_BODY_HEIGHT)
@@ -618,6 +714,7 @@ class KeyboardCommandsEditor(QWidget):
         self.rows_layout.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
 
         self.command_rows = []
+        self._active_shortcut_capture = None
         self._loading_commands = False
         self.local_shortcuts_enabled = True
 
@@ -650,6 +747,83 @@ class KeyboardCommandsEditor(QWidget):
         internal_scrollbar = self.scroll_area.verticalScrollBar()
         self.command_scrollbar.valueChanged.connect(internal_scrollbar.setValue)
         internal_scrollbar.valueChanged.connect(self.command_scrollbar.setValue)
+
+        # Local confirmation card used for shortcut conflicts. It is attached
+        # to the scroll wrapper so it always remains inside the Keyboard
+        # Commands panel.
+        self.shortcut_conflict_overlay = QWidget(self.scroll_wrapper)
+        self.shortcut_conflict_overlay.setObjectName("shortcutConflictOverlay")
+        self.shortcut_conflict_overlay.setAttribute(Qt.WA_StyledBackground, True)
+        self.shortcut_conflict_overlay.setGeometry(self.scroll_wrapper.rect())
+
+        overlay_layout = QVBoxLayout(self.shortcut_conflict_overlay)
+        overlay_layout.setContentsMargins(8, 8, 8, 8)
+        overlay_layout.setAlignment(Qt.AlignCenter)
+
+        self.shortcut_conflict_card = QWidget()
+        self.shortcut_conflict_card.setObjectName("shortcutConflictCard")
+        self.shortcut_conflict_card.setAttribute(Qt.WA_StyledBackground, True)
+        self.shortcut_conflict_card.setFixedSize(self.CONTENT_WIDTH - 12, 96)
+
+        card_layout = QVBoxLayout(self.shortcut_conflict_card)
+        card_layout.setContentsMargins(12, 10, 12, 10)
+        card_layout.setSpacing(8)
+        card_layout.setAlignment(Qt.AlignCenter)
+
+        # Reuse the exact dimensions of the smallest Keyboard Commands pill.
+        # The regular row controls are 84 x 26 px.
+        pill_size = QSize(KeyboardCommandRow.PILL_WIDTH, 26)
+
+        conflict_summary = QHBoxLayout()
+        conflict_summary.setContentsMargins(0, 0, 0, 0)
+        conflict_summary.setSpacing(8)
+        conflict_summary.setAlignment(Qt.AlignCenter)
+
+        self.shortcut_conflict_shortcut = QLabel()
+        self.shortcut_conflict_shortcut.setObjectName("shortcutConflictShortcutPill")
+        self.shortcut_conflict_shortcut.setFixedSize(pill_size)
+        self.shortcut_conflict_shortcut.setAlignment(Qt.AlignCenter)
+        conflict_summary.addWidget(self.shortcut_conflict_shortcut)
+
+        self.shortcut_conflict_relation = QLabel(tr("Already used by"))
+        self.shortcut_conflict_relation.setObjectName("shortcutConflictRelationLabel")
+        self.shortcut_conflict_relation.setAlignment(Qt.AlignCenter)
+        conflict_summary.addWidget(self.shortcut_conflict_relation)
+
+        self.shortcut_conflict_command = QLabel()
+        self.shortcut_conflict_command.setObjectName("shortcutConflictCommandPill")
+        self.shortcut_conflict_command.setFixedSize(pill_size)
+        self.shortcut_conflict_command.setAlignment(Qt.AlignCenter)
+        conflict_summary.addWidget(self.shortcut_conflict_command)
+
+        card_layout.addLayout(conflict_summary)
+
+        conflict_buttons = QHBoxLayout()
+        conflict_buttons.setContentsMargins(0, 0, 0, 0)
+        conflict_buttons.setSpacing(KeyboardCommandRow.PILL_SPACING)
+        conflict_buttons.setAlignment(Qt.AlignCenter)
+
+        self.shortcut_conflict_reassign = QPushButton(tr("Reassign"))
+        self.shortcut_conflict_reassign.setObjectName("shortcutConflictPrimaryButton")
+        self.shortcut_conflict_reassign.setFixedSize(pill_size)
+        self.shortcut_conflict_reassign.clicked.connect(
+            self._reassign_conflicting_shortcut
+        )
+
+        self.shortcut_conflict_cancel = QPushButton(tr("Cancel"))
+        self.shortcut_conflict_cancel.setObjectName("shortcutConflictSecondaryButton")
+        self.shortcut_conflict_cancel.setFixedSize(pill_size)
+        self.shortcut_conflict_cancel.clicked.connect(
+            self._cancel_conflicting_shortcut
+        )
+
+        conflict_buttons.addWidget(self.shortcut_conflict_reassign)
+        conflict_buttons.addWidget(self.shortcut_conflict_cancel)
+        card_layout.addLayout(conflict_buttons)
+
+        overlay_layout.addWidget(self.shortcut_conflict_card)
+        self.shortcut_conflict_overlay.hide()
+        self._pending_shortcut_conflict = None
 
         self.add_command_button = QPushButton(tr("+ Add keyboard command"))
         self.add_command_button.setObjectName("addListButton")
@@ -745,11 +919,21 @@ class KeyboardCommandsEditor(QWidget):
     def add_keyboard_command_row(self, data=None):
         row = KeyboardCommandRow(
             dpi_stage_count_provider=self._dpi_stage_count_provider,
+            dpi_min=self._dpi_min,
+            dpi_max=self._dpi_max,
+            dpi_step=self._dpi_step,
         )
         row.remove_button.clicked.connect(
             lambda checked=False, row=row: self.remove_keyboard_command_row(row)
         )
         row.commandTriggered.connect(self.execute_keyboard_command)
+        row.shortcut_button.captureStarted.connect(self._on_shortcut_capture_started)
+        row.shortcut_button.captureStopped.connect(self._on_shortcut_capture_stopped)
+        row.shortcut_button.shortcutChanged.connect(
+            lambda _label, key, modifiers, row=row: self._on_shortcut_changed(
+                row, key, modifiers
+            )
+        )
         row.rowChanged.connect(self.save_keyboard_commands)
 
         if data is not None:
@@ -762,9 +946,76 @@ class KeyboardCommandsEditor(QWidget):
         if not self._loading_commands:
             self.save_keyboard_commands()
 
+    def _on_shortcut_capture_started(self, shortcut_button):
+        active_button = self._active_shortcut_capture
+        if active_button is not None and active_button is not shortcut_button:
+            active_button.cancel_capture()
+
+        self._active_shortcut_capture = shortcut_button
+
+    def _on_shortcut_capture_stopped(self, shortcut_button):
+        if self._active_shortcut_capture is shortcut_button:
+            self._active_shortcut_capture = None
+
+    def _on_shortcut_changed(self, changed_row, key, modifiers):
+        conflict_row = next(
+            (
+                row
+                for row in self.command_rows
+                if row is not changed_row
+                and row.matches_shortcut_values(key, modifiers)
+            ),
+            None,
+        )
+
+        if conflict_row is None:
+            changed_row.rowChanged.emit()
+            return
+
+        shortcut = shortcut_to_text(key, modifiers)
+        self.shortcut_conflict_shortcut.setText(shortcut)
+        self.shortcut_conflict_command.setText(
+            conflict_row.action_combo.currentText()
+        )
+        self._pending_shortcut_conflict = (changed_row, conflict_row)
+        self.add_command_button.setEnabled(False)
+        self.shortcut_conflict_overlay.setGeometry(self.scroll_wrapper.rect())
+        self.shortcut_conflict_overlay.show()
+        self.shortcut_conflict_overlay.raise_()
+        self.shortcut_conflict_reassign.setFocus(Qt.OtherFocusReason)
+
+    def _close_shortcut_conflict(self):
+        self._pending_shortcut_conflict = None
+        self.shortcut_conflict_overlay.hide()
+        self.add_command_button.setEnabled(True)
+
+    def _reassign_conflicting_shortcut(self):
+        pending = self._pending_shortcut_conflict
+        if pending is None:
+            return
+
+        changed_row, conflict_row = pending
+        conflict_row.shortcut_button.clear_shortcut()
+        conflict_row.rowChanged.emit()
+        changed_row.rowChanged.emit()
+        self._close_shortcut_conflict()
+
+    def _cancel_conflicting_shortcut(self):
+        pending = self._pending_shortcut_conflict
+        if pending is None:
+            return
+
+        changed_row, _conflict_row = pending
+        changed_row.shortcut_button.restore_previous_shortcut()
+        changed_row.rowChanged.emit()
+        self._close_shortcut_conflict()
+
     def remove_keyboard_command_row(self, row):
         if row not in self.command_rows:
             return
+
+        if self._active_shortcut_capture is row.shortcut_button:
+            row.shortcut_button.cancel_capture()
 
         self.command_rows.remove(row)
         self.rows_layout.removeWidget(row)
@@ -821,7 +1072,13 @@ class KeyboardCommandsEditor(QWidget):
         self.commandsChanged.emit(self.commands_to_list())
 
     def execute_keyboard_command(self, action, parameter):
-        if action in {"DPI Value+", "DPI Value-"}:
+        if action == "Set DPI":
+            try:
+                value = int(parameter)
+            except (TypeError, ValueError):
+                return
+            self.dpiValueSetRequested.emit(value)
+        elif action in {"DPI Value+", "DPI Value-"}:
             try:
                 step = int(parameter)
             except (TypeError, ValueError):

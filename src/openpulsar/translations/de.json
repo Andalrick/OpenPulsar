@@ -152,5 +152,12 @@
   "diagnostic.export_error.title": "Export fehlgeschlagen",
   "diagnostic.export_error.body": "Der Diagnosebericht konnte nicht gespeichert werden:\n{error}",
   "diagnostic.export_success.title": "Diagnosebericht gespeichert",
-  "diagnostic.export_success.body": "Der Diagnosebericht wurde erfolgreich gespeichert."
+  "diagnostic.export_success.body": "Der Diagnosebericht wurde erfolgreich gespeichert.",
+  "Set DPI": "DPI festlegen",
+  "Shortcut already assigned": "Tastenkürzel bereits vergeben",
+  "The shortcut {shortcut} is already assigned to {command}.": "Das Tastenkürzel „{shortcut}“ ist bereits „{command}“ zugewiesen.",
+  "Do you want to reassign it?": "Möchten Sie es neu zuweisen?",
+  "Cancel": "Abbrechen",
+  "Reassign": "Neu zuweisen",
+  "Already used by": "Bereits verwendet von"
 }
