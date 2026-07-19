@@ -1,6 +1,6 @@
 from functools import partial
 
-from PySide6.QtCore import QTimer
+from PySide6.QtCore import Qt, QTimer
 from PySide6.QtWidgets import QGridLayout, QMenu, QPushButton, QWidget, QWidgetAction
 
 from openpulsar.core.dpi import Color
@@ -325,6 +325,11 @@ class DpiPanelMixin:
         if not self.is_dpi_stage_enabled(index):
             return
 
+        active_stage = int(getattr(self, "active_dpi_stage", 1))
+        if stage != active_stage:
+            self.set_active_dpi_stage(stage)
+            return
+
         step = self.mouse.capabilities.dpi_step
         value = box.value() + (direction * step)
 
@@ -378,6 +383,7 @@ class DpiPanelMixin:
         new_value = round(new_value / dpi_step) * dpi_step
 
         box.setValue(new_value)
+        self.dpi_stage_rows[visible].show()
         box.show()
         self.dpi_led_buttons[visible].show()
         self.dpi_minus_buttons[visible].show()
@@ -443,6 +449,7 @@ class DpiPanelMixin:
         for index, box in enumerate(self.dpi_boxes):
             if index < len(remaining_values):
                 box.setValue(remaining_values[index])
+                self.dpi_stage_rows[index].show()
                 box.show()
                 self.dpi_led_buttons[index].show()
                 self.dpi_minus_buttons[index].show()
@@ -455,6 +462,7 @@ class DpiPanelMixin:
 
                 self.dpi_remove_buttons[index].show()
             else:
+                self.dpi_stage_rows[index].hide()
                 box.hide()
                 self.dpi_led_buttons[index].hide()
                 self.dpi_minus_buttons[index].hide()
@@ -524,39 +532,35 @@ class DpiPanelMixin:
             return None
 
     def update_dpi_stars(self, active_stage: int):
-        for index, row in enumerate(
-            self.dpi_stage_rows,
-            start=1,
-        ):
+        """Update active-row state and gate DPI controls safely.
+
+        Styling is driven by dynamic Qt properties and the application QSS;
+        no per-row stylesheet or graphics effect is created at runtime.
+        """
+        for index, row in enumerate(self.dpi_stage_rows, start=1):
             is_visible = self.is_dpi_stage_enabled(index - 1)
             is_active = index == active_stage and is_visible
 
-            if not is_visible:
-                row.setStyleSheet("""
-                    QWidget#dpiStageRow {
-                        background-color: transparent;
-                        border: 1px solid transparent;
-                        border-radius: 10px;
-                    }
-                """)
-                continue
+            row.setProperty("active", is_active)
+            row.style().unpolish(row)
+            row.style().polish(row)
+            row.update()
 
-            if is_active:
-                row.setStyleSheet("""
-                    QWidget#dpiStageRow {
-                        background-color: #eef4ff;
-                        border: 1px solid #2f6cff;
-                        border-radius: 10px;
-                    }
-                """)
-            else:
-                row.setStyleSheet("""
-                    QWidget#dpiStageRow {
-                        background-color: transparent;
-                        border: 1px solid transparent;
-                        border-radius: 10px;
-                    }
-                """)
+            dpi_control = self.dpi_boxes[index - 1]
+            dpi_control.setInteractive(is_active)
+            dpi_control.setProperty("activeStage", is_active)
+            dpi_control.style().unpolish(dpi_control)
+            dpi_control.style().polish(dpi_control)
+
+            led_button = self.dpi_led_buttons[index - 1]
+            led_button.setProperty("activeStage", is_active)
+            led_button.setAttribute(Qt.WA_TransparentForMouseEvents, not is_active)
+            led_button.update()
+
+            remove_button = self.dpi_remove_buttons[index - 1]
+            remove_button.setProperty("activeStage", is_active)
+            remove_button.setAttribute(Qt.WA_TransparentForMouseEvents, not is_active)
+            remove_button.update()
 
     def set_active_dpi_stage(self, stage: int):
         if self.current_profile is None:
@@ -566,36 +570,19 @@ class DpiPanelMixin:
         if not 1 <= stage <= visible_count:
             return
 
-        previous_stage = getattr(self, "active_dpi_stage", 1)
         current_slot = self.current_slot
 
-        # UI optimiste : on affiche immédiatement le choix utilisateur.
-        # La souris confirme ensuite via une relecture légèrement différée.
-        self.active_dpi_stage = stage
-        self.current_profile.active_dpi_stage = stage
-        self.update_dpi_stars(stage)
-        self.update_tray_quick_actions()
-
+        # La ligne ne devient active qu'après confirmation par la souris.
+        # Cela évite d'afficher brièvement un état que le firmware aurait pu
+        # refuser et garde la même sémantique sur tous les protocoles.
         try:
-            self.mouse.set_active_dpi_stage(
-                stage,
-                current_slot,
-            )
-
+            self.mouse.set_active_dpi_stage(stage, current_slot)
             QTimer.singleShot(
                 80,
                 lambda slot=current_slot: self.sync_active_dpi_indicator(slot),
             )
-
         except HARDWARE_STATE_ERRORS as e:
             logger.debug(f"Erreur stage DPI actif: {e}")
-
-            # Si la souris refuse l'écriture, l'UI revient à l'état connu.
-            self.active_dpi_stage = previous_stage
-            if self.current_profile is not None:
-                self.current_profile.active_dpi_stage = previous_stage
-            self.update_dpi_stars(previous_stage)
-            self.update_tray_quick_actions()
 
     def on_dpi_changed(self, stage):
         if self._loading_profile or self._applying_profile:

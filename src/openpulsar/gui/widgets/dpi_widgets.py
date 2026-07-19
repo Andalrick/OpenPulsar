@@ -1,10 +1,37 @@
 """DPI control widgets used by the OpenPulsar main window."""
 
-from PySide6.QtCore import Qt, QRectF
+from PySide6.QtCore import Qt, QRectF, Signal
 from PySide6.QtGui import QColor, QPainter, QPen
 from PySide6.QtWidgets import QHBoxLayout, QLineEdit, QPushButton, QWidget
 
 from openpulsar.gui import theme
+
+
+class DpiStageRow(QWidget):
+    """Clickable DPI row whose state is styled entirely through QSS.
+
+    No custom painting or graphics effect is used here.  Inactive child
+    controls are made mouse-transparent, so the first click anywhere on the
+    row activates the stage; controls become interactive only once the mouse
+    confirms that stage as active.
+    """
+
+    clicked = Signal()
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setObjectName("dpiStageRow")
+        self.setAttribute(Qt.WA_StyledBackground, True)
+        self.setCursor(Qt.PointingHandCursor)
+        self.setProperty("active", False)
+
+    def mouseReleaseEvent(self, event):
+        if event.button() == Qt.LeftButton and self.rect().contains(event.position().toPoint()):
+            self.clicked.emit()
+            event.accept()
+            return
+        super().mouseReleaseEvent(event)
+
 
 class DpiRemoveButton(QPushButton):
     """Round DPI-stage remove control drawn independently from font metrics."""
@@ -32,6 +59,10 @@ class DpiRemoveButton(QPushButton):
             border = QColor(theme.OP_DANGER)
             background = QColor(theme.OP_DANGER_HOVER)
             cross = QColor(theme.OP_DANGER_TEXT_HOVER)
+        elif bool(self.property("activeStage")):
+            border = QColor("#ffffff")
+            background = QColor("#ffffff")
+            cross = QColor(theme.OP_BLUE)
         else:
             border = QColor("#cbd5e1")
             background = QColor("#ffffff")
@@ -131,3 +162,12 @@ class DpiValueControl(QWidget):
 
     def step(self):
         return self._step
+
+    def setInteractive(self, interactive):
+        """Enable editing without visually disabling inactive controls."""
+        interactive = bool(interactive)
+        self.setProperty("interactive", interactive)
+        self.setAttribute(Qt.WA_TransparentForMouseEvents, not interactive)
+        self.value_label.setReadOnly(not interactive)
+        self.minus_button.setFocusPolicy(Qt.NoFocus if not interactive else Qt.StrongFocus)
+        self.plus_button.setFocusPolicy(Qt.NoFocus if not interactive else Qt.StrongFocus)

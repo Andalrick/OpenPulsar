@@ -40,7 +40,7 @@ from .widgets.common_widgets import (
     picture_path,
     qss_url,
 )
-from .widgets.dpi_widgets import DpiRemoveButton, DpiValueControl
+from .widgets.dpi_widgets import DpiRemoveButton, DpiStageRow, DpiValueControl
 from .widgets.keyboard_widgets import (
     KeyboardCommandRow,
     KeyboardCommandsEditor,
@@ -264,7 +264,7 @@ def build_main_ui(self):
     dpi_body_layout.setContentsMargins(
         CONTENT_MARGIN_X,
         CONTENT_MARGIN_TOP,
-        3,
+        CONTENT_MARGIN_X,
         CONTENT_MARGIN_BOTTOM,
     )
 
@@ -424,7 +424,7 @@ def build_main_ui(self):
 
     self.dpi_content_stack = QStackedWidget()
     self.dpi_content_stack.setObjectName("dpiContentStack")
-    self.dpi_content_stack.setFixedWidth(166)
+    self.dpi_content_stack.setFixedWidth(DPI_PANEL_WIDTH - (2 * CONTENT_MARGIN_X))
 
     self.dpi_page = QWidget()
     self.dpi_page.setObjectName("dpiPage")
@@ -469,12 +469,14 @@ def build_main_ui(self):
         )
         self.dpi_remove_buttons.append(remove_button)
 
-        row_widget = QWidget()
-        row_widget.setObjectName("dpiStageRow")
+        row_widget = DpiStageRow()
         row_widget.setFixedSize(160, ROW_HEIGHT)
+        row_widget.clicked.connect(
+            lambda stage=i + 1: self.set_active_dpi_stage(stage)
+        )
 
         row_layout = QHBoxLayout(row_widget)
-        row_layout.setContentsMargins(4, 7, 4, 7)
+        row_layout.setContentsMargins(4, 7, 4, 5)
         row_layout.setSpacing(8)
         row_layout.setAlignment(Qt.AlignVCenter)
         row_layout.addWidget(led_button, alignment=Qt.AlignVCenter)

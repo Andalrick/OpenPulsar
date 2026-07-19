@@ -709,7 +709,11 @@ class KeyboardCommandsEditor(QWidget):
         self.rows_container.setObjectName("keyboardCommandRowsContainer")
 
         self.rows_layout = QVBoxLayout(self.rows_container)
-        self.rows_layout.setContentsMargins(0, 0, 0, 0)
+        # Optically center the command rows in the panel while keeping the
+        # dedicated scrollbar gutter exactly where it is.  The rows move
+        # three pixels to the right; neither the QScrollArea nor its external
+        # scrollbar is resized or repositioned.
+        self.rows_layout.setContentsMargins(self.CONTENT_MARGIN * 2, 0, 0, 0)
         self.rows_layout.setSpacing(self.ROW_SPACING)
         self.rows_layout.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
 

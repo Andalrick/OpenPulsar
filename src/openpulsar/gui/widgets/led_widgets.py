@@ -48,6 +48,10 @@ class LedIndicator(QPushButton):
             border = QColor(theme.OP_BLUE)
             background = QColor(theme.OP_BLUE_SOFT)
             inner = self._color
+        elif bool(self.property("activeStage")):
+            border = QColor("#ffffff")
+            background = QColor("#ffffff")
+            inner = self._color
         else:
             border = QColor("#cbd5e1")
             background = QColor("#ffffff")

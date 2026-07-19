@@ -214,6 +214,45 @@ LIGHT_THEME_QSS = """
             height: 0px;
         }
 
+
+        QWidget#dpiStageRow {
+            background-color: transparent;
+            border: 1px solid transparent;
+            border-radius: 10px;
+        }
+
+        QWidget#dpiStageRow:hover {
+            background-color: #eef4ff;
+            border: 1px solid #2f6cff;
+        }
+
+        QWidget#dpiStageRow[active="true"] {
+            background-color: #2f6cff;
+            border: 1px solid #2f6cff;
+        }
+
+        QWidget#dpiStageRow[active="true"] QWidget#dpiValueControl {
+            background-color: #ffffff;
+            border-color: #ffffff;
+        }
+
+        QWidget#dpiStageRow[active="true"] QLineEdit#dpiValueEdit {
+            background-color: #ffffff;
+            color: #111827;
+        }
+
+        QWidget#dpiStageRow[active="true"] QPushButton#dpiMinusButton,
+        QWidget#dpiStageRow[active="true"] QPushButton#dpiPlusButton {
+            background-color: #ffffff;
+            color: #2f6cff;
+        }
+
+        QWidget#dpiStageRow[active="true"] QPushButton#dpiMinusButton:hover,
+        QWidget#dpiStageRow[active="true"] QPushButton#dpiPlusButton:hover {
+            background-color: #eef4ff;
+            color: #1d4ed8;
+        }
+
         QWidget#dpiValueControl {
             background-color: #ffffff;
             border: 1px solid #cbd5e1;

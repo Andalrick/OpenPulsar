@@ -455,6 +455,9 @@ class ProfileMixin:
             self.angle_snap_check.setChecked(profile.angle_snap)
             self.ripple_control_check.setChecked(profile.ripple_control)
 
+            for row in self.dpi_stage_rows:
+                row.hide()
+
             for dpi_box in self.dpi_boxes:
                 dpi_box.hide()
 
@@ -472,6 +475,7 @@ class ProfileMixin:
 
             for index, stage in enumerate(profile.dpi_stages):
                 self.dpi_boxes[index].setValue(stage.dpi)
+                self.dpi_stage_rows[index].show()
                 self.dpi_boxes[index].show()
                 self.dpi_led_buttons[index].show()
                 self.dpi_minus_buttons[index].show()
@@ -533,6 +537,9 @@ class ProfileMixin:
             self.angle_snap_check.setChecked(profile.angle_snap)
             self.ripple_control_check.setChecked(profile.ripple_control)
 
+            for row in self.dpi_stage_rows:
+                row.hide()
+
             for dpi_box in self.dpi_boxes:
                 dpi_box.hide()
 
@@ -553,6 +560,7 @@ class ProfileMixin:
                     break
 
                 self.dpi_boxes[index].setValue(stage.dpi)
+                self.dpi_stage_rows[index].show()
                 self.dpi_boxes[index].show()
                 self.dpi_led_buttons[index].show()
                 self.dpi_minus_buttons[index].show()
