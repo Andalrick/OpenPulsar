@@ -6,6 +6,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.6] - 2026-07-19
+
+### Changed
+
+- Made complete DPI-stage rows clickable while keeping hardware-confirmed activation behavior.
+- Harmonized DPI and LED panel margins, spacing and active-state styling.
+- Improved the visual consistency of DPI, RGB gain and keyboard-command controls.
+
+### Fixed
+
+- Added clear hover feedback to clickable DPI LED color indicators.
+- Restored the red hover state of DPI-stage remove buttons.
+- Removed the selectable empty DPI row below the last configured stage.
+- Corrected the horizontal and vertical alignment of DPI-stage controls.
+
 ## [0.1.5] - 2026-07-18
 
 ### Added

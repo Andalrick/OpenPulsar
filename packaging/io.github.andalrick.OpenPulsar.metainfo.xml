@@ -23,6 +23,11 @@
     <name>Andalrick</name>
   </developer>
   <releases>
+    <release version="0.1.6" date="2026-07-19">
+      <description>
+        <p>Refined DPI-stage interaction and completed a visual consistency pass across DPI, LED, RGB gain and keyboard-command controls.</p>
+      </description>
+    </release>
     <release version="0.1.5" date="2026-07-18">
       <description>
         <p>Added direct DPI value keyboard commands, integrated shortcut conflict handling and a more consistent visual language across keyboard, DPI and RGB controls.</p>
