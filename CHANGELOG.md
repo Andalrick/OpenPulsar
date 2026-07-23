@@ -12,7 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Fixed
 
-## [0.1.6] - 2026-07-19
+## [0.1.7] - 2026-07-19
 
 ### Changed
 

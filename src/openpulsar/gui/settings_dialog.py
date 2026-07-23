@@ -15,7 +15,8 @@ from PySide6.QtWidgets import (
 )
 
 from openpulsar.i18n import tr, set_language
-from .metrics import PANEL_BORDER_WIDTH
+from .metrics import PANEL_BORDER_WIDTH, PANEL_RADIUS
+from .theme import op_radius
 
 
 ASSETS_DIR = Path(__file__).resolve().parents[1] / "assets"
@@ -294,7 +295,7 @@ class SettingsHelpPopup(QFrame):
         QFrame#settingsHelpPopup {
             background-color: #ffffff;
             border: {panel_border_width}px solid #cbd5e1;
-            border-radius: 12px;
+            border-radius: {panel_radius}px;
         }
         QLabel#settingsHelpPopupTitle {
             color: #1f2937;
@@ -307,7 +308,11 @@ class SettingsHelpPopup(QFrame):
             font-family: Inter, Segoe UI, Arial;
             font-size: 12px;
         }
-        """.replace("{panel_border_width}", str(PANEL_BORDER_WIDTH)))
+        """.replace("{panel_border_width}", str(PANEL_BORDER_WIDTH))
+            .replace("{panel_radius}", str(PANEL_RADIUS))
+            .replace("{radius_28}", str(op_radius(28)))
+            .replace("{radius_30}", str(op_radius(30)))
+            .replace("{radius_36}", str(op_radius(36))))
 
     def mousePressEvent(self, event):
         self.close()
@@ -538,8 +543,8 @@ class SettingsDialog(QWidget):
         self.setStyleSheet("""
         QWidget#settingsPopover {
             background-color: #ffffff;
-            border: {panel_border_width}px solid #cbd5e1;
-            border-radius: 12px;
+            border: {panel_border_width}px solid #2f6cff;
+            border-radius: {panel_radius}px;
         }
 
         QWidget#settingsPopover QWidget {
@@ -563,7 +568,7 @@ class SettingsDialog(QWidget):
         QPushButton#helpButton {
             background-color: #ffffff;
             border: 1px solid #cbd5e1;
-            border-radius: 9px;
+            border-radius: {radius_36}px;
             padding: 0px;
             color: #2f6cff;
             font-weight: 700;
@@ -579,7 +584,7 @@ class SettingsDialog(QWidget):
         QWidget#settingsPillSelector {
             background-color: #ffffff;
             border: 1px solid #cbd5e1;
-            border-radius: 7px;
+            border-radius: {radius_28}px;
         }
 
         QLabel#settingsPillValue {
@@ -621,7 +626,7 @@ class SettingsDialog(QWidget):
         QPushButton#settingsApplyButton {
             background-color: #2f6cff;
             border: 1px solid #2f6cff;
-            border-radius: 8px;
+            border-radius: {radius_30}px;
             color: #ffffff;
             font-size: 12px;
             font-weight: 800;
@@ -642,4 +647,8 @@ class SettingsDialog(QWidget):
             border: 1px solid #1e40af;
             color: #ffffff;
         }
-        """.replace("{panel_border_width}", str(PANEL_BORDER_WIDTH)))
+        """.replace("{panel_border_width}", str(PANEL_BORDER_WIDTH))
+            .replace("{panel_radius}", str(PANEL_RADIUS))
+            .replace("{radius_28}", str(op_radius(28)))
+            .replace("{radius_30}", str(op_radius(30)))
+            .replace("{radius_36}", str(op_radius(36))))

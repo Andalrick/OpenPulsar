@@ -7,38 +7,42 @@ from PySide6.QtWidgets import (
     QWidget,
     QHBoxLayout,
     QLabel,
-    QPushButton,
-    QMessageBox,
 )
+
+
+from .widgets.help_button import PaintedHelpButton
 
 
 class DialogMixin:
     def make_help_label(self, text, key):
+        # Every sensor row uses the exact same label/help geometry.  Keeping
+        # the text in a fixed column prevents the help circles from following
+        # the varying text widths (Polling, LOD, Ripple Control, ...).
         widget = QWidget()
         widget.setObjectName("helpLabel")
+        widget.setFixedSize(112, 26)
 
         layout = QHBoxLayout(widget)
         layout.setContentsMargins(0, 0, 0, 0)
-        layout.setSpacing(5)
+        layout.setSpacing(6)
 
         label = QLabel(text)
+        label.setFixedWidth(88)
+        label.setAlignment(Qt.AlignRight | Qt.AlignVCenter)
 
-        button = QPushButton("?")
+        button = PaintedHelpButton()
         button.setObjectName("helpButton")
-        button.setFixedSize(18, 18)
-        button.setCursor(Qt.PointingHandCursor)
         self.context_help_buttons.append(button)
 
         button.clicked.connect(
-            lambda checked=False, key=key, anchor=button: self.show_help_popup(
+            lambda key=key, anchor=button: self.show_help_popup(
                 key,
                 anchor,
             )
         )
 
         layout.addWidget(label)
-        layout.addWidget(button)
-        layout.addStretch()
+        layout.addWidget(button, alignment=Qt.AlignVCenter)
         self.update_context_help_visibility()
 
         return widget
@@ -58,22 +62,12 @@ class DialogMixin:
             button.update()
 
     def ask_enable_persistent_for_keyboard_commands(self):
-        box = QMessageBox(self)
-        box.setWindowTitle(tr("keyboard.persistent_required.title"))
-        box.setText(tr("keyboard.persistent_required.body"))
-        enable_button = box.addButton(
-            tr("keyboard.persistent_required.enable"),
-            QMessageBox.AcceptRole,
-        )
-        box.addButton(
-            tr("keyboard.persistent_required.cancel"),
-            QMessageBox.RejectRole,
-        )
-        box.exec()
-
-        if box.clickedButton() is not enable_button:
+        editor = getattr(self, "keyboard_commands_editor", None)
+        if editor is None:
             return
+        editor.show_persistent_mode_required()
 
+    def enable_persistent_for_keyboard_commands(self):
         settings = SettingsStore.load()
         settings["persistent_mode"] = True
         SettingsStore.save(settings)

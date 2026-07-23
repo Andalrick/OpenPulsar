@@ -21,6 +21,7 @@ from PySide6.QtWidgets import (
 )
 
 from openpulsar.i18n import tr
+from .. import theme
 from .dpi_widgets import DpiRemoveButton, DpiValueControl
 from .mouse_button_widgets import MouseButtonCombo
 from ..metrics import (
@@ -681,6 +682,8 @@ class KeyboardCommandsEditor(QWidget):
     profileModeRequested = Signal(str)
     profileDirectRequested = Signal(int)
     commandsChanged = Signal(list)
+    persistentModeEnableRequested = Signal()
+    persistentModeCancelled = Signal()
 
     def __init__(
         self,
@@ -801,6 +804,18 @@ class KeyboardCommandsEditor(QWidget):
         conflict_summary.addWidget(self.shortcut_conflict_command)
 
         card_layout.addLayout(conflict_summary)
+        self.shortcut_conflict_summary = conflict_summary
+
+        self.persistent_required_message = QLabel(
+            tr("keyboard.persistent_required.body")
+        )
+        self.persistent_required_message.setObjectName(
+            "shortcutConflictRelationLabel"
+        )
+        self.persistent_required_message.setAlignment(Qt.AlignCenter)
+        self.persistent_required_message.setWordWrap(True)
+        self.persistent_required_message.hide()
+        card_layout.addWidget(self.persistent_required_message)
 
         conflict_buttons = QHBoxLayout()
         conflict_buttons.setContentsMargins(0, 0, 0, 0)
@@ -824,6 +839,40 @@ class KeyboardCommandsEditor(QWidget):
         conflict_buttons.addWidget(self.shortcut_conflict_reassign)
         conflict_buttons.addWidget(self.shortcut_conflict_cancel)
         card_layout.addLayout(conflict_buttons)
+        self.shortcut_conflict_buttons = conflict_buttons
+
+        persistent_buttons = QHBoxLayout()
+        persistent_buttons.setContentsMargins(0, 0, 0, 0)
+        persistent_buttons.setSpacing(KeyboardCommandRow.PILL_SPACING)
+        persistent_buttons.setAlignment(Qt.AlignCenter)
+
+        self.persistent_required_enable = QPushButton(
+            tr("keyboard.persistent_required.enable")
+        )
+        self.persistent_required_enable.setObjectName(
+            "shortcutConflictPrimaryButton"
+        )
+        self.persistent_required_enable.setFixedSize(pill_size)
+        self.persistent_required_enable.clicked.connect(
+            self._enable_persistent_mode
+        )
+
+        self.persistent_required_cancel = QPushButton(
+            tr("keyboard.persistent_required.cancel")
+        )
+        self.persistent_required_cancel.setObjectName(
+            "shortcutConflictSecondaryButton"
+        )
+        self.persistent_required_cancel.setFixedSize(pill_size)
+        self.persistent_required_cancel.clicked.connect(
+            self._cancel_persistent_mode_prompt
+        )
+
+        persistent_buttons.addWidget(self.persistent_required_enable)
+        persistent_buttons.addWidget(self.persistent_required_cancel)
+        card_layout.addLayout(persistent_buttons)
+        self.persistent_required_buttons = persistent_buttons
+        self._set_layout_visible(self.persistent_required_buttons, False)
 
         overlay_layout.addWidget(self.shortcut_conflict_card)
         self.shortcut_conflict_overlay.hide()
@@ -831,7 +880,7 @@ class KeyboardCommandsEditor(QWidget):
 
         self.add_command_button = QPushButton(tr("+ Add keyboard command"))
         self.add_command_button.setObjectName("addListButton")
-        self.add_command_button.setFixedSize(220, 30)
+        self.add_command_button.setFixedSize(220, theme.OP_PILL_HEIGHT)
         self.add_command_button.clicked.connect(lambda checked=False: self.add_keyboard_command_row())
 
         self.command_footer = QWidget()
@@ -961,6 +1010,49 @@ class KeyboardCommandsEditor(QWidget):
         if self._active_shortcut_capture is shortcut_button:
             self._active_shortcut_capture = None
 
+    @staticmethod
+    def _set_layout_visible(layout, visible):
+        for index in range(layout.count()):
+            item = layout.itemAt(index)
+            widget = item.widget()
+            if widget is not None:
+                widget.setVisible(visible)
+
+    def _show_inline_overlay(self):
+        self.add_command_button.setEnabled(False)
+        self.shortcut_conflict_overlay.setGeometry(self.scroll_wrapper.rect())
+        self.shortcut_conflict_overlay.show()
+        self.shortcut_conflict_overlay.raise_()
+
+    def _show_shortcut_conflict_content(self):
+        self._set_layout_visible(self.shortcut_conflict_summary, True)
+        self._set_layout_visible(self.shortcut_conflict_buttons, True)
+        self.persistent_required_message.hide()
+        self._set_layout_visible(self.persistent_required_buttons, False)
+
+    def show_persistent_mode_required(self):
+        """Show the persistent-mode prompt in the shortcut conflict location."""
+        self._pending_shortcut_conflict = None
+        self._set_layout_visible(self.shortcut_conflict_summary, False)
+        self._set_layout_visible(self.shortcut_conflict_buttons, False)
+        self.persistent_required_message.show()
+        self._set_layout_visible(self.persistent_required_buttons, True)
+        self._show_inline_overlay()
+        self.persistent_required_enable.setFocus(Qt.OtherFocusReason)
+
+    def _close_inline_overlay(self):
+        self._pending_shortcut_conflict = None
+        self.shortcut_conflict_overlay.hide()
+        self.add_command_button.setEnabled(True)
+
+    def _enable_persistent_mode(self):
+        self._close_inline_overlay()
+        self.persistentModeEnableRequested.emit()
+
+    def _cancel_persistent_mode_prompt(self):
+        self._close_inline_overlay()
+        self.persistentModeCancelled.emit()
+
     def _on_shortcut_changed(self, changed_row, key, modifiers):
         conflict_row = next(
             (
@@ -982,16 +1074,12 @@ class KeyboardCommandsEditor(QWidget):
             conflict_row.action_combo.currentText()
         )
         self._pending_shortcut_conflict = (changed_row, conflict_row)
-        self.add_command_button.setEnabled(False)
-        self.shortcut_conflict_overlay.setGeometry(self.scroll_wrapper.rect())
-        self.shortcut_conflict_overlay.show()
-        self.shortcut_conflict_overlay.raise_()
+        self._show_shortcut_conflict_content()
+        self._show_inline_overlay()
         self.shortcut_conflict_reassign.setFocus(Qt.OtherFocusReason)
 
     def _close_shortcut_conflict(self):
-        self._pending_shortcut_conflict = None
-        self.shortcut_conflict_overlay.hide()
-        self.add_command_button.setEnabled(True)
+        self._close_inline_overlay()
 
     def _reassign_conflicting_shortcut(self):
         pending = self._pending_shortcut_conflict

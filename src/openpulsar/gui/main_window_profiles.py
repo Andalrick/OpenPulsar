@@ -4,7 +4,7 @@ import copy
 import time
 
 from PySide6.QtCore import QSignalBlocker, QTimer
-from PySide6.QtWidgets import QFileDialog, QMessageBox
+from PySide6.QtWidgets import QFileDialog
 
 from openpulsar.i18n import tr
 from openpulsar.logging_utils import get_logger
@@ -27,6 +27,7 @@ from .main_window_profile_style import profile_segment_style
 from .metrics import PANEL_BORDER_WIDTH
 from .profile.profile_extras_store import ProfileExtrasStore, apply_profile_extras
 from .widgets.keyboard_widgets import KeyboardCommandsEditor
+from .widgets.op_dialog import OPDialog
 
 logger = get_logger(__name__)
 
@@ -158,7 +159,7 @@ class ProfileMixin:
                 QComboBox#mouseButtonCombo {
                     background-color: #fff7f7;
                     border: 1px solid #ef4444;
-                    border-radius: 7px;
+                    border-radius: 4px;
                     padding-left: 8px;
                     padding-right: 0px;
                     color: #dc2626;
@@ -607,7 +608,7 @@ class ProfileMixin:
             self.send_to_mouse({"all"})
 
         except HARDWARE_STATE_ERRORS as e:
-            QMessageBox.warning(
+            OPDialog.error(
                 self,
                 tr("profile.import.error.title"),
                 tr("profile.import.error.body").format(error=e),
@@ -638,7 +639,7 @@ class ProfileMixin:
             save_profile_file(profile, path)
 
         except HARDWARE_STATE_ERRORS as e:
-            QMessageBox.warning(
+            OPDialog.error(
                 self,
                 tr("profile.export.error.title"),
                 tr("profile.export.error.body").format(error=e),

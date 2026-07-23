@@ -7,7 +7,7 @@ original Qt object ownership and call flow.
 
 from PySide6.QtCore import QTimer, QSize, Qt
 from PySide6.QtGui import QIcon, QTransform
-from PySide6.QtWidgets import QFileDialog, QMessageBox
+from PySide6.QtWidgets import QFileDialog
 
 from datetime import datetime
 from pathlib import Path
@@ -24,6 +24,7 @@ from openpulsar.i18n import tr
 from openpulsar.logging_utils import get_logger
 from .errors import BEST_EFFORT_ERRORS, HARDWARE_STATE_ERRORS
 from .widgets.common_widgets import picture_path
+from .widgets.op_dialog import OPDialog
 
 logger = get_logger(__name__)
 
@@ -662,14 +663,14 @@ def export_diagnostic_log(self):
     try:
         Path(path).write_text(self.build_diagnostic_report(), encoding="utf-8")
     except OSError as exc:
-        QMessageBox.warning(
+        OPDialog.error(
             self,
             tr("diagnostic.export_error.title"),
             tr("diagnostic.export_error.body").format(error=exc),
         )
         return
 
-    QMessageBox.information(
+    OPDialog.information(
         self,
         tr("diagnostic.export_success.title"),
         tr("diagnostic.export_success.body"),

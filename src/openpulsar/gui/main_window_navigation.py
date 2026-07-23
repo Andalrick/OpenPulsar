@@ -1,12 +1,13 @@
 from PySide6.QtGui import QIcon
 
-from .metrics import PANEL_BORDER_WIDTH
+from .metrics import PANEL_BORDER_WIDTH, PANEL_RADIUS
 from .widgets.common_widgets import TAB_ICONS
 
 
 def _main_tab_style(self, active=False, side="left"):
-    left_radius = 12 if side == "left" else 0
-    right_radius = 12 if side == "right" else 0
+    radius = PANEL_RADIUS
+    left_radius = radius if side == "left" else 0
+    right_radius = radius if side == "right" else 0
 
     bg = "#2f6cff" if active else "#ffffff"
     fg = "#ffffff" if active else "#334155"
@@ -41,11 +42,12 @@ def _main_tab_style(self, active=False, side="left"):
 
 
 def select_main_tab(self, index):
-    if index == 1 and not self.persistent_mode:
-        self.ask_enable_persistent_for_keyboard_commands()
-        index = 0
+    persistent_prompt = index == 1 and not self.persistent_mode
 
     self.main_stack.setCurrentIndex(index)
+
+    if persistent_prompt:
+        self.ask_enable_persistent_for_keyboard_commands()
 
     self.buttons_tab_button.setIcon(
         QIcon(

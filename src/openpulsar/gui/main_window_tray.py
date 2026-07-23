@@ -1,9 +1,10 @@
 import sys
 from pathlib import Path
 
+from .widgets.op_dialog import OPDialog
 from PySide6.QtCore import QProcess
 from PySide6.QtGui import QAction, QActionGroup, QIcon
-from PySide6.QtWidgets import QApplication, QMenu, QMessageBox, QSystemTrayIcon
+from PySide6.QtWidgets import QApplication, QMenu, QSystemTrayIcon
 
 from openpulsar.i18n import tr
 from openpulsar.logging_utils import get_logger
@@ -143,20 +144,14 @@ class TrayMixin:
             else "settings.persistent.restart.disabled.body"
         )
 
-        box = QMessageBox(self)
-        box.setWindowTitle(title)
-        box.setText(body)
-        restart_button = box.addButton(
+        restart_now = OPDialog.question(
+            self,
+            title,
+            body,
             tr("settings.persistent.restart.now"),
-            QMessageBox.AcceptRole,
-        )
-        box.addButton(
             tr("settings.persistent.restart.later"),
-            QMessageBox.RejectRole,
         )
-        box.exec()
-
-        if box.clickedButton() is restart_button:
+        if restart_now:
             self.restart_openpulsar()
 
 

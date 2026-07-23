@@ -1,5 +1,5 @@
 Name:           openpulsar
-Version:        0.1.6
+Version:        0.1.7
 Release:        1%{?dist}
 Summary:        Configuration utility for Pulsar wired gaming mice
 
@@ -62,7 +62,7 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/io.github.anda
 %{_udevrulesdir}/70-openpulsar.rules
 
 %changelog
-* Sun Jul 19 2026 Andalrick <andalrick@outlook.com> - 0.1.6-1
+* Sun Jul 19 2026 Andalrick <andalrick@outlook.com> - 0.1.7-1
 - Make DPI-stage rows fully clickable with hardware-confirmed activation
 - Add hover feedback to DPI LED selectors and restore remove-button hover
 - Correct DPI panel spacing, alignment and hidden-row behavior

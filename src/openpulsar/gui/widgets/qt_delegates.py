@@ -19,6 +19,7 @@ class ActionTreeDelegate(QStyledItemDelegate):
     def paint(self, painter, option, index):
         option = QStyleOptionViewItem(option)
         is_action = index.data(Qt.UserRole) is not None
+        is_danger = bool(index.data(Qt.UserRole + 1))
         is_selected = bool(option.state & QStyle.State_Selected)
 
         if is_selected and is_action:
@@ -32,8 +33,12 @@ class ActionTreeDelegate(QStyledItemDelegate):
             painter.drawRoundedRect(QRectF(highlight), 4, 4)
             painter.restore()
 
-            option.palette.setColor(QPalette.Text, QColor(theme.OP_BLUE_TEXT))
-            option.palette.setColor(QPalette.HighlightedText, QColor(theme.OP_BLUE_TEXT))
+            text_color = theme.OP_DANGER_TEXT if is_danger else theme.OP_BLUE_TEXT
+            option.palette.setColor(QPalette.Text, QColor(text_color))
+            option.palette.setColor(QPalette.HighlightedText, QColor(text_color))
+        elif is_danger:
+            option.palette.setColor(QPalette.Text, QColor(theme.OP_DANGER_TEXT))
+            option.palette.setColor(QPalette.HighlightedText, QColor(theme.OP_DANGER_TEXT))
 
         option.state &= ~QStyle.State_Selected
         super().paint(painter, option, index)

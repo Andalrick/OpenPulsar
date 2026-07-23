@@ -27,7 +27,6 @@ from PySide6.QtWidgets import (
     QMenu,
     QWidgetAction,
     QFileDialog,
-    QMessageBox,
     QSizePolicy,
     QStackedWidget,
     QScrollArea,

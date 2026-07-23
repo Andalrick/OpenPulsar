@@ -1,7 +1,7 @@
 """Mouse-button mapping widgets."""
 
 from PySide6.QtCore import Qt, Signal
-from PySide6.QtGui import QPixmap
+from PySide6.QtGui import QColor, QPixmap
 from PySide6.QtWidgets import (
     QAbstractItemView,
     QComboBox,
@@ -45,6 +45,7 @@ class MouseButtonCombo(QComboBox):
     def __init__(self, parent=None):
         super().__init__(parent)
         self._action_groups = []
+        self._standalone_actions = []
         self._open_menu = None
         self._action_menu_width = None
         self._action_menu_height = 234
@@ -61,7 +62,7 @@ class MouseButtonCombo(QComboBox):
     def set_keep_one_group_open(self, enabled):
         self._keep_one_group_open = bool(enabled)
 
-    def set_action_groups(self, groups, placeholder=None):
+    def set_action_groups(self, groups, placeholder=None, standalone_actions=None):
         """Configure a compact selector with expandable categories.
 
         Actions may be plain labels or ``(label, data)`` pairs.  The latter
@@ -71,6 +72,7 @@ class MouseButtonCombo(QComboBox):
         current_data = self.currentData()
         signals_were_blocked = self.blockSignals(True)
         self._action_groups = []
+        self._standalone_actions = []
         self.clear()
 
         if placeholder is not None:
@@ -89,6 +91,23 @@ class MouseButtonCombo(QComboBox):
                 self.addItem(label, data)
 
             self._action_groups.append((group_name, normalized_actions))
+
+        for action in standalone_actions or []:
+            if isinstance(action, (tuple, list)) and len(action) >= 2:
+                label, data = action[:2]
+                is_danger = bool(action[2]) if len(action) >= 3 else False
+            else:
+                label = data = action
+                is_danger = False
+
+            self._standalone_actions.append((label, data, is_danger))
+            self.addItem(label, data)
+            if is_danger:
+                self.setItemData(
+                    self.count() - 1,
+                    QColor("#dc2626"),
+                    Qt.ForegroundRole,
+                )
 
         if current_data is not None:
             index = self.findData(current_data)
@@ -161,6 +180,13 @@ class MouseButtonCombo(QComboBox):
 
                 if data == current_data or label == current_text:
                     group_item.setExpanded(True)
+
+        for label, data, is_danger in self._standalone_actions:
+            action_item = QTreeWidgetItem(tree, [label])
+            action_item.setData(0, Qt.UserRole, data)
+            action_item.setData(0, Qt.UserRole + 1, is_danger)
+            if is_danger:
+                action_item.setForeground(0, QColor("#dc2626"))
 
         if self._keep_one_group_open and not any(
             tree.topLevelItem(i).isExpanded()

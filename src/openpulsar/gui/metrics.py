@@ -4,10 +4,11 @@ Keeping these values in one place prevents visually identical panels from
 slowly drifting apart as the UI evolves.
 """
 
-PANEL_RADIUS = 12
 PANEL_BORDER_WIDTH = 1
 
 HEADER_HEIGHT = 28
+PROFILE_RIBBON_HEIGHT = 34
+PANEL_RADIUS = round(PROFILE_RIBBON_HEIGHT * 0.25)
 PANEL_BODY_HEIGHT = 360
 PANEL_HEIGHT = HEADER_HEIGHT + PANEL_BODY_HEIGHT
 

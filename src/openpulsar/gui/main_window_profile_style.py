@@ -1,5 +1,6 @@
 
-from .metrics import PANEL_BORDER_WIDTH
+from .metrics import PANEL_BORDER_WIDTH, PROFILE_RIBBON_HEIGHT
+from .theme import op_radius
 
 
 def profile_segment_style(
@@ -13,8 +14,9 @@ def profile_segment_style(
     hover_bg = "#2f6cff" if (active or accent) else "#eef4ff"
     hover_fg = "#ffffff" if (active or accent) else "#1d4ed8"
     border = "#2f6cff" if (active or accent) else "#d9e0ec"
-    radius_left = 12 if left_radius else 0
-    radius_right = 12 if right_radius else 0
+    radius = op_radius(PROFILE_RIBBON_HEIGHT)
+    radius_left = radius if left_radius else 0
+    radius_right = radius if right_radius else 0
     weight = "700" if (active or accent) else "500"
     font_size = "16px" if accent else "14px"
 

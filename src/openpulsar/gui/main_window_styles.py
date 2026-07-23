@@ -5,6 +5,17 @@ extracted from main_window.py without touching runtime behaviour.
 """
 
 from .metrics import PANEL_BORDER_WIDTH, PANEL_RADIUS
+from .theme import (
+    OP_PILL_RADIUS,
+    OP_CONTROL_RADIUS_XS,
+    OP_CONTROL_RADIUS_S,
+    OP_CONTROL_RADIUS_M,
+    OP_CONTROL_RADIUS_L,
+    OP_CONTROL_RADIUS_XL,
+    OP_CONTROL_RADIUS_XXL,
+    op_radius,
+    op_circle_radius,
+)
 from .widgets.common_widgets import qss_url
 
 
@@ -96,7 +107,7 @@ LIGHT_THEME_QSS = """
                 stop: 1 #fbfdff
             );
             border: {panel_border_width}px solid #cdd8e8;
-            border-radius: 7px;
+            border-radius: {panel_radius}px;
         }
 
         QLabel {
@@ -125,7 +136,7 @@ LIGHT_THEME_QSS = """
         QPushButton {
             background-color: #ffffff;
             border: 1px solid #cbd5e1;
-            border-radius: 8px;
+            border-radius: {control_radius_32}px;
             padding: 6px;
             color: #1f2937;
         }
@@ -143,7 +154,7 @@ LIGHT_THEME_QSS = """
         QPushButton#logExportButton {
             background-color: transparent;
             border: 1px solid transparent;
-            border-radius: 6px;
+            border-radius: {control_radius_20}px;
             padding: 1px;
         }
 
@@ -160,7 +171,7 @@ LIGHT_THEME_QSS = """
         QPushButton#settingsButton {
             background-color: rgba(255, 255, 255, 0);
             border: 1px solid rgba(203, 213, 225, 0);
-            border-radius: 8px;
+            border-radius: {control_radius_32}px;
             padding: 4px;
         }
 
@@ -183,7 +194,7 @@ LIGHT_THEME_QSS = """
         QSpinBox {
             background-color: #ffffff;
             border: 1px solid #cbd5e1;
-            border-radius: 7px;
+            border-radius: {control_radius_28}px;
             padding: 4px 8px;
             color: #1f2937;
             min-height: 20px;
@@ -218,7 +229,7 @@ LIGHT_THEME_QSS = """
         QWidget#dpiStageRow {
             background-color: transparent;
             border: 1px solid transparent;
-            border-radius: 10px;
+            border-radius: {row_radius}px;
         }
 
         QWidget#dpiStageRow:hover {
@@ -256,7 +267,7 @@ LIGHT_THEME_QSS = """
         QWidget#dpiValueControl {
             background-color: #ffffff;
             border: 1px solid #cbd5e1;
-            border-radius: 7px;
+            border-radius: {control_radius_26}px;
         }
 
         QWidget#dpiValueControl:disabled {
@@ -398,7 +409,7 @@ LIGHT_THEME_QSS = """
         QComboBox#mouseButtonCombo {
             background-color: #ffffff;
             border: 1px solid #cbd5e1;
-            border-radius: 7px;
+            border-radius: {control_radius_16}px;
             padding-left: 8px;
             padding-right: 0px;
             min-height: 16px;
@@ -417,14 +428,14 @@ LIGHT_THEME_QSS = """
         QMenu#mouseButtonActionMenu {
             background-color: #ffffff;
             border: 1px solid #d8e1f2;
-            border-radius: 7px;
+            border-radius: {panel_radius}px;
             padding: 0px;
         }
 
         QTreeWidget#mouseButtonActionTree {
             background-color: #ffffff;
             border: 1px solid #d8e1f2;
-            border-radius: 7px;
+            border-radius: {panel_radius}px;
             padding: 3px;
             outline: 0;
             color: #0f172a;
@@ -471,7 +482,7 @@ LIGHT_THEME_QSS = """
             width: 16px;
             height: 16px;
             border: 1px solid #cbd5e1;
-            border-radius: 4px;
+            border-radius: {control_radius_16}px;
             background-color: #ffffff;
         }
 
@@ -490,19 +501,19 @@ LIGHT_THEME_QSS = """
         QMenu#dpiColorMenu {
             background-color: #ffffff;
             border: 1px solid #cbd5e1;
-            border-radius: 10px;
+            border-radius: {panel_radius}px;
             padding: 0px;
         }
 
         QWidget#dpiColorPalette {
             background-color: #ffffff;
-            border-radius: 10px;
+            border-radius: {panel_radius}px;
         }
 
         QPushButton#helpButton {
             background-color: #ffffff;
             border: 1px solid #cbd5e1;
-            border-radius: 9px;
+            border-radius: {help_button_radius}px;
             padding: 0px;
             color: #2f6cff;
             font-weight: 700;
@@ -534,13 +545,13 @@ LIGHT_THEME_QSS = """
         QWidget#helpPopup {
             background-color: #ffffff;
             border: {panel_border_width}px solid #2f6cff;
-            border-radius: 12px;
+            border-radius: {panel_radius}px;
         }
 
         QWidget#aboutPopup {
             background-color: #ffffff;
             border: {panel_border_width}px solid #2f6cff;
-            border-radius: 12px;
+            border-radius: {panel_radius}px;
         }
 
         QLabel#helpPopupTitle {
@@ -569,7 +580,7 @@ LIGHT_THEME_QSS = """
         QPushButton#aboutLinkButton {
             background-color: #ffffff;
             border: 1px solid #2f6cff;
-            border-radius: 8px;
+            border-radius: {control_radius_30}px;
             padding: 0px;
             color: #1d4ed8;
             font-weight: 600;
@@ -615,7 +626,7 @@ LIGHT_THEME_QSS = """
         QPushButton#mainTabButton {
             background-color: #ffffff;
             border: 1px solid #cbd5e1;
-            border-radius: 8px;
+            border-radius: {control_radius_28}px;
             padding: 0 12px;
             color: #334155;
             font-weight: 600;
@@ -636,8 +647,8 @@ LIGHT_THEME_QSS = """
             border: {panel_border_width}px solid #cbd5e1;
             border-top: none;
             border-radius: 0px;
-            border-bottom-left-radius: 10px;
-            border-bottom-right-radius: 10px;
+            border-bottom-left-radius: {panel_radius}px;
+            border-bottom-right-radius: {panel_radius}px;
         }
 
 
@@ -656,7 +667,7 @@ LIGHT_THEME_QSS = """
         QWidget#shortcutConflictCard {
             background-color: #ffffff;
             border: 1px solid #93b4ff;
-            border-radius: 10px;
+            border-radius: {panel_radius}px;
         }
 
         QLabel#shortcutConflictRelationLabel {
@@ -670,7 +681,7 @@ LIGHT_THEME_QSS = """
         QLabel#shortcutConflictCommandPill {
             background-color: #ffffff;
             border: 1px solid #cbd5e1;
-            border-radius: 7px;
+            border-radius: {control_radius_26}px;
             color: #334155;
             font-size: 12px;
             font-weight: 600;
@@ -681,7 +692,7 @@ LIGHT_THEME_QSS = """
             min-height: 24px;
             max-height: 26px;
             padding: 0px 8px;
-            border-radius: 7px;
+            border-radius: {control_radius_26}px;
             font-size: 12px;
             font-weight: 600;
         }
@@ -728,14 +739,14 @@ LIGHT_THEME_QSS = """
         QWidget#keyboardCommandRow {
             background-color: transparent;
             border: 1px solid transparent;
-            border-radius: 10px;
+            border-radius: {row_radius}px;
         }
 
         QComboBox#keyboardCommandCombo,
         QComboBox#keyboardCommandActionCombo {
             background-color: #ffffff;
             border: 1px solid #cbd5e1;
-            border-radius: 7px;
+            border-radius: {control_radius_26}px;
             padding-top: 0px;
             padding-bottom: 0px;
             padding-left: 8px;
@@ -801,7 +812,7 @@ LIGHT_THEME_QSS = """
         QPushButton#keyboardShortcutButton {
             background-color: #ffffff;
             border: 1px solid #cbd5e1;
-            border-radius: 7px;
+            border-radius: {control_radius_26}px;
             padding: 0px;
             color: #334155;
             font-weight: 600;
@@ -816,7 +827,7 @@ LIGHT_THEME_QSS = """
         QPushButton#addListButton {
             background-color: #ffffff;
             border: 1px solid #cbd5e1;
-            border-radius: 8px;
+            border-radius: {pill_radius}px;
             padding: 0px;
             color: #1f2937;
             font-weight: 500;
@@ -872,6 +883,15 @@ def background_stylesheet(background: str) -> str:
 def light_theme_stylesheet() -> str:
     return (
         LIGHT_THEME_QSS.replace("{panel_radius}", str(PANEL_RADIUS))
+        .replace("{pill_radius}", str(OP_PILL_RADIUS))
+        .replace("{control_radius_16}", str(OP_CONTROL_RADIUS_XS))
+        .replace("{help_button_radius}", str(op_circle_radius(18)))
+        .replace("{control_radius_20}", str(op_radius(20)))
+        .replace("{control_radius_26}", str(OP_CONTROL_RADIUS_M))
+        .replace("{control_radius_28}", str(OP_CONTROL_RADIUS_L))
+        .replace("{control_radius_30}", str(OP_CONTROL_RADIUS_XL))
+        .replace("{control_radius_32}", str(OP_CONTROL_RADIUS_XXL))
+        .replace("{row_radius}", str(op_radius(38)))
         .replace("{panel_border_width}", str(PANEL_BORDER_WIDTH))
         .replace("{background_image}", qss_url("Background_OpenPulsar.svg"))
         .replace("{check_icon}", qss_url("check.svg"))

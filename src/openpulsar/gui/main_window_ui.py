@@ -53,6 +53,7 @@ from .widgets.qt_delegates import ActionTreeDelegate, CenteredComboDelegate
 from .widgets.sensor_widgets import SensorValueControl
 from .widgets.popup_widgets import HelpPopup, AboutPopup, AboutHoverButton
 from .widgets.op_panel import OPPanel
+from .widgets.help_button import PaintedHelpButton
 from .metrics import (
     CONTENT_MARGIN_BOTTOM,
     CONTENT_MARGIN_TOP,
@@ -62,6 +63,7 @@ from .metrics import (
     PROFILE_TO_MAIN_GAP,
     MAIN_TO_SENSOR_GAP,
     PROFILE_RIBBON_WIDTH,
+    PROFILE_RIBBON_HEIGHT,
     FOOTER_HEIGHT,
     HEADER_HEIGHT,
     LEFT_PANEL_WIDTH,
@@ -109,7 +111,8 @@ def build_main_ui(self):
     self.import_profile_button.setIcon(
         QIcon(picture_path("openpulsar_import.svg"))
     )
-    self.import_profile_button.setIconSize(QSize(18, 18))
+    profile_icon_size = theme.op_icon_size(PROFILE_RIBBON_HEIGHT)
+    self.import_profile_button.setIconSize(QSize(profile_icon_size, profile_icon_size))
 
     self.prev_profile_button = QPushButton("←")
     self.next_profile_button = QPushButton("→")
@@ -118,7 +121,7 @@ def build_main_ui(self):
     self.export_profile_button.setIcon(
         QIcon(picture_path("openpulsar_export.svg"))
     )
-    self.export_profile_button.setIconSize(QSize(18, 18))
+    self.export_profile_button.setIconSize(QSize(profile_icon_size, profile_icon_size))
 
 
     self.import_profile_button.clicked.connect(self.import_current_profile)
@@ -141,7 +144,7 @@ def build_main_ui(self):
         self.next_profile_button,
         self.export_profile_button,
     ):
-        button.setFixedHeight(34)
+        button.setFixedHeight(PROFILE_RIBBON_HEIGHT)
         button.setSizePolicy(
             QSizePolicy.Expanding,
             QSizePolicy.Fixed,
@@ -152,7 +155,7 @@ def build_main_ui(self):
 
     for slot in range(1, self.mouse.capabilities.num_profiles + 1):
         label = QPushButton(f"P{slot}")
-        label.setFixedHeight(34)
+        label.setFixedHeight(PROFILE_RIBBON_HEIGHT)
         label.setSizePolicy(
             QSizePolicy.Expanding,
             QSizePolicy.Fixed,
@@ -176,8 +179,9 @@ def build_main_ui(self):
     right_layout = QVBoxLayout()
     right_layout.setContentsMargins(0, 0, 0, 0)
     right_layout.setSpacing(0)
+    right_layout.addSpacing(2)
     right_layout.addWidget(profiles_ribbon, alignment=Qt.AlignLeft)
-    right_layout.addSpacing(PROFILE_TO_MAIN_GAP)
+    right_layout.addSpacing(PROFILE_TO_MAIN_GAP - 2)
 
     sensor_box = QGroupBox("")
     sensor_box.setObjectName("sensorBox")
@@ -241,9 +245,8 @@ def build_main_ui(self):
     self.led_settings_button = LedSettingsButton()
     self.led_settings_button.clicked.connect(self.toggle_led_panel)
 
-    dpi_help_button = QPushButton("?")
+    dpi_help_button = PaintedHelpButton()
     dpi_help_button.setObjectName("helpButton")
-    dpi_help_button.setFixedSize(18, 18)
     self.dpi_help_button = dpi_help_button
     self.context_help_buttons.append(dpi_help_button)
     dpi_help_button.clicked.connect(
@@ -253,6 +256,7 @@ def build_main_ui(self):
     dpi_header_layout.insertWidget(
         dpi_header_layout.count() - 1,
         dpi_help_button,
+        alignment=Qt.AlignBottom,
     )
     dpi_header_layout.addWidget(self.led_settings_button, alignment=Qt.AlignVCenter)
 
@@ -356,7 +360,6 @@ def build_main_ui(self):
             tr("Middle Click"),
             tr("Back"),
             tr("Forward"),
-            tr("Disabled"),
         ]),
         (tr("DPI & Profiles"), [
             tr("DPI Cycle"),
@@ -397,12 +400,9 @@ def build_main_ui(self):
         self.forward_button_combo,
     ):
         combo.set_keep_one_group_open(True)
-        combo.set_action_groups(button_action_groups)
-        disabled_index = combo.findText(tr("Disabled"))
-        combo.setItemData(
-            disabled_index,
-            QColor("#dc2626"),
-            Qt.ForegroundRole,
+        combo.set_action_groups(
+            button_action_groups,
+            standalone_actions=[(tr("Disabled"), tr("Disabled"), True)],
         )
 
         combo.protectedClicked.connect(self.show_left_click_lock_popup)
@@ -476,7 +476,7 @@ def build_main_ui(self):
         )
 
         row_layout = QHBoxLayout(row_widget)
-        row_layout.setContentsMargins(4, 7, 4, 5)
+        row_layout.setContentsMargins(4, 6, 4, 6)
         row_layout.setSpacing(8)
         row_layout.setAlignment(Qt.AlignVCenter)
         row_layout.addWidget(led_button, alignment=Qt.AlignVCenter)
@@ -488,7 +488,7 @@ def build_main_ui(self):
 
     self.add_dpi_button = QPushButton(tr("+ Add stage"))
     self.add_dpi_button.setObjectName("addListButton")
-    self.add_dpi_button.setFixedSize(150, 30)
+    self.add_dpi_button.setFixedSize(150, theme.OP_PILL_HEIGHT)
     self.add_dpi_button.clicked.connect(self.add_dpi_stage)
 
     dpi_footer = QWidget()
@@ -516,31 +516,17 @@ def build_main_ui(self):
     )
     self.dpi_group = dpi_group
 
-    performance_layout.addRow(
-        self.make_help_label("Polling", "polling"),
-        self.polling_control,
+    sensor_rows = (
+        (performance_layout, "Polling", "polling", self.polling_control),
+        (performance_layout, "Debounce", "debounce", self.debounce_control),
+        (performance_layout, "LOD", "lod", self.lod_control),
+        (tracking_layout, "Motion Sync", "motion_sync", self.motion_sync_check),
+        (tracking_layout, "Angle Snap", "angle_snap", self.angle_snap_check),
+        (tracking_layout, "Ripple Control", "ripple_control", self.ripple_control_check),
     )
-    performance_layout.addRow(
-        self.make_help_label("Debounce", "debounce"),
-        self.debounce_control,
-    )
-    performance_layout.addRow(
-        self.make_help_label("LOD", "lod"),
-        self.lod_control,
-    )
-
-    tracking_layout.addRow(
-        self.make_help_label("Motion Sync", "motion_sync"),
-        self.motion_sync_check,
-    )
-    tracking_layout.addRow(
-        self.make_help_label("Angle Snap", "angle_snap"),
-        self.angle_snap_check,
-    )
-    tracking_layout.addRow(
-        self.make_help_label("Ripple Control", "ripple_control"),
-        self.ripple_control_check,
-    )
+    for form_layout, text, help_key, control in sensor_rows:
+        form_layout.addRow(self.make_help_label(text, help_key), control)
+        form_layout.setAlignment(control, Qt.AlignLeft | Qt.AlignVCenter)
 
     performance_box.setLayout(performance_layout)
     tracking_box.setLayout(tracking_layout)
@@ -596,6 +582,12 @@ def build_main_ui(self):
     self.keyboard_commands_editor.profileModeRequested.connect(self.change_profile_by_mode)
     self.keyboard_commands_editor.profileDirectRequested.connect(self.activate_profile)
     self.keyboard_commands_editor.commandsChanged.connect(self.on_keyboard_commands_changed)
+    self.keyboard_commands_editor.persistentModeEnableRequested.connect(
+        self.enable_persistent_for_keyboard_commands
+    )
+    self.keyboard_commands_editor.persistentModeCancelled.connect(
+        lambda: self.select_main_tab(0)
+    )
     self.start_global_shortcuts()
     logic_page_layout.addWidget(
         self.keyboard_commands_editor,
@@ -677,13 +669,13 @@ def build_main_ui(self):
     root.addWidget(footer)
 
     self.about_hover_zone = AboutHoverButton(self.centralWidget())
-    self.about_hover_zone.setGeometry(10, 10, 32, 32)
+    self.about_hover_zone.setGeometry(10, 11, 32, 32)
     self.about_hover_zone.clicked.connect(self.show_about_popup)
     self.about_hover_zone.raise_()
 
     self.settings_button = QPushButton(self.centralWidget())
     self.settings_button.setObjectName("settingsButton")
-    self.settings_button.setGeometry(490, 15, 32, 32)
+    self.settings_button.setGeometry(490, 13, 32, 32)
     self.settings_button.setIcon(QIcon(picture_path("icon_settings.svg")))
     self.settings_button.setIconSize(QSize(32, 32))
     self.settings_button.setCursor(Qt.PointingHandCursor)

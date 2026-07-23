@@ -6,6 +6,7 @@ from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushBu
 
 from .errors import HARDWARE_STATE_ERRORS
 from .metrics import ROW_HEIGHT
+from .theme import op_circle_radius
 from .profile.profile_extras_store import ProfileExtrasStore
 from .widgets.common_widgets import picture_path
 from .widgets.led_widgets import LedChoiceControl, LedGainControl, LedIndicator
@@ -139,7 +140,7 @@ class LedPanelMixin:
                 QPushButton#ledGainColorButton {
                     background-color: #ffffff;
                     border: 1px solid #cbd5e1;
-                    border-radius: 12px;
+                    border-radius: {circle_radius}px;
                     color: #64748b;
                     font-size: 14px;
                     font-weight: 700;
@@ -170,7 +171,7 @@ class LedPanelMixin:
                     border: 1px solid #2f6cff;
                     color: #1d4ed8;
                 }
-            """)
+            """.replace("{circle_radius}", str(op_circle_radius(24))))
         else:
             # Exact same 26 px swatch used by the DPI-stage rows.
             icon_button = LedIndicator(marker)

@@ -178,7 +178,7 @@
   <!-- small squares -->
   <!-- OpenPulsar logo and text -->
   <g
-     transform="translate(-23.172607,9)"
+     transform="translate(-23.172607,10)"
      id="g102">
     <!-- icon -->
     <!-- title -->
@@ -379,7 +379,7 @@
   </g>
   <g
      id="g4"
-     transform="matrix(0.28571429,0,0,0.28571429,7.7142857,7.7142857)"
+     transform="matrix(0.28571429,0,0,0.28571429,7.7142857,8.7142857)"
      style="stroke-width:3.5">
     <circle
        cx="64"
@@ -404,7 +404,7 @@
        cy="64"
        fill="#1f5fff"
        id="circle2"
-       style="stroke-width:3.5;fill:#2f6cff;fill-opacity:1"
+       style="fill:#2f6cff;fill-opacity:1;stroke-width:3.5"
        rx="27"
        ry="27.000002" />
     <path
