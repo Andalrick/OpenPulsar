@@ -12,7 +12,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Fixed
 
-## [0.1.7] - 2026-07-19
+## [0.1.7] - 2026-07-23
+
+### Added
+
+- Added custom OpenPulsar dialogs for profile and diagnostic notifications.
+- Added consistent painted contextual-help buttons throughout the interface.
+
+### Changed
+
+- Finalized the main-window layout, profile ribbon geometry and panel corner radii.
+- Improved contextual-help alignment and positioning, including the header help control.
+- Integrated the persistent-mode prompt directly into the keyboard-command panel.
+- Harmonized control radii, spacing and visual states across the interface.
+
+## [0.1.6] - 2026-07-19
 
 ### Changed
 

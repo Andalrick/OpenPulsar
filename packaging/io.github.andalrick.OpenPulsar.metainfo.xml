@@ -23,7 +23,12 @@
     <name>Andalrick</name>
   </developer>
   <releases>
-    <release version="0.1.7" date="2026-07-19">
+    <release version="0.1.7" date="2026-07-23">
+      <description>
+        <p>Finalized the main interface polish with consistent help controls, unified geometry and native OpenPulsar dialogs.</p>
+      </description>
+    </release>
+    <release version="0.1.6" date="2026-07-19">
       <description>
         <p>Refined DPI-stage interaction and completed a visual consistency pass across DPI, LED, RGB gain and keyboard-command controls.</p>
       </description>
